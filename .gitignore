@@ -41,3 +41,11 @@ drizzle/meta/
 # editor
 .vscode/
 .idea/
+
+# Superpowers SDD scratch
+.superpowers/
+
+# OS
+*.swp
+*.swo
+*~
