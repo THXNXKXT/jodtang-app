@@ -14,15 +14,25 @@ export function TransactionItem({ transaction }: { transaction: Transaction }) {
   const isIncome = transaction.type === "income";
 
   return (
-    <motion.div layout className="flex items-center gap-3 py-3">
-      <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full" style={{ backgroundColor: `${color}22` }}>
+    <motion.div layout className="flex items-center gap-3.5 px-4 py-4">
+      <div
+        className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full"
+        style={{ backgroundColor: `${color}1a` }}
+      >
         {Icon ? <Icon size={20} style={{ color }} /> : null}
       </div>
       <div className="min-w-0 flex-1">
-        <p className="truncate text-sm font-medium text-[var(--color-text-primary)]">{transaction.note || category?.name}</p>
-        <p className="text-xs text-[var(--color-text-secondary)]">{wallet?.name} - {formatRelativeDate(transaction.date)}</p>
+        <p className="truncate text-sm font-medium text-[var(--color-text-primary)]">
+          {transaction.note || category?.name}
+        </p>
+        <p className="mt-0.5 text-xs text-[var(--color-text-secondary)]">
+          {wallet?.name} - {formatRelativeDate(transaction.date)}
+        </p>
       </div>
-      <span className="shrink-0 text-sm font-semibold" style={{ color: isIncome ? "var(--color-income)" : "var(--color-text-primary)" }}>
+      <span
+        className="shrink-0 text-sm font-semibold tabular-nums"
+        style={{ color: isIncome ? "var(--color-income)" : "var(--color-text-primary)" }}
+      >
         {isIncome ? "+" : "-"}{formatCurrency(transaction.amount)}
       </span>
     </motion.div>
