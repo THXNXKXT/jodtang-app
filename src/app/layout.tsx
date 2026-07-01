@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
+import { AppShell } from "@/components/layout/app-shell";
 import { I18nContext, defaultLocale, messages, type Locale } from "@/i18n/config";
 import { useState, useCallback } from "react";
 
@@ -18,7 +19,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang={locale} className={inter.variable}>
       <body>
         <I18nContext.Provider value={{ locale, messages: messages[locale], setLocale }}>
-          {children}
+          <AppShell>{children}</AppShell>
         </I18nContext.Provider>
       </body>
     </html>
