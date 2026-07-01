@@ -4,24 +4,23 @@ import { motion } from "framer-motion";
 import { Card } from "@/components/ui/card";
 import { CATEGORY_COLORS, CATEGORY_ICONS } from "@/lib/constants";
 import { useI18n } from "@/i18n/config";
-import {
-  getCategoryById,
-  getCategorySpending,
-  mockBudgets,
-} from "@/lib/mock-data";
+import { useAppData } from "@/lib/data-provider";
 import { formatCurrency } from "@/lib/utils";
 
 export function BudgetsTab() {
   const { t } = useI18n();
+  const { budgets, categories, transactions } = useAppData();
 
   return (
     <div className="space-y-3">
-      {mockBudgets.map((budget, index) => {
-        const category = getCategoryById(budget.categoryId);
+      {budgets.map((budget, index) => {
+        const category = categories.find((c) => c.id === budget.categoryId);
         const iconKey = category?.icon ?? "other_expense";
         const Icon = CATEGORY_ICONS[iconKey];
         const color = CATEGORY_COLORS[iconKey] ?? "#525252";
-        const spent = getCategorySpending(budget.categoryId);
+        const spent = transactions
+          .filter((tx) => tx.type === "expense" && tx.categoryId === budget.categoryId)
+          .reduce((s, tx) => s + tx.amount, 0);
         const ratio = spent / budget.amount;
         const isOver = spent > budget.amount;
         const widthPct = Math.min(ratio * 100, 100);

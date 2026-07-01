@@ -5,21 +5,22 @@ import { PageTransition } from "@/components/layout/page-transition";
 import { TransactionFilters } from "@/components/transactions/transaction-filters";
 import { TransactionList } from "@/components/transactions/transaction-list";
 import { useI18n } from "@/i18n/config";
-import { mockTransactions } from "@/lib/mock-data";
+import { useAppData } from "@/lib/data-provider";
 
 export default function TransactionsPage() {
   const { t } = useI18n();
+  const { transactions } = useAppData();
   const [search, setSearch] = useState("");
   const [type, setType] = useState("all");
 
   const filtered = useMemo(() => {
     const q = search.trim().toLowerCase();
-    return mockTransactions.filter((tx) => {
+    return transactions.filter((tx) => {
       if (type !== "all" && tx.type !== type) return false;
       if (q && !tx.note.toLowerCase().includes(q)) return false;
       return true;
     });
-  }, [search, type]);
+  }, [search, type, transactions]);
 
   return (
     <PageTransition>

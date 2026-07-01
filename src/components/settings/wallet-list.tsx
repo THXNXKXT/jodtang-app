@@ -2,7 +2,7 @@
 
 import { Card } from "@/components/ui/card";
 import { CATEGORY_ICONS } from "@/lib/constants";
-import { mockWallets } from "@/lib/mock-data";
+import { useAppData } from "@/lib/data-provider";
 import { formatCurrency } from "@/lib/utils";
 import type { WalletType } from "@/types";
 
@@ -14,9 +14,10 @@ const TYPE_LABELS: Record<WalletType, string> = {
 };
 
 export function WalletList() {
+  const { wallets } = useAppData();
   return (
     <div className="space-y-2">
-      {mockWallets.map((wallet) => {
+      {wallets.map((wallet) => {
         const Icon = CATEGORY_ICONS[wallet.icon];
         return (
           <Card key={wallet.id} className="flex items-center gap-3 py-3">

@@ -7,9 +7,10 @@ import { Button } from "@/components/ui/button";
 import { SegmentedControl } from "@/components/ui/segmented-control";
 import { CATEGORY_COLORS, CATEGORY_ICONS } from "@/lib/constants";
 import { useI18n } from "@/i18n/config";
-import { mockCategories, mockTransactions, mockWallets } from "@/lib/mock-data";
+import { useAppData } from "@/lib/data-provider";
+import { createTransaction } from "@/server/actions/transactions";
 import { cn } from "@/lib/utils";
-import type { Transaction, TransactionType } from "@/types";
+import type { TransactionType } from "@/types";
 
 interface AddTransactionSheetProps {
   open: boolean;
@@ -24,45 +25,49 @@ const TYPE_SEGMENTS = [
 
 export function AddTransactionSheet({ open, onClose }: AddTransactionSheetProps) {
   const { t } = useI18n();
+  const { categories: allCategories, wallets, reload } = useAppData();
   const [type, setType] = useState<TransactionType>("expense");
   const [amount, setAmount] = useState("");
   const [categoryId, setCategoryId] = useState("");
-  const [walletId, setWalletId] = useState(mockWallets[0]?.id ?? "");
+  const [walletId, setWalletId] = useState(wallets[0]?.id ?? "");
   const [note, setNote] = useState("");
+  const [saving, setSaving] = useState(false);
 
   const categories = useMemo(
-    () => mockCategories.filter((c) => c.type === type),
-    [type],
+    () => allCategories.filter((c) => c.type === type),
+    [allCategories, type],
   );
 
   function reset() {
     setType("expense");
     setAmount("");
     setCategoryId("");
-    setWalletId(mockWallets[0]?.id ?? "");
+    setWalletId(wallets[0]?.id ?? "");
     setNote("");
   }
 
-  function handleSave() {
+  async function handleSave() {
     const parsed = parseFloat(amount);
     if (!Number.isFinite(parsed) || parsed <= 0) return;
     if (type !== "transfer" && !categoryId) return;
     if (!walletId) return;
 
-    const newTx: Transaction = {
-      id: `tx${Date.now()}`,
-      type,
-      amount: parsed,
-      categoryId: type === "transfer" ? "" : categoryId,
-      walletId,
-      date: new Date().toISOString(),
-      note: note.trim() || t(`add.${type}`),
-      tags: [],
-    };
-
-    mockTransactions.unshift(newTx);
-    reset();
-    onClose();
+    setSaving(true);
+    try {
+      await createTransaction({
+        type,
+        amount: parsed,
+        categoryId: type === "transfer" ? undefined : Number(categoryId),
+        walletId: Number(walletId),
+        note: note.trim() || t(`add.${type}`),
+        date: new Date().toISOString(),
+      });
+      reload();
+      reset();
+      onClose();
+    } finally {
+      setSaving(false);
+    }
   }
 
   return (
@@ -140,7 +145,7 @@ export function AddTransactionSheet({ open, onClose }: AddTransactionSheetProps)
             {t("add.wallet")}
           </p>
           <div className="flex flex-wrap gap-2">
-            {mockWallets.map((w) => {
+            {wallets.map((w) => {
               const Icon = CATEGORY_ICONS[w.icon];
               const selected = walletId === w.id;
               return (
@@ -177,7 +182,7 @@ export function AddTransactionSheet({ open, onClose }: AddTransactionSheetProps)
         </div>
 
         <motion.div whileTap={{ scale: 0.98 }}>
-          <Button className="w-full" onClick={handleSave}>
+          <Button className="w-full" onClick={handleSave} disabled={saving}>
             {t("add.save")}
           </Button>
         </motion.div>

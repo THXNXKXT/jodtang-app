@@ -3,12 +3,13 @@
 import { motion } from "framer-motion";
 import { TransactionItem } from "@/components/ui/transaction-item";
 import { useI18n } from "@/i18n/config";
-import { mockTransactions } from "@/lib/mock-data";
+import { useAppData } from "@/lib/data-provider";
 import Link from "next/link";
 
 export function RecentTransactions() {
   const { t } = useI18n();
-  const recent = mockTransactions.slice(0, 5);
+  const { transactions } = useAppData();
+  const recent = transactions.slice(0, 5);
 
   return (
     <div>

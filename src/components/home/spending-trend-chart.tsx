@@ -11,15 +11,16 @@ import {
 } from "recharts";
 import { Card } from "@/components/ui/card";
 import { useI18n } from "@/i18n/config";
-import { mockTransactions } from "@/lib/mock-data";
+import { useAppData } from "@/lib/data-provider";
 import { formatCurrencyShort } from "@/lib/utils";
+import type { Transaction } from "@/types";
 
 interface DayDatum {
   label: string;
   amount: number;
 }
 
-function buildLast7DaysData(): DayDatum[] {
+function buildLast7DaysData(transactions: Transaction[]): DayDatum[] {
   const today = new Date();
   today.setHours(0, 0, 0, 0);
   const buckets = new Map<string, number>();
@@ -31,7 +32,7 @@ function buildLast7DaysData(): DayDatum[] {
     buckets.set(key, 0);
   }
 
-  for (const tx of mockTransactions) {
+  for (const tx of transactions) {
     if (tx.type !== "expense") continue;
     const key = new Date(tx.date).toISOString().slice(0, 10);
     if (buckets.has(key)) {
@@ -54,7 +55,8 @@ function buildLast7DaysData(): DayDatum[] {
 
 export function SpendingTrendChart() {
   const { t } = useI18n();
-  const data = useMemo(() => buildLast7DaysData(), []);
+  const { transactions } = useAppData();
+  const data = useMemo(() => buildLast7DaysData(transactions), [transactions]);
 
   return (
     <Card>

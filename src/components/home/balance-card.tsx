@@ -1,96 +1,42 @@
 "use client";
-
 import { motion } from "framer-motion";
-import { TrendingDown, TrendingUp } from "lucide-react";
-import type { ReactNode } from "react";
+import { TrendingUp, TrendingDown } from "lucide-react";
 import { AnimatedNumber } from "@/components/ui/animated-number";
-import { Card } from "@/components/ui/card";
-import { useI18n } from "@/i18n/config";
-import {
-  getMonthExpense,
-  getMonthIncome,
-  getTotalBalance,
-} from "@/lib/mock-data";
+import { useAppData } from "@/lib/data-provider";
 import { formatCurrency } from "@/lib/utils";
 
 export function BalanceCard() {
-  const { t } = useI18n();
-  const balance = getTotalBalance();
-  const income = getMonthIncome();
-  const expense = getMonthExpense();
-  const max = Math.max(income, expense, 1);
+  const { wallets, transactions, loading } = useAppData();
+  const total = wallets.reduce((s, w) => s + w.openingBalance, 0);
+  const income = transactions.filter((t) => t.type === "income").reduce((s, t) => s + t.amount, 0);
+  const expense = transactions.filter((t) => t.type === "expense").reduce((s, t) => s + t.amount, 0);
+  const maxVal = Math.max(income, expense, 1);
+
+  if (loading) return <div className="h-48 animate-pulse rounded-3xl bg-[var(--color-surface)]" />;
 
   return (
-    <Card className="overflow-hidden">
-      <motion.div
-        initial={{ opacity: 0, y: 12 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.4, ease: "easeOut" }}
-        className="space-y-4"
-      >
-        <p className="text-sm text-[var(--color-text-secondary)]">
-          {t("home.totalBalance")}
-        </p>
-        <AnimatedNumber
-          value={balance}
-          format={(v) => formatCurrency(v)}
-          className="block text-3xl font-bold text-[var(--color-text-primary)]"
-        />
-
-        <div className="space-y-3 pt-1">
-          <BarRow
-            icon={<TrendingUp size={16} />}
-            label={t("home.income")}
-            amount={income}
-            widthPct={(income / max) * 100}
-            color="var(--color-income)"
-          />
-          <BarRow
-            icon={<TrendingDown size={16} />}
-            label={t("home.expense")}
-            amount={expense}
-            widthPct={(expense / max) * 100}
-            color="var(--color-expense)"
-          />
+    <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4 }}
+      className="rounded-3xl border border-[var(--color-border)] bg-gradient-to-b from-[var(--color-surface)] to-[var(--color-bg)] p-5">
+      <p className="text-sm text-[var(--color-text-secondary)]">ยอดรวมทั้งหมด</p>
+      <div className="mt-1 text-3xl font-bold tracking-tight">
+        <AnimatedNumber value={total} format={(n) => `฿${n.toLocaleString("th-TH")}`} />
+      </div>
+      <div className="mt-4 flex gap-3">
+        <div className="flex-1 rounded-xl bg-[var(--color-surface-hover)] p-3">
+          <div className="flex items-center gap-1.5 text-xs text-[var(--color-income)]"><TrendingUp size={14} /> รายรับ</div>
+          <p className="mt-1 text-sm font-semibold">{formatCurrency(income)}</p>
+          <div className="mt-2 h-1 overflow-hidden rounded-full bg-[var(--color-border)]">
+            <motion.div className="h-full rounded-full bg-[var(--color-income)]" initial={{ width: 0 }} animate={{ width: `${(income / maxVal) * 100}%` }} transition={{ duration: 0.8, delay: 0.2 }} />
+          </div>
         </div>
-      </motion.div>
-    </Card>
-  );
-}
-
-function BarRow({
-  icon,
-  label,
-  amount,
-  widthPct,
-  color,
-}: {
-  icon: ReactNode;
-  label: string;
-  amount: number;
-  widthPct: number;
-  color: string;
-}) {
-  return (
-    <div className="space-y-1.5">
-      <div className="flex items-center justify-between text-sm">
-        <span className="flex items-center gap-1.5 text-[var(--color-text-secondary)]">
-          {icon}
-          {label}
-        </span>
-        <span className="font-semibold tabular-nums text-[var(--color-text-primary)]">
-          {formatCurrency(amount)}
-        </span>
+        <div className="flex-1 rounded-xl bg-[var(--color-surface-hover)] p-3">
+          <div className="flex items-center gap-1.5 text-xs text-[var(--color-expense)]"><TrendingDown size={14} /> รายจ่าย</div>
+          <p className="mt-1 text-sm font-semibold">{formatCurrency(expense)}</p>
+          <div className="mt-2 h-1 overflow-hidden rounded-full bg-[var(--color-border)]">
+            <motion.div className="h-full rounded-full bg-[var(--color-expense)]" initial={{ width: 0 }} animate={{ width: `${(expense / maxVal) * 100}%` }} transition={{ duration: 0.8, delay: 0.3 }} />
+          </div>
+        </div>
       </div>
-      <div className="h-2 overflow-hidden rounded-full bg-[var(--color-surface-hover)]">
-        <motion.div
-          className="h-full rounded-full"
-          style={{ backgroundColor: color }}
-          initial={{ width: 0 }}
-          animate={{ width: `${widthPct}%` }}
-          transition={{ duration: 0.7, ease: "easeOut", delay: 0.2 }}
-        />
-      </div>
-    </div>
+    </motion.div>
   );
 }

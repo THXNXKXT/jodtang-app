@@ -5,11 +5,7 @@ import { Cell, Pie, PieChart, ResponsiveContainer, Tooltip } from "recharts";
 import { Card } from "@/components/ui/card";
 import { CATEGORY_COLORS, CATEGORY_ICONS } from "@/lib/constants";
 import { useI18n } from "@/i18n/config";
-import {
-  getCategorySpending,
-  getMonthExpense,
-  mockCategories,
-} from "@/lib/mock-data";
+import { useAppData } from "@/lib/data-provider";
 import { formatCurrency } from "@/lib/utils";
 
 interface SliceDatum {
@@ -23,14 +19,19 @@ const ellipsis = "overflow-hidden text-ellipsis whitespace-nowrap";
 
 export function CategoryBreakdownChart() {
   const { t } = useI18n();
+  const { transactions, categories } = useAppData();
 
   const data = useMemo<SliceDatum[]>(() => {
-    const total = getMonthExpense();
-    const slices = mockCategories
+    const total = transactions
+      .filter((tx) => tx.type === "expense")
+      .reduce((s, tx) => s + tx.amount, 0);
+    const slices = categories
       .filter((c) => c.type === "expense")
       .map((c) => ({
         name: c.name,
-        value: getCategorySpending(c.id),
+        value: transactions
+          .filter((tx) => tx.type === "expense" && tx.categoryId === c.id)
+          .reduce((s, tx) => s + tx.amount, 0),
         color: CATEGORY_COLORS[c.icon] ?? "#525252",
       }))
       .filter((s) => s.value > 0)
@@ -41,7 +42,7 @@ export function CategoryBreakdownChart() {
         pct: total > 0 ? (s.value / total) * 100 : 0,
       }));
     return slices;
-  }, []);
+  }, [transactions, categories]);
 
   return (
     <Card>
@@ -84,7 +85,7 @@ export function CategoryBreakdownChart() {
         <ul className="min-w-0 flex-1 space-y-1.5">
           {data.map((slice) => {
             const Icon = CATEGORY_ICONS[
-              mockCategories.find((c) => c.name === slice.name)?.icon ?? "other_expense"
+              categories.find((c) => c.name === slice.name)?.icon ?? "other_expense"
             ];
             return (
               <li key={slice.name} className="flex items-center gap-2 text-sm">

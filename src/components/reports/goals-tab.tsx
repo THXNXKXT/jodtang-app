@@ -3,15 +3,16 @@
 import { Card } from "@/components/ui/card";
 import { ProgressRing } from "@/components/ui/progress-ring";
 import { useI18n } from "@/i18n/config";
-import { mockGoals } from "@/lib/mock-data";
+import { useAppData } from "@/lib/data-provider";
 import { formatCurrency } from "@/lib/utils";
 
 export function GoalsTab() {
   const { t } = useI18n();
+  const { goals } = useAppData();
 
   return (
     <div className="space-y-3">
-      {mockGoals.map((goal) => {
+      {goals.map((goal) => {
         const pct = Math.min(goal.currentAmount / goal.targetAmount, 1);
         return (
           <Card key={goal.id} className="flex items-center gap-4">

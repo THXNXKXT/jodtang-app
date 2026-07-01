@@ -1,10 +1,11 @@
 "use client";
 import { CATEGORY_ICONS, CATEGORY_COLORS } from "@/lib/constants";
-import { mockCategories } from "@/lib/mock-data";
+import { useAppData } from "@/lib/data-provider";
 
 export function CategoryList() {
-  const expense = mockCategories.filter((c) => c.type === "expense");
-  const income = mockCategories.filter((c) => c.type === "income");
+  const { categories } = useAppData();
+  const expense = categories.filter((c) => c.type === "expense");
+  const income = categories.filter((c) => c.type === "income");
   return (
     <div className="space-y-4">
       <div>

@@ -4,19 +4,18 @@ import { motion } from "framer-motion";
 import { Card } from "@/components/ui/card";
 import { CATEGORY_COLORS, CATEGORY_ICONS } from "@/lib/constants";
 import { useI18n } from "@/i18n/config";
-import {
-  getCategoryById,
-  getCategorySpending,
-  mockBudgets,
-} from "@/lib/mock-data";
+import { useAppData } from "@/lib/data-provider";
 import { formatCurrency } from "@/lib/utils";
 
 export function BudgetMiniCards() {
   const { t } = useI18n();
+  const { budgets, categories, transactions } = useAppData();
 
-  const topBudgets = [...mockBudgets]
+  const topBudgets = [...budgets]
     .map((budget) => {
-      const spent = getCategorySpending(budget.categoryId);
+      const spent = transactions
+        .filter((tx) => tx.type === "expense" && tx.categoryId === budget.categoryId)
+        .reduce((s, tx) => s + tx.amount, 0);
       const ratio = spent / budget.amount;
       return { budget, spent, ratio };
     })
@@ -32,7 +31,7 @@ export function BudgetMiniCards() {
       </div>
       <div className="space-y-3">
         {topBudgets.map(({ budget, spent, ratio }, index) => {
-          const category = getCategoryById(budget.categoryId);
+          const category = categories.find((c) => c.id === budget.categoryId);
           const iconKey = category?.icon ?? "other_expense";
           const Icon = CATEGORY_ICONS[iconKey];
           const color = CATEGORY_COLORS[iconKey] ?? "#525252";

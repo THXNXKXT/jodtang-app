@@ -13,13 +13,18 @@ import {
 import { Card } from "@/components/ui/card";
 import { CategoryBreakdownChart } from "@/components/home/category-breakdown-chart";
 import { useI18n } from "@/i18n/config";
-import { getMonthExpense, getMonthIncome } from "@/lib/mock-data";
+import { useAppData } from "@/lib/data-provider";
 import { formatCurrency, formatCurrencyShort } from "@/lib/utils";
 
 export function OverviewTab() {
   const { t } = useI18n();
-  const income = getMonthIncome();
-  const expense = getMonthExpense();
+  const { transactions } = useAppData();
+  const income = transactions
+    .filter((tx) => tx.type === "income")
+    .reduce((s, tx) => s + tx.amount, 0);
+  const expense = transactions
+    .filter((tx) => tx.type === "expense")
+    .reduce((s, tx) => s + tx.amount, 0);
 
   const data = useMemo(
     () => [
