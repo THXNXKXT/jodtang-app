@@ -1,7 +1,9 @@
 "use client";
+import { useState } from "react";
 import { motion } from "framer-motion";
 import { useRouter, usePathname } from "next/navigation";
 import { LayoutDashboard, ReceiptText, BarChart3, Settings, Plus } from "lucide-react";
+import { AddTransactionSheet } from "@/components/add/add-transaction-sheet";
 import { useI18n } from "@/i18n/config";
 import { cn } from "@/lib/utils";
 
@@ -18,6 +20,7 @@ export function BottomNav() {
   const { t } = useI18n();
   const router = useRouter();
   const pathname = usePathname();
+  const [addOpen, setAddOpen] = useState(false);
 
   return (
     <nav className="fixed bottom-0 left-1/2 z-30 flex w-full max-w-[480px] items-center justify-around border-t border-[var(--color-border)] bg-[var(--color-surface)]/80 backdrop-blur-xl safe-area-bottom h-[var(--spacing-tab-bar)] -translate-x-1/2">
@@ -27,6 +30,8 @@ export function BottomNav() {
       <motion.button
         whileTap={{ scale: 0.9 }}
         transition={{ type: "spring", stiffness: 400, damping: 17 }}
+        onClick={() => setAddOpen(true)}
+        aria-label={t("nav.add")}
         className="flex h-12 w-12 -translate-y-2 items-center justify-center rounded-full bg-[var(--color-text-primary)] text-[var(--color-bg)] shadow-lg"
       >
         <Plus size={24} />
@@ -34,6 +39,7 @@ export function BottomNav() {
       {navItems.slice(2).map((item) => (
         <NavButton key={item.href} item={item} active={pathname === item.href} onClick={() => router.push(item.href)} t={t} />
       ))}
+      <AddTransactionSheet open={addOpen} onClose={() => setAddOpen(false)} />
     </nav>
   );
 }

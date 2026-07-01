@@ -5,7 +5,7 @@ import { AppShell } from "@/components/layout/app-shell";
 import { I18nContext, defaultLocale, messages, type Locale } from "@/i18n/config";
 import { useState, useCallback } from "react";
 
-const inter = Inter({ subsets: ["latin", "thai"], variable: "--font-sans" });
+const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });
 
 export const metadata: Metadata = {
   title: "Jodtang — จดตัง",
