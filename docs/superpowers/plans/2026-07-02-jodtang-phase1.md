@@ -1,8 +1,8 @@
-# Jodtung-app Phase 1: Visual Prototype Implementation Plan
+# Jodtang-app Phase 1: Visual Prototype Implementation Plan
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
-**Goal:** Build a fully interactive mobile-first visual prototype of Jodtung-app with mock data, complete Framer Motion animations, and all 5 main screens — no backend wiring.
+**Goal:** Build a fully interactive mobile-first visual prototype of Jodtang-app with mock data, complete Framer Motion animations, and all 5 main screens — no backend wiring.
 
 **Architecture:** Next.js 16 App Router with client components for interactivity. Mock data hardcoded in a typed data layer. Framer Motion for all animations. lucide-react icons throughout (zero emojis). Bottom tab navigation with shared-layout page transitions.
 
@@ -25,7 +25,7 @@
 ## File Structure
 
 ```
-jodtung-app/
+jodtang-app/
 ├── src/
 │   ├── app/
 │   │   ├── layout.tsx                    # Root layout: fonts, metadata, IntlProvider
@@ -85,9 +85,9 @@ jodtung-app/
 ├── package.json
 └── docs/
     └── superpowers/
-        ├── specs/2026-07-02-jodtung-app-design.md
+        ├── specs/2026-07-02-jodtang-app-design.md
         └── plans/
-            └── 2026-07-02-jodtung-app-phase1.md  ← this file
+            └── 2026-07-02-jodtang-app-phase1.md  ← this file
 ```
 
 ---
@@ -104,7 +104,7 @@ jodtung-app/
 
 ```bash
 cd /d/Projects
-pnpm create next-app@latest jodtung-app --ts --tailwind --eslint --app --src-dir --use-pnpm --import-alias "@/*"
+pnpm create next-app@latest jodtang-app --ts --tailwind --eslint --app --src-dir --use-pnpm --import-alias "@/*"
 ```
 
 If the folder already exists (it does — we created it for git), scaffold in a temp dir and move files:
@@ -112,11 +112,11 @@ If the folder already exists (it does — we created it for git), scaffold in a 
 ```bash
 cd /d/Projects
 pnpm create next-app@latest jodtung-tmp --ts --tailwind --eslint --app --src-dir --use-pnpm --import-alias "@/*"
-# Move all files including dotfiles into jodtung-app
-cp -r jodtung-tmp/* jodtung-app/
-cp -r jodtung-tmp/.* jodtung-app/ 2>/dev/null
+# Move all files including dotfiles into jodtang-app
+cp -r jodtung-tmp/* jodtang-app/
+cp -r jodtung-tmp/.* jodtang-app/ 2>/dev/null
 rm -rf jodtung-tmp
-cd jodtung-app
+cd jodtang-app
 ```
 
 - [ ] **Step 2: Install all dependencies**
@@ -612,7 +612,7 @@ Create `src/i18n/messages.th.json`:
 
 ```json
 {
-  "app": { "name": "จดทุก" },
+  "app": { "name": "จดตัง" },
   "nav": {
     "home": "หน้าแรก",
     "transactions": "รายการ",
@@ -696,7 +696,7 @@ Create `src/i18n/messages.en.json`:
 
 ```json
 {
-  "app": { "name": "Jodtung" },
+  "app": { "name": "Jodtang" },
   "nav": {
     "home": "Home",
     "transactions": "Transactions",
@@ -838,7 +838,7 @@ import { AppShell } from "@/components/layout/app-shell";
 const inter = Inter({ subsets: ["latin", "thai"], variable: "--font-sans" });
 
 export const metadata: Metadata = {
-  title: "Jodtung — จดทุก",
+  title: "Jodtang — จดตัง",
   description: "Mobile-first personal finance tracker",
 };
 

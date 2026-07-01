@@ -1,6 +1,6 @@
-# Jodtung-app Design Spec
+# Jodtang-app Design Spec
 
-> **Jodtung** (จดทุก) = "record everything" — a mobile-first personal finance PWA
+> **Jodtang** (จดตัง) = "record everything" — a mobile-first personal finance PWA
 
 ## Goal
 
