@@ -1,5 +1,6 @@
 "use client";
 import { createContext, useContext, useEffect, useState, useCallback, ReactNode } from "react";
+import { usePathname } from "next/navigation";
 import type { Transaction, Wallet, Category, Budget, SavingsGoal } from "@/types";
 
 interface AppData {
@@ -17,6 +18,7 @@ const DataContext = createContext<AppData>({
 });
 
 export function DataProvider({ children }: { children: ReactNode }) {
+  const pathname = usePathname();
   const [data, setData] = useState<Omit<AppData, "reload">>({
     wallets: [], categories: [], transactions: [], budgets: [], goals: [], loading: true,
   });
@@ -67,7 +69,7 @@ export function DataProvider({ children }: { children: ReactNode }) {
     }
   }, []);
 
-  useEffect(() => { load(); }, [load]);
+  useEffect(() => { load(); }, [load, pathname]);
   return <DataContext.Provider value={{ ...data, reload: load }}>{children}</DataContext.Provider>;
 }
 

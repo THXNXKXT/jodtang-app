@@ -32,7 +32,6 @@ export function AddTransactionSheet({ open, onClose }: Props) {
   useEffect(() => { if (cats.length > 0 && !categoryId) setCategoryId(cats[0]!.id); }, [cats, categoryId]);
 
   async function handleSave() {
-    console.log("handleSave", { amount, walletId, categoryId });
     const parsed = parseFloat(amount);
     if (!Number.isFinite(parsed) || parsed <= 0 || !walletId) return;
     setSaving(true);
@@ -47,7 +46,7 @@ export function AddTransactionSheet({ open, onClose }: Props) {
       await reload();
       setAmount(""); setNote(""); setCategoryId("");
       onClose();
-    } catch (e) { console.error("Save error:", e); }
+    } catch {}
     finally { setSaving(false); }
   }
 
