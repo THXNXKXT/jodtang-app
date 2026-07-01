@@ -49,3 +49,8 @@ drizzle/meta/
 *.swp
 *.swo
 *~
+
+# Internal planning docs
+docs/superpowers/
+AGENTS.md
+CLAUDE.md
