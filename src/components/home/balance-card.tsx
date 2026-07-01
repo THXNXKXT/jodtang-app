@@ -7,9 +7,10 @@ import { formatCurrency } from "@/lib/utils";
 
 export function BalanceCard() {
   const { wallets, transactions, loading } = useAppData();
-  const total = wallets.reduce((s, w) => s + w.openingBalance, 0);
+  const walletTotal = wallets.reduce((s, w) => s + w.openingBalance, 0);
   const income = transactions.filter((t) => t.type === "income").reduce((s, t) => s + t.amount, 0);
   const expense = transactions.filter((t) => t.type === "expense").reduce((s, t) => s + t.amount, 0);
+  const total = walletTotal + income - expense;
   const maxVal = Math.max(income, expense, 1);
 
   if (loading) return <div className="h-48 animate-pulse rounded-3xl bg-[var(--color-surface)]" />;
