@@ -1,21 +1,50 @@
 @import "tailwindcss";
 
+@custom-variant dark (&:where(.dark, .dark *));
+
 @theme {
-  --color-bg: #0a0a0a;
-  --color-surface: #141414;
-  --color-surface-hover: #1c1c1c;
-  --color-border: #262626;
-  --color-text-primary: #fafafa;
-  --color-text-secondary: #a3a3a3;
-  --color-text-muted: #525252;
-  --color-income: #22c55e;
-  --color-income-muted: #22c55ecc;
-  --color-expense: #ef4444;
-  --color-expense-muted: #ef4444cc;
-  --color-transfer: #3b82f6;
-  --color-transfer-muted: #3b82f6cc;
+  --font-sans: "IBM Plex Sans Thai", system-ui, -apple-system, sans-serif;
   --spacing-tab-bar: 64px;
-  --font-sans: "Inter", system-ui, -apple-system, sans-serif;
+}
+
+/* Light mode (default) */
+:root {
+  --color-bg: #f8fafc;
+  --color-surface: #ffffff;
+  --color-surface-hover: #f1f5f9;
+  --color-border: #e2e8f0;
+  --color-text-primary: #0f172a;
+  --color-text-secondary: #475569;
+  --color-text-muted: #94a3b8;
+  --color-primary: #2563eb;
+  --color-primary-soft: #dbeafe;
+  --color-income: #059669;
+  --color-income-soft: #d1fae5;
+  --color-expense: #dc2626;
+  --color-expense-soft: #fee2e2;
+  --color-transfer: #2563eb;
+  --color-transfer-soft: #dbeafe;
+  --shadow-card: 0 1px 3px 0 rgb(0 0 0 / 0.06), 0 1px 2px -1px rgb(0 0 0 / 0.06);
+}
+
+/* Dark mode */
+.dark {
+  --color-bg: #0b1120;
+  --color-surface: #161e2e;
+  --color-surface-hover: #1e293b;
+  --color-border: #1e293b;
+  --color-text-primary: #f1f5f9;
+  --color-text-secondary: #94a3b8;
+  --color-text-muted: #475569;
+  --color-primary: #3b82f6;
+  --color-primary-soft: #1e3a5f;
+  --color-income: #10b981;
+  --color-income-soft: #064e3b;
+  --color-expense: #f43f5e;
+  --color-expense-soft: #4c0519;
+  --color-transfer: #3b82f6;
+  --color-transfer-soft: #1e3a5f;
+  --shadow-card: 0 1px 3px 0 rgb(0 0 0 / 0.3);
 }
 
 @layer base {
@@ -26,6 +55,7 @@
     font-family: var(--font-sans);
     overscroll-behavior-y: none;
     -webkit-font-smoothing: antialiased;
+    transition: background-color 0.3s ease, color 0.3s ease;
   }
   .no-scrollbar::-webkit-scrollbar { display: none; }
   .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
