@@ -1,0 +1,9 @@
+{
+  "app": { "name": "จดตัง" },
+  "nav": { "home": "หน้าแรก", "transactions": "รายการ", "add": "เพิ่ม", "reports": "รายงาน", "settings": "ตั้งค่า" },
+  "home": { "totalBalance": "ยอดรวมทั้งหมด", "income": "รายรับ", "expense": "รายจ่าย", "spendingTrend": "แนวโน้ม 7 วัน", "categoryBreakdown": "สัดส่วนรายจ่าย", "budgets": "งบประมาณ", "recentTransactions": "ล่าสุด", "seeAll": "ดูทั้งหมด" },
+  "transactions": { "title": "รายการทั้งหมด", "search": "ค้นหา...", "all": "ทั้งหมด", "noResults": "ไม่พบรายการ" },
+  "add": { "title": "เพิ่มรายการ", "expense": "รายจ่าย", "income": "รายรับ", "transfer": "โอนย้าย", "amount": "จำนวนเงิน", "category": "หมวดหมู่", "wallet": "กระเป๋าเงิน", "note": "หมายเหตุ", "save": "บันทึก" },
+  "reports": { "title": "รายงาน", "overview": "ภาพรวม", "budgets": "งบประมาณ", "goals": "เป้าหมาย", "monthlyComparison": "เปรียบเทียบรายเดือน", "budgetLeft": "เหลือ", "budgetOver": "เกินงบ", "contribute": "เติมเงิน", "target": "เป้าหมาย", "saved": "ออมแล้ว" },
+  "settings": { "title": "ตั้งค่า", "profile": "โปรไฟล์", "wallets": "กระเป๋าเงิน", "categories": "หมวดหมู่", "preferences": "การตั้งค่า", "language": "ภาษา", "thai": "ไทย", "english": "English", "export": "ส่งออกข้อมูล", "signOut": "ออกจากระบบ" }
+}

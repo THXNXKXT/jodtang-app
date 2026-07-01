@@ -1,0 +1,9 @@
+{
+  "app": { "name": "Jodtang" },
+  "nav": { "home": "Home", "transactions": "Transactions", "add": "Add", "reports": "Reports", "settings": "Settings" },
+  "home": { "totalBalance": "Total Balance", "income": "Income", "expense": "Expense", "spendingTrend": "7-Day Trend", "categoryBreakdown": "Spending by Category", "budgets": "Budgets", "recentTransactions": "Recent", "seeAll": "See all" },
+  "transactions": { "title": "All Transactions", "search": "Search...", "all": "All", "noResults": "No transactions found" },
+  "add": { "title": "Add Transaction", "expense": "Expense", "income": "Income", "transfer": "Transfer", "amount": "Amount", "category": "Category", "wallet": "Wallet", "note": "Note", "save": "Save" },
+  "reports": { "title": "Reports", "overview": "Overview", "budgets": "Budgets", "goals": "Goals", "monthlyComparison": "Monthly Comparison", "budgetLeft": "Left", "budgetOver": "Over budget", "contribute": "Contribute", "target": "Target", "saved": "Saved" },
+  "settings": { "title": "Settings", "profile": "Profile", "wallets": "Wallets", "categories": "Categories", "preferences": "Preferences", "language": "Language", "thai": "ไทย", "english": "English", "export": "Export Data", "signOut": "Sign Out" }
+}
