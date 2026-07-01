@@ -35,32 +35,31 @@ export function DataProvider({ children }: { children: ReactNode }) {
         getWallets(), getCategories(), getTransactions(), getBudgets(), getGoals(),
       ]);
       setData({
-        wallets: wallets.map((w: Record<string, unknown>) => ({
+        wallets: (wallets as Record<string, unknown>[]).map((w) => ({
           id: String(w.id), name: w.name as string, type: w.type as Wallet["type"],
           icon: w.icon as string, color: w.color as string,
           openingBalance: w.openingBalance as number, sortOrder: w.sortOrder as number,
-        })),
-        categories: categories.map((c: Record<string, unknown>) => ({
+        })) as Wallet[],
+        categories: (categories as Record<string, unknown>[]).map((c) => ({
           id: String(c.id), name: c.name as string, nameEn: c.nameEn as string,
           type: c.type as Category["type"], icon: c.icon as string,
           color: c.color as string, sortOrder: c.sortOrder as number,
-        })),
-        transactions: transactions.map((t: Record<string, unknown>) => ({
+        })) as Category[],
+        transactions: (transactions as Record<string, unknown>[]).map((t) => ({
           id: String(t.id), type: t.type as Transaction["type"], amount: t.amount as number,
-          categoryId: t.categoryId ? String(t.categoryId) : "",
-          walletId: t.walletId ? String(t.walletId) : "",
-          date: (t.date as Date).toISOString(), note: (t.note as string) || "",
-          tags: [],
-        })),
-        budgets: budgets.map((b: Record<string, unknown>) => ({
+          categoryId: t.categoryId != null ? String(t.categoryId) : "",
+          walletId: t.walletId != null ? String(t.walletId) : "",
+          date: t.date instanceof Date ? t.date.toISOString() : String(t.date),
+          note: (t.note as string) || "", tags: [],
+        })) as Transaction[],
+        budgets: (budgets as Record<string, unknown>[]).map((b) => ({
           id: String(b.id), categoryId: String(b.categoryId), amount: b.amount as number,
           period: "monthly" as const, active: b.active as boolean,
-        })),
-        goals: goals.map((g: Record<string, unknown>) => ({
+        })) as Budget[],
+        goals: (goals as Record<string, unknown>[]).map((g) => ({
           id: String(g.id), name: g.name as string, targetAmount: g.targetAmount as number,
-          currentAmount: g.currentAmount as number, icon: g.icon as string,
-          color: g.color as string,
-        })),
+          currentAmount: g.currentAmount as number, icon: g.icon as string, color: g.color as string,
+        })) as SavingsGoal[],
         loading: false,
       });
     } catch {
@@ -69,7 +68,6 @@ export function DataProvider({ children }: { children: ReactNode }) {
   }, []);
 
   useEffect(() => { load(); }, [load]);
-
   return <DataContext.Provider value={{ ...data, reload: load }}>{children}</DataContext.Provider>;
 }
 
