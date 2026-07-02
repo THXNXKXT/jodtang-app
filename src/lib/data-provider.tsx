@@ -75,10 +75,11 @@ export function DataProvider({ children }: { children: ReactNode }) {
     }
   }, []);
 
-  useEffect(() => { load(); }, [load]);
+  const pathname = usePathname();
+  const isAuthRoute = pathname === "/login" || pathname === "/signup";
+  useEffect(() => { if (!isAuthRoute) load(); }, [load, isAuthRoute]);
 
   // Reload on route change (handles post-login data fetch)
-  const pathname = usePathname();
   useEffect(() => { if (pathname === "/") load(); }, [pathname, load]);
   return <DataContext.Provider value={{ ...data, reload: load }}>{children}</DataContext.Provider>;
 }
