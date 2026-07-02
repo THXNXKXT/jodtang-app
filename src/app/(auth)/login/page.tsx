@@ -24,8 +24,7 @@ export default function LoginPage() {
       setError(t("auth.loginError"));
       setLoading(false);
     } else {
-      router.push("/");
-      router.refresh();
+      window.location.href = "/";
     }
   }
 

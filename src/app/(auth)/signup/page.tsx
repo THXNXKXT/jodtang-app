@@ -26,8 +26,7 @@ export default function SignupPage() {
       setError(t("auth.signupError"));
       setLoading(false);
     } else {
-      router.push("/");
-      router.refresh();
+      window.location.href = "/";
     }
   }
 
