@@ -46,7 +46,7 @@ export function AddTransactionSheet({ open, onClose }: Props) {
       await reload();
       setAmount(""); setNote(""); setCategoryId("");
       onClose();
-    } catch {}
+    } catch (e) { console.error("Save error:", e); }
     finally { setSaving(false); }
   }
 
