@@ -32,7 +32,7 @@ export function BottomNav() {
         transition={{ type: "spring", stiffness: 400, damping: 17 }}
         onClick={() => setAddOpen(true)}
         aria-label={t("nav.add")}
-        className="flex h-12 w-12 -translate-y-2 items-center justify-center rounded-full bg-[var(--color-text-primary)] text-[var(--color-bg)] shadow-lg"
+        className="flex h-14 w-14 -translate-y-3 items-center justify-center rounded-2xl bg-gradient-to-br from-[var(--color-primary)] to-[var(--color-primary)] text-white shadow-lg shadow-[var(--color-primary)]/30 ring-4 ring-[var(--color-surface)]"
       >
         <Plus size={24} />
       </motion.button>
