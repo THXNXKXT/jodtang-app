@@ -17,7 +17,18 @@ export function LineSection() {
 
   useEffect(() => {
     getLineSettings().then(s => {
-      if (s) { setLineId(s.lineId); setFreq((s.notifyFreq ?? "off") as typeof freq); }
+      if (!s) return;
+      setLineId(s.lineId);
+      setFreq((s.notifyFreq ?? "off") as typeof freq);
+      if (s.lineId?.startsWith("pending:")) {
+        const parts = s.lineId.split(":");
+        const savedCode = parts[1] ?? null;
+        const ts = Number(parts[2] ?? 0);
+        if (savedCode && ts && Date.now() - ts < CODE_EXPIRY_MS) {
+          setCode(savedCode);
+          setCodeExpiry(ts + CODE_EXPIRY_MS);
+        }
+      }
     }).catch(() => {});
   }, []);
 
