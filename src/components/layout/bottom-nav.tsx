@@ -2,7 +2,8 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { useRouter, usePathname } from "next/navigation";
-import { LayoutDashboard, ReceiptText, BarChart3, Settings, Plus } from "lucide-react";
+import { LayoutDashboard, ReceiptText, BarChart3, Settings } from "lucide-react";
+import { AddButtonSVG } from "@/components/svg/add-button";
 import { AddTransactionSheet } from "@/components/add/add-transaction-sheet";
 import { useI18n } from "@/i18n/config";
 import { cn } from "@/lib/utils";
@@ -28,13 +29,13 @@ export function BottomNav() {
         <NavButton key={item.href} item={item} active={pathname === item.href} onClick={() => router.push(item.href)} t={t} />
       ))}
       <motion.button
-        whileTap={{ scale: 0.9 }}
+        whileTap={{ scale: 0.88 }}
         transition={{ type: "spring", stiffness: 400, damping: 17 }}
         onClick={() => setAddOpen(true)}
         aria-label={t("nav.add")}
-        className="flex h-14 w-14 -translate-y-5 items-center justify-center rounded-full bg-gradient-to-br from-[var(--color-primary)] to-[#1d4ed8] text-white shadow-xl shadow-[var(--color-primary)]/40 ring-[3px] ring-[var(--color-surface)]"
+        className="-translate-y-5"
       >
-        <svg width="26" height="26" viewBox="0 0 24 24" fill="none"><path d="M12 5v14M5 12h14" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" /></svg>
+        <AddButtonSVG size={56} />
       </motion.button>
       {navItems.slice(2).map((item) => (
         <NavButton key={item.href} item={item} active={pathname === item.href} onClick={() => router.push(item.href)} t={t} />
