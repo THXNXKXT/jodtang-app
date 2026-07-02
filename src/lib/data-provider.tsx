@@ -1,5 +1,6 @@
 "use client";
 import { createContext, useContext, useEffect, useState, useCallback, type ReactNode } from "react";
+import { usePathname } from "next/navigation";
 import type { Transaction, Wallet, Category, Budget, SavingsGoal } from "@/types";
 
 interface AppData {
@@ -75,6 +76,10 @@ export function DataProvider({ children }: { children: ReactNode }) {
   }, []);
 
   useEffect(() => { load(); }, [load]);
+
+  // Reload on route change (handles post-login data fetch)
+  const pathname = usePathname();
+  useEffect(() => { if (pathname === "/") load(); }, [pathname, load]);
   return <DataContext.Provider value={{ ...data, reload: load }}>{children}</DataContext.Provider>;
 }
 
