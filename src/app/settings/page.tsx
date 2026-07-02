@@ -10,6 +10,7 @@ import { Logo } from "@/components/svg/logo";
 import { useI18n, type Locale } from "@/i18n/config";
 import { authClient } from "@/lib/auth-client";
 import { getProfile } from "@/server/actions/profile";
+import { isAvatarUrl } from "@/components/svg/avatars";
 import { Globe, Download, LogOut, Palette } from "lucide-react";
 
 export default function SettingsPage() {
@@ -37,8 +38,8 @@ export default function SettingsPage() {
         </div>
 
         <Card className="flex cursor-pointer items-center gap-3" onClick={() => setProfileOpen(true)}>
-          {avatar?.startsWith("data:") ? (
-            <img src={avatar} alt="" className="h-12 w-12 rounded-full object-cover" />
+          {isAvatarUrl(avatar) ? (
+            <img src={avatar ?? undefined} alt="" className="h-12 w-12 rounded-full object-cover" />
           ) : (
             <div className="flex h-12 w-12 items-center justify-center rounded-full bg-[var(--color-primary-soft)] text-lg font-bold text-[var(--color-primary)]">
               {(name || "?")[0]?.toUpperCase()}
