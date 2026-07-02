@@ -119,7 +119,7 @@ export function LineSection() {
         <span className="text-sm font-medium">{t("settings.lineNotifications")}</span>
       </div>
       <Card className="cursor-pointer p-4" onClick={handleConnect}>
-        <div className="space-y-3">
+        <div className="flex items-center gap-3">
           <div className="flex h-10 w-10 items-center justify-center rounded-full bg-[var(--color-surface-2)]">
             <MessageCircle size={20} className="text-[var(--color-primary)]" />
           </div>
