@@ -30,7 +30,7 @@ export default function LoginPage() {
   }
 
   return (
-    <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4 }}>
+    <motion.div initial={false}>
       <div className="mb-8 flex flex-col items-center gap-3">
         <Logo size={56} />
         <h1 className="text-2xl font-bold">จดตัง</h1>
