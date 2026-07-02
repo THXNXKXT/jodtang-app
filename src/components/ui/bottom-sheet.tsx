@@ -1,5 +1,5 @@
 "use client";
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence, motion, type PanInfo } from "framer-motion";
 import { X } from "lucide-react";
 import type { ReactNode } from "react";
 
@@ -11,29 +11,25 @@ interface BottomSheetProps {
 }
 
 export function BottomSheet({ open, onClose, children, title }: BottomSheetProps) {
+  function onDragEnd(_: unknown, info: PanInfo) {
+    if (info.offset.y > 80) onClose();
+  }
   return (
     <AnimatePresence>
       {open && (
-        <motion.div
-          key="backdrop"
-          className="fixed inset-0 z-40 bg-black/60 backdrop-blur-sm"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          onClick={onClose}
-        />
+        <motion.div key="backdrop" className="fixed inset-0 z-40 bg-black/60 backdrop-blur-sm"
+          initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={onClose} />
       )}
       {open && (
-        <motion.div
-          key="sheet"
+        <motion.div key="sheet"
           className="fixed bottom-0 left-1/2 z-50 w-full max-w-[480px] -translate-x-1/2 rounded-t-2xl border-t border-[var(--color-border)] bg-[var(--color-surface)] px-4 pb-[max(1rem,env(safe-area-inset-bottom))] pt-2"
-          initial={{ y: "100%" }}
-          animate={{ y: 0 }}
-          exit={{ y: "100%" }}
+          initial={{ y: "100%" }} animate={{ y: 0 }} exit={{ y: "100%" }}
           transition={{ type: "spring", stiffness: 400, damping: 35 }}
+          drag="y" dragConstraints={{ top: 0, bottom: 0 }} dragElastic={{ top: 0, bottom: 0.5 }}
+          onDragEnd={onDragEnd}
         >
           <div className="flex justify-center pb-2">
-            <div className="h-1 w-10 rounded-full bg-[var(--color-text-muted)]" />
+            <div className="h-1.5 w-12 cursor-grab rounded-full bg-[var(--color-text-muted)] active:cursor-grabbing" />
           </div>
           {title !== undefined && (
             <div className="mb-3 flex items-center justify-between">
