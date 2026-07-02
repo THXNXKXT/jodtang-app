@@ -26,7 +26,7 @@ export function BottomSheet({ open, onClose, children, title }: BottomSheetProps
       {open && (
         <motion.div
           key="sheet"
-          className="fixed inset-x-0 bottom-0 z-50 rounded-t-2xl border-t border-[var(--color-border)] bg-[var(--color-surface)] px-4 pb-[max(1rem,env(safe-area-inset-bottom))] pt-2"
+          className="fixed bottom-0 left-1/2 z-50 w-full max-w-[480px] -translate-x-1/2 rounded-t-2xl border-t border-[var(--color-border)] bg-[var(--color-surface)] px-4 pb-[max(1rem,env(safe-area-inset-bottom))] pt-2"
           initial={{ y: "100%" }}
           animate={{ y: 0 }}
           exit={{ y: "100%" }}
@@ -44,7 +44,7 @@ export function BottomSheet({ open, onClose, children, title }: BottomSheetProps
               </button>
             </div>
           )}
-          <div className="max-h-[75vh] overflow-y-auto">{children}</div>
+          <div className="max-h-[65vh] overflow-y-auto">{children}</div>
         </motion.div>
       )}
     </AnimatePresence>
