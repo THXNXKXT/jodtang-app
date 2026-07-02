@@ -35,29 +35,28 @@ export async function GET(req: NextRequest) {
     const net = income - expense;
     const dateStr = dayStart.toLocaleDateString("th-TH", { day: "numeric", month: "short" });
 
-    function row(label: string, amount: string, color: string, bold = false): Record<string, unknown> {
+    function txRow(label: string, amount: string, color: string): Record<string, unknown> {
       return {
         type: "box", layout: "horizontal",
         contents: [
-          { type: "text", text: label, size: "xs", color, flex: 1, weight: bold ? "bold" : "regular" },
-          { type: "text", text: amount, size: "xs", color, flex: 0, weight: bold ? "bold" : "regular" },
+          { type: "text", text: label, size: "xs", color, flex: 1 },
+          { type: "text", text: amount, size: "xs", color, flex: 0 },
         ],
       };
     }
 
-    const bodyContents: Record<string, unknown>[] = [];
-
+    // Card 1: Summary
+    const summaryBody: Record<string, unknown>[] = [];
     if (incTxns.length > 0) {
-      bodyContents.push(row("รายรับ", `+${formatCurrency(income)}`, "#10b981", true));
-      for (const t of incTxns.slice(0, 5)) bodyContents.push(row(`  ${t.catName}`, formatCurrency(Number(t.amount)), "#999999"));
+      summaryBody.push(txRow("รายรับ", `+${formatCurrency(income)}`, "#10b981"));
+      summaryBody.push(txRow("รายจ่าย", `-${formatCurrency(expense)}`, "#ef4444"));
+    } else {
+      summaryBody.push(txRow("รายจ่าย", `-${formatCurrency(expense)}`, "#ef4444"));
     }
-    if (incTxns.length > 0 && expTxns.length > 0) bodyContents.push({ type: "separator", margin: "sm" });
-    if (expTxns.length > 0) {
-      bodyContents.push(row("รายจ่าย", `-${formatCurrency(expense)}`, "#ef4444", true));
-      for (const t of expTxns.slice(0, 5)) bodyContents.push(row(`  ${t.catName}`, formatCurrency(Number(t.amount)), "#999999"));
-    }
+    summaryBody.push({ type: "separator", margin: "sm" });
+    summaryBody.push(txRow("ยอดสุทธิ", `${net >= 0 ? "+" : ""}${formatCurrency(net)}`, net >= 0 ? "#10b981" : "#ef4444"));
 
-    const flex = {
+    const cards: Record<string, unknown>[] = [{
       type: "bubble", size: "kilo",
       header: {
         type: "box", layout: "vertical",
@@ -68,27 +67,47 @@ export async function GET(req: NextRequest) {
           { type: "text", text: `สรุปประจำวันที่ ${dateStr}`, size: "lg", color: "#ffffff", weight: "bold" },
         ],
       },
-      body: {
-        type: "box", layout: "vertical", paddingAll: "16px",
-        contents: [
-          ...bodyContents,
-          { type: "separator", margin: "md" },
-          row("ยอดสุทธิ", `${net >= 0 ? "+" : ""}${formatCurrency(net)}`, net >= 0 ? "#10b981" : "#ef4444", true),
-          { type: "text", text: `${txns.length} รายการ`, size: "xs", color: "#aaaaaa", margin: "sm" },
-        ],
-      },
-    };
+      body: { type: "box", layout: "vertical", paddingAll: "16px", contents: summaryBody },
+    }];
+
+    // Card 2: Income details (all items)
+    if (incTxns.length > 0) {
+      const items = incTxns.map(t => txRow(t.catName ?? "-", formatCurrency(Number(t.amount)), "#10b981"));
+      cards.push({
+        type: "bubble", size: "kilo",
+        header: {
+          type: "box", layout: "vertical",
+          backgroundColor: "#10b981", paddingAll: "16px",
+          contents: [{ type: "text", text: `💚 รายรับ ${incTxns.length} รายการ`, size: "sm", color: "#ffffff", weight: "bold" }],
+        },
+        body: { type: "box", layout: "vertical", paddingAll: "12px", contents: items },
+      });
+    }
+
+    // Card 3: Expense details (all items)
+    if (expTxns.length > 0) {
+      const items = expTxns.map(t => txRow(t.catName ?? "-", formatCurrency(Number(t.amount)), "#ef4444"));
+      cards.push({
+        type: "bubble", size: "kilo",
+        header: {
+          type: "box", layout: "vertical",
+          backgroundColor: "#ef4444", paddingAll: "16px",
+          contents: [{ type: "text", text: `❤️ รายจ่าย ${expTxns.length} รายการ`, size: "sm", color: "#ffffff", weight: "bold" }],
+        },
+        body: { type: "box", layout: "vertical", paddingAll: "12px", contents: items },
+      });
+    }
+
+    const flex = { type: "carousel", contents: cards };
 
     try {
       const res = await fetch("https://api.line.me/v2/bot/message/push", {
         method: "POST",
         headers: { Authorization: `Bearer ${env.LINE_CHANNEL_ACCESS_TOKEN}`, "Content-Type": "application/json" },
-        body: JSON.stringify({ to: user.lineId, messages: [{ type: "flex", altText: `จดตัง — สรุปประจำวัน ${dateStr}`, contents: flex }] }),
+        body: JSON.stringify({ to: user.lineId, messages: [{ type: "flex", altText: `จดตัง — สรุปประจำวัน ${dateStr} (${txns.length} รายการ)`, contents: flex }] }),
       });
-      if (!res.ok) {
-        const errBody = await res.text();
-        errors.push(`${user.email}: ${res.status} ${errBody}`);
-      } else sent++;
+      if (!res.ok) errors.push(`${user.email}: ${res.status} ${await res.text()}`);
+      else sent++;
     } catch (e) { errors.push(`${user.email}: ${String(e)}`); }
   }
 
