@@ -3,7 +3,7 @@ import { useState } from "react";
 import { useI18n } from "@/i18n/config";
 import { motion } from "framer-motion";
 import { Card } from "@/components/ui/card";
-import { Plus } from "lucide-react";
+import { Plus, ChevronLeft, ChevronRight } from "lucide-react";
 import { CATEGORY_COLORS, CATEGORY_ICONS } from "@/lib/constants";
 import { useAppData } from "@/lib/data-provider";
 import { formatCurrency, catName } from "@/lib/utils";
@@ -16,13 +16,35 @@ export function BudgetsTab() {
   const { budgets, categories, transactions } = useAppData();
   const [sheetOpen, setSheetOpen] = useState(false);
   const [editing, setEditing] = useState<Budget | null>(null);
+  const now = new Date();
+  const [viewYear, setViewYear] = useState(now.getFullYear());
+  const [viewMonth, setViewMonth] = useState(now.getMonth());
+  const isCurrentMonth = viewYear === now.getFullYear() && viewMonth === now.getMonth();
+
+  function prevMonth() {
+    const d = new Date(viewYear, viewMonth - 1, 1);
+    setViewYear(d.getFullYear()); setViewMonth(d.getMonth());
+  }
+  function nextMonth() {
+    if (isCurrentMonth) return;
+    const d = new Date(viewYear, viewMonth + 1, 1);
+    setViewYear(d.getFullYear()); setViewMonth(d.getMonth());
+  }
 
   function openAdd() { setEditing(null); setSheetOpen(true); }
   function openEdit(b: Budget) { setEditing(b); setSheetOpen(true); }
 
   return (
     <div className="space-y-3">
-      <p className="px-1 text-xs font-medium text-[var(--color-text-muted)]">{getMonthLabel()}</p>
+      <div className="flex items-center justify-between px-1">
+        <button onClick={prevMonth} className="rounded-lg p-1.5 text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)]">
+          <ChevronLeft size={18} />
+        </button>
+        <p className="text-sm font-medium text-[var(--color-text-secondary)]">{getMonthLabel(viewYear, viewMonth)}</p>
+        <button onClick={nextMonth} disabled={isCurrentMonth} className="rounded-lg p-1.5 text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)] disabled:opacity-30">
+          <ChevronRight size={18} />
+        </button>
+      </div>
       <button onClick={openAdd} className="flex w-full items-center justify-center gap-2 rounded-2xl border border-dashed border-[var(--color-border)] py-3 text-sm text-[var(--color-text-secondary)] transition-colors hover:border-[var(--color-primary)] hover:text-[var(--color-primary)]">
         <Plus size={18} /> {t("reports.budgets")}
       </button>
@@ -31,7 +53,7 @@ export function BudgetsTab() {
         const iconKey = category?.icon ?? "other_expense";
         const Icon = CATEGORY_ICONS[iconKey];
         const color = CATEGORY_COLORS[iconKey] ?? "#525252";
-        const spent = getMonthSpent(transactions, budget.categoryId);
+        const spent = getMonthSpent(transactions, budget.categoryId, viewYear, viewMonth);
         const ratio = budget.amount > 0 ? spent / budget.amount : 0;
         const isOver = spent > budget.amount;
         const widthPct = Math.min(ratio * 100, 100);

@@ -1,17 +1,22 @@
 import type { Transaction } from "@/types";
 
-export function isCurrentMonth(dateStr: string): boolean {
+export function isInMonth(dateStr: string, year: number, month: number): boolean {
   const d = new Date(dateStr);
-  const now = new Date();
-  return d.getMonth() === now.getMonth() && d.getFullYear() === now.getFullYear();
+  return d.getMonth() === month && d.getFullYear() === year;
 }
 
-export function getMonthSpent(transactions: Transaction[], categoryId: string): number {
+export function getMonthSpent(transactions: Transaction[], categoryId: string, year?: number, month?: number): number {
+  const now = new Date();
+  const y = year ?? now.getFullYear();
+  const m = month ?? now.getMonth();
   return transactions
-    .filter((tx) => tx.type === "expense" && tx.categoryId === categoryId && isCurrentMonth(tx.date))
+    .filter((tx) => tx.type === "expense" && tx.categoryId === categoryId && isInMonth(tx.date, y, m))
     .reduce((s, tx) => s + tx.amount, 0);
 }
 
-export function getMonthLabel(): string {
-  return new Date().toLocaleDateString("th-TH", { month: "long", year: "numeric" });
+export function getMonthLabel(year?: number, month?: number): string {
+  const d = new Date();
+  const y = year ?? d.getFullYear();
+  const m = month ?? d.getMonth();
+  return new Date(y, m).toLocaleDateString("th-TH", { month: "long", year: "numeric" });
 }
