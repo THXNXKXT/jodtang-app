@@ -21,13 +21,14 @@ export function Logo({ size = 32, className }: { size?: number; className?: stri
         animate={{ d: ["M17 36C16 40 14 43 11 44", "M17 36C16 39 15 41 12 42", "M17 36C16 40 14 43 11 44"] }}
         transition={{ duration: 2.3, repeat: Infinity, ease: "easeInOut", delay: 0.2 }}
       />
-      {/* Tentacle 3 — center */}
-      <motion.path
-        d="M24 37V44"
-        stroke="var(--color-primary)" strokeWidth="3" strokeLinecap="round" fill="none"
-        animate={{ d: ["M24 37C24 40 23 43 22 45", "M24 37C24 39 24 42 24 45", "M24 37C24 40 25 43 26 45", "M24 37V44"] }}
-        transition={{ duration: 1.8, repeat: Infinity, ease: "easeInOut", delay: 0.1 }}
-      />
+      {/* Tentacle 3 — center, holds pencil (static) */}
+      <path d="M24 37V46" stroke="var(--color-primary)" strokeWidth="3" strokeLinecap="round" fill="none" />
+      {/* Pencil in center tentacle */}
+      <g transform="rotate(20 24 40)">
+        <rect x="22.5" y="38" width="3" height="9" rx="0.5" fill="#fbbf24" />
+        <path d="M22.5 47L24 50L25.5 47Z" fill="#475569" />
+        <rect x="22.5" y="38" width="3" height="1.5" fill="#f59e0b" />
+      </g>
       {/* Tentacle 4 — right inner */}
       <motion.path
         d="M31 36C32 40 34 43 37 44"
