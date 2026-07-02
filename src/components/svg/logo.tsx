@@ -23,37 +23,35 @@ export function Logo({ size = 32, className }: { size?: number; className?: stri
       />
       {/* Tentacle 3 — center */}
       <path d="M24 37V46" stroke="var(--color-primary)" strokeWidth="3" strokeLinecap="round" fill="none" />
-
-      {/* Tentacle 4 — right inner, holds pencil */}
+      {/* Tentacle 4 — right inner */}
+      <motion.path
+        d="M31 36C32 40 34 43 37 44"
+        stroke="var(--color-primary)" strokeWidth="3" strokeLinecap="round" fill="none"
+        animate={{ d: ["M31 36C32 40 34 43 37 44", "M31 36C32 39 33 41 36 42", "M31 36C32 40 34 43 37 44"] }}
+        transition={{ duration: 2.1, repeat: Infinity, ease: "easeInOut", delay: 0.3 }}
+      />
+      {/* Tentacle 5 — right outer, holds pencil */}
       <motion.g
-        animate={{ rotate: [0, -10, 0, -10, 0] }}
+        animate={{ rotate: [0, -8, 0, -8, 0] }}
         transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-        style={{ transformOrigin: "31px 36px" }}
+        style={{ transformOrigin: "35px 35px" }}
       >
-        <path d="M31 36C32 40 34 43 37 44" stroke="var(--color-primary)" strokeWidth="3" strokeLinecap="round" fill="none" />
+        <path d="M35 35C36 39 39 41 42 41C44 41 45 40 45 38" stroke="var(--color-primary)" strokeWidth="3" strokeLinecap="round" fill="none" />
         {/* Writing line */}
         <motion.path
-          d="M39 46L44 48"
+          d="M44 42L47 44"
           stroke="var(--color-text-secondary)" strokeWidth="1" strokeLinecap="round" fill="none"
           animate={{ pathLength: [0, 1], opacity: [0, 0.5, 0] }}
           transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
         />
-        {/* Pencil — inside viewBox */}
-        <g transform="rotate(-30 37 42)">
-          <rect x="35.5" y="39" width="3" height="7" rx="0.5" fill="#fbbf24" />
-          <rect x="35.5" y="39" width="3" height="1.5" fill="#f59e0b" />
-          <path d="M35.5 46L37 48L38.5 46Z" fill="#374151" />
-          <rect x="35.5" y="36.5" width="3" height="2.5" rx="0.5" fill="#ec4263" />
+        {/* Pencil */}
+        <g transform="rotate(-25 42 39)">
+          <rect x="40.5" y="36" width="3" height="7" rx="0.5" fill="#fbbf24" />
+          <rect x="40.5" y="36" width="3" height="1.5" fill="#f59e0b" />
+          <path d="M40.5 43L42 45L43.5 43Z" fill="#374151" />
+          <rect x="40.5" y="33.5" width="3" height="2.5" rx="0.5" fill="#ec4263" />
         </g>
       </motion.g>
-
-      {/* Tentacle 5 — right outer */}
-      <motion.path
-        d="M35 35C36 39 39 41 42 41C44 41 45 40 45 38"
-        stroke="var(--color-primary)" strokeWidth="3" strokeLinecap="round" fill="none"
-        animate={{ d: ["M35 35C36 39 39 41 42 41C44 41 45 40 45 38", "M35 35C36 38 38 40 41 40C43 40 44 39 44 37", "M35 35C36 39 39 41 42 41C44 41 45 40 45 38"] }}
-        transition={{ duration: 2.4, repeat: Infinity, ease: "easeInOut", delay: 0.4 }}
-      />
 
       {/* Eyes */}
       <circle cx="18" cy="19" r="3" fill="white" />
