@@ -6,6 +6,7 @@ import { Card } from "@/components/ui/card";
 import { CATEGORY_COLORS, CATEGORY_ICONS } from "@/lib/constants";
 import { useAppData } from "@/lib/data-provider";
 import { formatCurrency, catName } from "@/lib/utils";
+import { getMonthSpent } from "@/lib/budget-utils";
 
 export function BudgetMiniCards() {
   const { t } = useI18n();
@@ -14,9 +15,7 @@ export function BudgetMiniCards() {
 
   const topBudgets = [...budgets]
     .map((budget) => {
-      const spent = transactions
-        .filter((tx) => tx.type === "expense" && tx.categoryId === budget.categoryId)
-        .reduce((s, tx) => s + tx.amount, 0);
+      const spent = getMonthSpent(transactions, budget.categoryId);
       const ratio = spent / budget.amount;
       return { budget, spent, ratio };
     })

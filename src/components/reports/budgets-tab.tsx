@@ -7,6 +7,7 @@ import { Plus } from "lucide-react";
 import { CATEGORY_COLORS, CATEGORY_ICONS } from "@/lib/constants";
 import { useAppData } from "@/lib/data-provider";
 import { formatCurrency, catName } from "@/lib/utils";
+import { getMonthSpent, getMonthLabel } from "@/lib/budget-utils";
 import { BudgetSheet } from "./budget-sheet";
 import type { Budget } from "@/types";
 
@@ -21,6 +22,7 @@ export function BudgetsTab() {
 
   return (
     <div className="space-y-3">
+      <p className="px-1 text-xs font-medium text-[var(--color-text-muted)]">{getMonthLabel()}</p>
       <button onClick={openAdd} className="flex w-full items-center justify-center gap-2 rounded-2xl border border-dashed border-[var(--color-border)] py-3 text-sm text-[var(--color-text-secondary)] transition-colors hover:border-[var(--color-primary)] hover:text-[var(--color-primary)]">
         <Plus size={18} /> {t("reports.budgets")}
       </button>
@@ -29,7 +31,7 @@ export function BudgetsTab() {
         const iconKey = category?.icon ?? "other_expense";
         const Icon = CATEGORY_ICONS[iconKey];
         const color = CATEGORY_COLORS[iconKey] ?? "#525252";
-        const spent = transactions.filter((tx) => tx.type === "expense" && tx.categoryId === budget.categoryId).reduce((s, tx) => s + tx.amount, 0);
+        const spent = getMonthSpent(transactions, budget.categoryId);
         const ratio = budget.amount > 0 ? spent / budget.amount : 0;
         const isOver = spent > budget.amount;
         const widthPct = Math.min(ratio * 100, 100);
