@@ -3,14 +3,19 @@ import { Card } from "@/components/ui/card";
 import { CATEGORY_ICONS } from "@/lib/constants";
 import { useAppData } from "@/lib/data-provider";
 import { formatCurrency } from "@/lib/utils";
+import { useI18n } from "@/i18n/config";
 import type { WalletType } from "@/types";
 
-const TYPE_LABELS: Record<WalletType, string> = {
-  cash: "เงินสด", bank: "ธนาคาร", ewallet: "e-Wallet", savings: "เงินออม",
-};
-
 export function WalletList() {
+  const { t } = useI18n();
   const { wallets, transactions } = useAppData();
+
+  const typeLabels: Record<WalletType, string> = {
+    cash: t("settings.walletType.cash"),
+    bank: t("settings.walletType.bank"),
+    ewallet: t("settings.walletType.ewallet"),
+    savings: t("settings.walletType.savings"),
+  };
 
   function getWalletBalance(walletId: string, opening: number) {
     const walletTxns = transactions.filter((t) => t.walletId === walletId);
@@ -32,7 +37,7 @@ export function WalletList() {
             </div>
             <div className="min-w-0 flex-1">
               <p className="text-sm font-medium text-[var(--color-text-primary)]">{wallet.name}</p>
-              <p className="text-xs text-[var(--color-text-secondary)]">{TYPE_LABELS[wallet.type]}</p>
+              <p className="text-xs text-[var(--color-text-secondary)]">{typeLabels[wallet.type]}</p>
             </div>
             <span className="shrink-0 text-sm font-semibold tabular-nums text-[var(--color-text-primary)]">
               {formatCurrency(balance)}

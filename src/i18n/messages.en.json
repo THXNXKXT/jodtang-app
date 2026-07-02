@@ -1,9 +1,45 @@
 {
   "app": { "name": "Jodtang" },
   "nav": { "home": "Home", "transactions": "Transactions", "add": "Add", "reports": "Reports", "settings": "Settings" },
-  "home": { "totalBalance": "Total Balance", "income": "Income", "expense": "Expense", "spendingTrend": "7-Day Trend", "categoryBreakdown": "Spending by Category", "budgets": "Budgets", "recentTransactions": "Recent", "seeAll": "See all" },
+  "home": {
+    "totalBalance": "Total Balance", "income": "Income", "expense": "Expense",
+    "spendingTrend": "7-Day Trend", "categoryBreakdown": "Spending by Category",
+    "budgets": "Budgets", "recentTransactions": "Recent", "seeAll": "See all"
+  },
   "transactions": { "title": "All Transactions", "search": "Search...", "all": "All", "noResults": "No transactions found" },
-  "add": { "title": "Add Transaction", "expense": "Expense", "income": "Income", "transfer": "Transfer", "amount": "Amount", "category": "Category", "wallet": "Wallet", "note": "Note", "save": "Save" },
-  "reports": { "title": "Reports", "overview": "Overview", "budgets": "Budgets", "goals": "Goals", "monthlyComparison": "Monthly Comparison", "budgetLeft": "Left", "budgetOver": "Over budget", "contribute": "Contribute", "target": "Target", "saved": "Saved" },
-  "settings": { "title": "Settings", "profile": "Profile", "wallets": "Wallets", "categories": "Categories", "preferences": "Preferences", "language": "Language", "thai": "ไทย", "english": "English", "export": "Export Data", "signOut": "Sign Out" }
+  "add": {
+    "title": "Add Transaction", "expense": "Expense", "income": "Income", "transfer": "Transfer",
+    "amount": "Amount", "category": "Category", "wallet": "Wallet",
+    "note": "Note", "save": "Save", "saving": "Saving..."
+  },
+  "reports": {
+    "title": "Reports", "overview": "Overview", "budgets": "Budgets", "goals": "Goals",
+    "monthlyComparison": "Monthly Comparison", "budgetLeft": "Left", "budgetOver": "Over budget",
+    "contribute": "Contribute", "target": "Target", "saved": "Saved"
+  },
+  "settings": {
+    "title": "Settings", "profile": "My Account", "loggedIn": "Signed in",
+    "wallets": "Wallets", "preferences": "Preferences",
+    "language": "Language", "thai": "ไทย", "english": "English",
+    "theme": "Theme", "themeLight": "Light", "themeDark": "Dark", "themeSystem": "System",
+    "export": "Export Data", "signOut": "Sign Out",
+    "walletType": { "cash": "Cash", "bank": "Bank", "ewallet": "E-Wallet", "savings": "Savings" }
+  },
+  "auth": {
+    "loginTitle": "Jodtang", "loginSubtitle": "Sign in to your account",
+    "signupTitle": "Sign Up", "signupSubtitle": "Create your Jodtang account",
+    "email": "Email", "password": "Password", "name": "Name",
+    "emailPlaceholder": "you@example.com", "namePlaceholder": "Your name",
+    "passwordPlaceholder": "At least 8 characters",
+    "loginBtn": "Sign In", "loginLoading": "Signing in...",
+    "signupBtn": "Sign Up", "signupLoading": "Signing up...",
+    "noAccount": "Don't have an account?", "haveAccount": "Already have an account?",
+    "loginError": "Invalid email or password",
+    "signupError": "Unable to sign up (email may already be in use)",
+    "passwordShort": "Password must be at least 8 characters"
+  },
+  "error": {
+    "title": "Something went wrong", "message": "Failed to load this page", "retry": "Try again",
+    "notFound": "Page not found", "goHome": "Go home"
+  }
 }

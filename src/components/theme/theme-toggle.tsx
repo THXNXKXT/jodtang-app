@@ -2,14 +2,16 @@
 import { motion } from "framer-motion";
 import { Sun, Moon, MonitorSmartphone } from "lucide-react";
 import { useTheme } from "./theme-provider";
+import { useI18n } from "@/i18n/config";
 import { cn } from "@/lib/utils";
 
 export function ThemeToggle() {
   const { theme, setTheme } = useTheme();
+  const { t } = useI18n();
   const options: Array<{ value: "light" | "dark" | "system"; icon: typeof Sun; label: string }> = [
-    { value: "light", icon: Sun, label: "สว่าง" },
-    { value: "dark", icon: Moon, label: "มืด" },
-    { value: "system", icon: MonitorSmartphone, label: "ระบบ" },
+    { value: "light", icon: Sun, label: t("settings.themeLight") },
+    { value: "dark", icon: Moon, label: t("settings.themeDark") },
+    { value: "system", icon: MonitorSmartphone, label: t("settings.themeSystem") },
   ];
   return (
     <div className="flex rounded-xl bg-[var(--color-surface-hover)] p-1">

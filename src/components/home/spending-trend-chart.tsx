@@ -89,7 +89,7 @@ export function SpendingTrendChart() {
                 color: "var(--color-text-primary)",
               }}
               labelStyle={{ color: "var(--color-text-secondary)" }}
-              formatter={(value) => [formatCurrencyShort(Number(value)), "รายจ่าย"]}
+              formatter={(value) => [formatCurrencyShort(Number(value)), t("home.expense")]}
             />
             <Area
               type="monotone"

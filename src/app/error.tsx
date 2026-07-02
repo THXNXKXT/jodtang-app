@@ -2,8 +2,10 @@
 import { useEffect } from "react";
 import { motion } from "framer-motion";
 import { AlertTriangle, RotateCcw } from "lucide-react";
+import { useI18n } from "@/i18n/config";
 
 export default function Error({ error, reset }: { error: Error; reset: () => void }) {
+  const { t } = useI18n();
   useEffect(() => { console.error("App error:", error); }, [error]);
   return (
     <div className="flex min-h-dvh flex-col items-center justify-center gap-6 px-6 text-center">
@@ -13,12 +15,12 @@ export default function Error({ error, reset }: { error: Error; reset: () => voi
         <AlertTriangle size={28} className="text-[var(--color-expense)]" />
       </motion.div>
       <div>
-        <h2 className="text-lg font-bold">เกิดข้อผิดพลาด</h2>
-        <p className="mt-1 text-sm text-[var(--color-text-secondary)]">ไม่สามารถโหลดหน้านี้ได้</p>
+        <h2 className="text-lg font-bold">{t("error.title")}</h2>
+        <p className="mt-1 text-sm text-[var(--color-text-secondary)]">{t("error.message")}</p>
       </div>
       <motion.button whileTap={{ scale: 0.97 }} onClick={reset}
         className="flex items-center gap-2 rounded-xl bg-[var(--color-primary)] px-5 py-3 text-sm font-semibold text-white">
-        <RotateCcw size={16} /> ลองอีกครั้ง
+        <RotateCcw size={16} /> {t("error.retry")}
       </motion.button>
     </div>
   );

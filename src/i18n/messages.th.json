@@ -1,9 +1,45 @@
 {
   "app": { "name": "จดตัง" },
   "nav": { "home": "หน้าแรก", "transactions": "รายการ", "add": "เพิ่ม", "reports": "รายงาน", "settings": "ตั้งค่า" },
-  "home": { "totalBalance": "ยอดรวมทั้งหมด", "income": "รายรับ", "expense": "รายจ่าย", "spendingTrend": "แนวโน้ม 7 วัน", "categoryBreakdown": "สัดส่วนรายจ่าย", "budgets": "งบประมาณ", "recentTransactions": "ล่าสุด", "seeAll": "ดูทั้งหมด" },
+  "home": {
+    "totalBalance": "ยอดรวมทั้งหมด", "income": "รายรับ", "expense": "รายจ่าย",
+    "spendingTrend": "แนวโน้ม 7 วัน", "categoryBreakdown": "สัดส่วนรายจ่าย",
+    "budgets": "งบประมาณ", "recentTransactions": "ล่าสุด", "seeAll": "ดูทั้งหมด"
+  },
   "transactions": { "title": "รายการทั้งหมด", "search": "ค้นหา...", "all": "ทั้งหมด", "noResults": "ไม่พบรายการ" },
-  "add": { "title": "เพิ่มรายการ", "expense": "รายจ่าย", "income": "รายรับ", "transfer": "โอนย้าย", "amount": "จำนวนเงิน", "category": "หมวดหมู่", "wallet": "กระเป๋าเงิน", "note": "หมายเหตุ", "save": "บันทึก" },
-  "reports": { "title": "รายงาน", "overview": "ภาพรวม", "budgets": "งบประมาณ", "goals": "เป้าหมาย", "monthlyComparison": "เปรียบเทียบรายเดือน", "budgetLeft": "เหลือ", "budgetOver": "เกินงบ", "contribute": "เติมเงิน", "target": "เป้าหมาย", "saved": "ออมแล้ว" },
-  "settings": { "title": "ตั้งค่า", "profile": "โปรไฟล์", "wallets": "กระเป๋าเงิน", "categories": "หมวดหมู่", "preferences": "การตั้งค่า", "language": "ภาษา", "thai": "ไทย", "english": "English", "export": "ส่งออกข้อมูล", "signOut": "ออกจากระบบ" }
+  "add": {
+    "title": "เพิ่มรายการ", "expense": "รายจ่าย", "income": "รายรับ", "transfer": "โอนย้าย",
+    "amount": "จำนวนเงิน", "category": "หมวดหมู่", "wallet": "กระเป๋าเงิน",
+    "note": "หมายเหตุ", "save": "บันทึก", "saving": "กำลังบันทึก..."
+  },
+  "reports": {
+    "title": "รายงาน", "overview": "ภาพรวม", "budgets": "งบประมาณ", "goals": "เป้าหมาย",
+    "monthlyComparison": "เปรียบเทียบรายเดือน", "budgetLeft": "เหลือ", "budgetOver": "เกินงบ",
+    "contribute": "เติมเงิน", "target": "เป้าหมาย", "saved": "ออมแล้ว"
+  },
+  "settings": {
+    "title": "ตั้งค่า", "profile": "บัญชีของฉัน", "loggedIn": "เข้าสู่ระบบแล้ว",
+    "wallets": "กระเป๋าเงิน", "preferences": "การตั้งค่า",
+    "language": "ภาษา", "thai": "ไทย", "english": "English",
+    "theme": "ธีม", "themeLight": "สว่าง", "themeDark": "มืด", "themeSystem": "ระบบ",
+    "export": "ส่งออกข้อมูล", "signOut": "ออกจากระบบ",
+    "walletType": { "cash": "เงินสด", "bank": "ธนาคาร", "ewallet": "e-Wallet", "savings": "เงินออม" }
+  },
+  "auth": {
+    "loginTitle": "จดตัง", "loginSubtitle": "เข้าสู่ระบบบัญชีของคุณ",
+    "signupTitle": "สมัครสมาชิก", "signupSubtitle": "สร้างบัญชีจดตังของคุณ",
+    "email": "อีเมล", "password": "รหัสผ่าน", "name": "ชื่อ",
+    "emailPlaceholder": "you@example.com", "namePlaceholder": "ชื่อของคุณ",
+    "passwordPlaceholder": "อย่างน้อย 8 ตัวอักษร",
+    "loginBtn": "เข้าสู่ระบบ", "loginLoading": "กำลังเข้าสู่ระบบ...",
+    "signupBtn": "สมัครสมาชิก", "signupLoading": "กำลังสมัคร...",
+    "noAccount": "ยังไม่มีบัญชี?", "haveAccount": "มีบัญชีแล้ว?",
+    "loginError": "อีเมลหรือรหัสผ่านไม่ถูกต้อง",
+    "signupError": "ไม่สามารถสมัครได้ (อีเมลอาจถูกใช้แล้ว)",
+    "passwordShort": "รหัสผ่านต้องมีอย่างน้อย 8 ตัวอักษร"
+  },
+  "error": {
+    "title": "เกิดข้อผิดพลาด", "message": "ไม่สามารถโหลดหน้านี้ได้", "retry": "ลองอีกครั้ง",
+    "notFound": "ไม่พบหน้าที่คุณค้นหา", "goHome": "กลับหน้าแรก"
+  }
 }

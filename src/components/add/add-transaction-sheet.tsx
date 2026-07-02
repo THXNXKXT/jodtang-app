@@ -103,7 +103,7 @@ export function AddTransactionSheet({ open, onClose }: Props) {
           className="w-full rounded-xl border border-[var(--color-border)] bg-[var(--color-bg)] px-4 py-3 text-sm outline-none placeholder:text-[var(--color-text-muted)]" />
         <button type="button" onClick={handleSave} disabled={saving}
           className="w-full rounded-xl bg-[var(--color-primary)] py-3.5 text-sm font-semibold text-white disabled:opacity-50">
-          {saving ? "กำลังบันทึก..." : t("add.save")}
+          {saving ? t("add.saving") : t("add.save")}
         </button>
       </div>
     </BottomSheet>

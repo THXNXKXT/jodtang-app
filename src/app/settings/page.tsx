@@ -10,7 +10,7 @@ import { authClient } from "@/lib/auth-client";
 import { Globe, Download, LogOut, Palette } from "lucide-react";
 
 export default function SettingsPage() {
-  const { locale, setLocale } = useI18n();
+  const { locale, setLocale, t } = useI18n();
   const router = useRouter();
 
   async function handleSignOut() {
@@ -30,8 +30,8 @@ export default function SettingsPage() {
         <Card className="flex items-center gap-3">
           <div className="flex h-12 w-12 items-center justify-center rounded-full bg-[var(--color-primary-soft)] text-lg font-bold text-[var(--color-primary)]">จ</div>
           <div className="flex-1">
-            <p className="text-sm font-medium">บัญชีของฉัน</p>
-            <p className="text-xs text-[var(--color-text-secondary)]">เข้าสู่ระบบแล้ว</p>
+            <p className="text-sm font-medium">{t("settings.profile")}</p>
+            <p className="text-xs text-[var(--color-text-secondary)]">{t("settings.loggedIn")}</p>
           </div>
         </Card>
 
@@ -56,16 +56,16 @@ export default function SettingsPage() {
         </div>
 
         <div>
-          <p className="mb-2 text-xs font-medium uppercase text-[var(--color-text-muted)]">กระเป๋าเงิน</p>
+          <p className="mb-2 text-xs font-medium uppercase text-[var(--color-text-muted)]">{t("settings.wallets")}</p>
           <WalletList />
         </div>
 
         <div className="space-y-2">
           <button className="flex w-full items-center gap-3 rounded-xl border border-[var(--color-border)] px-4 py-3 text-sm">
-            <Download size={16} /> ส่งออกข้อมูล
+            <Download size={16} /> {t("settings.export")}
           </button>
           <button onClick={handleSignOut} className="flex w-full items-center gap-3 rounded-xl px-4 py-3 text-sm text-[var(--color-expense)]">
-            <LogOut size={16} /> ออกจากระบบ
+            <LogOut size={16} /> {t("settings.signOut")}
           </button>
         </div>
       </div>
