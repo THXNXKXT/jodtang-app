@@ -24,7 +24,7 @@ export function BottomNav() {
   const [addOpen, setAddOpen] = useState(false);
 
   return (
-    <nav className="fixed bottom-0 left-1/2 z-30 flex w-full max-w-[480px] items-center justify-around border-t border-[var(--color-border)] bg-[var(--color-surface)]/80 backdrop-blur-xl safe-area-bottom h-[var(--spacing-tab-bar)] -translate-x-1/2">
+    <nav className="fixed bottom-0 left-1/2 z-30 grid w-full max-w-[480px] grid-cols-5 items-center justify-items-center border-t border-[var(--color-border)] bg-[var(--color-surface)]/80 backdrop-blur-xl safe-area-bottom h-[var(--spacing-tab-bar)] -translate-x-1/2">
       {navItems.slice(0, 2).map((item) => (
         <NavButton key={item.href} item={item} active={pathname === item.href} onClick={() => router.push(item.href)} t={t} />
       ))}
