@@ -3,7 +3,6 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import { Mail, Lock, User, Loader2 } from "lucide-react";
-import { signUp } from "@/lib/auth-client";
 import { Logo } from "@/components/svg/logo";
 import { useI18n } from "@/i18n/config";
 
@@ -21,8 +20,12 @@ export default function SignupPage() {
     if (password.length < 8) { setError(t("auth.passwordShort")); return; }
     setLoading(true);
     setError("");
-    const res = await signUp.email({ name, email, password });
-    if (res.error) {
+    const res = await fetch("/api/auth/sign-up/email", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name, email, password }),
+      }).then(r => r.json());
+    if (!res.token && !res.user) {
       setError(t("auth.signupError"));
       setLoading(false);
     } else {
