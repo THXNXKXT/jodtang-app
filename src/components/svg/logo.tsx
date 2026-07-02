@@ -21,21 +21,24 @@ export function Logo({ size = 32, className }: { size?: number; className?: stri
         animate={{ d: ["M17 36C16 40 14 43 11 44", "M17 36C16 39 15 41 12 42", "M17 36C16 40 14 43 11 44"] }}
         transition={{ duration: 2.3, repeat: Infinity, ease: "easeInOut", delay: 0.2 }}
       />
-      {/* Tentacle 3 — center, holds pencil (static) */}
+      {/* Tentacle 3 — center */}
       <path d="M24 37V46" stroke="var(--color-primary)" strokeWidth="3" strokeLinecap="round" fill="none" />
-      {/* Pencil in center tentacle */}
-      <g transform="rotate(20 24 40)">
-        <rect x="22.5" y="38" width="3" height="9" rx="0.5" fill="#fbbf24" />
-        <path d="M22.5 47L24 50L25.5 47Z" fill="#475569" />
-        <rect x="22.5" y="38" width="3" height="1.5" fill="#f59e0b" />
-      </g>
-      {/* Tentacle 4 — right inner */}
-      <motion.path
-        d="M31 36C32 40 34 43 37 44"
-        stroke="var(--color-primary)" strokeWidth="3" strokeLinecap="round" fill="none"
-        animate={{ d: ["M31 36C32 40 34 43 37 44", "M31 36C32 39 33 41 36 42", "M31 36C32 40 34 43 37 44"] }}
-        transition={{ duration: 2.1, repeat: Infinity, ease: "easeInOut", delay: 0.3 }}
-      />
+
+      {/* Tentacle 4 — right inner, holds pencil + writing motion */}
+      <motion.g
+        animate={{ rotate: [0, -8, 0, -8, 0] }}
+        transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+        style={{ transformOrigin: "31px 36px" }}
+      >
+        <path d="M31 36C32 40 34 43 37 44" stroke="var(--color-primary)" strokeWidth="3" strokeLinecap="round" fill="none" />
+        {/* Pencil */}
+        <motion.g style={{ transformOrigin: "37px 44px" }}>
+          <rect x="35" y="41" width="3" height="8" rx="0.5" fill="#fbbf24" transform="rotate(-15 37 41)" />
+          <path d="M35.5 48.5L37 51L38.5 48.5Z" fill="#475569" transform="rotate(-15 37 41)" />
+          <rect x="35" y="41" width="3" height="1.5" fill="#f59e0b" transform="rotate(-15 37 41)" />
+        </motion.g>
+      </motion.g>
+
       {/* Tentacle 5 — right outer */}
       <motion.path
         d="M35 35C36 39 39 41 42 41C44 41 45 40 45 38"
