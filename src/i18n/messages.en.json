@@ -77,9 +77,11 @@
     "freq_daily": "Daily",
     "freq_monthly": "Monthly",
     "freq_off": "Off",
-    "lineSteps": "1. Add LINE @071fddut as friend\n2. Send the code below to that account\n3. Wait for confirmation from the system",
+    "lineSteps": "Add LINE @071fddut as friend\nSend the code below to that account\nWait for confirmation from the system",
     "cancel": "Cancel",
-    "addFriend": "Add LINE Friend"
+    "addFriend": "Add LINE Friend",
+    "copy": "Copy code",
+    "copied": "Copied"
   },
   "auth": {
     "loginTitle": "Jodtang",

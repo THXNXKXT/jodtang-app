@@ -92,15 +92,16 @@ export function LineSection() {
             {t("settings.addFriend")}
             <ExternalLink size={12} className="opacity-70" />
           </a>
-          <div className="flex items-center gap-3">
-            <div className="flex-1 rounded-xl bg-[var(--color-surface-2)] px-4 py-3 text-center">
+          <div className="space-y-3">
+            <div className="rounded-xl bg-[var(--color-surface-2)] px-4 py-4 text-center">
               <span className="text-2xl font-bold tracking-[0.2em] tabular-nums">{code}</span>
             </div>
             <button
               onClick={() => { navigator.clipboard.writeText(code); setCopied(true); setTimeout(() => setCopied(false), 2000); }}
-              className="flex h-12 w-12 items-center justify-center rounded-xl bg-[var(--color-surface-2)]"
+              className="mx-auto flex items-center gap-2 rounded-xl bg-[var(--color-surface-2)] px-4 py-2.5 text-xs"
             >
-              {copied ? <Check size={18} className="text-emerald-500" /> : <Copy size={18} />}
+              {copied ? <Check size={14} className="text-emerald-500" /> : <Copy size={14} />}
+              <span>{copied ? t("settings.copied") : t("settings.copy")}</span>
             </button>
           </div>
           <button onClick={() => setCode(null)} className="text-xs text-[var(--color-text-secondary)] underline">
@@ -118,7 +119,7 @@ export function LineSection() {
         <span className="text-sm font-medium">{t("settings.lineNotifications")}</span>
       </div>
       <Card className="cursor-pointer p-4" onClick={handleConnect}>
-        <div className="flex items-center gap-3">
+        <div className="space-y-3">
           <div className="flex h-10 w-10 items-center justify-center rounded-full bg-[var(--color-surface-2)]">
             <MessageCircle size={20} className="text-[var(--color-primary)]" />
           </div>
