@@ -72,7 +72,9 @@ export function LineSection() {
   const secs = Math.floor((remaining % 60000) / 1000);
 
   async function handleConnect() {
-    const c = await generateLinkCode();
+    const res = await generateLinkCode();
+    if (res.error || !res.code) return;
+    const c = res.code;
     setCode(c);
     setCodeExpiry(Date.now() + CODE_EXPIRY_MS);
     setLineId(`pending:${c}`);

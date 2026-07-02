@@ -51,7 +51,7 @@
   },
   "settings": {
     "title": "ตั้งค่า",
-    "profile": "บัญชีของฉัน",
+    "profile": "โปรไฟล์",
     "wallets": "กระเป๋าเงิน",
     "preferences": "การตั้งค่า",
     "language": "ภาษา",
@@ -81,7 +81,12 @@
     "copy": "คัดลอกรหัส",
     "copied": "คัดลอกแล้ว",
     "expiresIn": "หมดอายุใน",
-    "editProfile": "แก้ไขโปรไฟล์"
+    "editProfile": "แก้ไขโปรไฟล์",
+    "displayName": "ชื่อที่แสดง",
+    "namePlaceholder": "ชื่อของคุณ",
+    "chooseAvatar": "เลือกรูปประจำตัว",
+    "saving": "กำลังบันทึก...",
+    "save": "บันทึก"
   },
   "auth": {
     "loginTitle": "จดตัง",

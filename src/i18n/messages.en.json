@@ -51,7 +51,7 @@
   },
   "settings": {
     "title": "Settings",
-    "profile": "My Account",
+    "profile": "Profile",
     "wallets": "Wallets",
     "preferences": "Preferences",
     "language": "Language",
@@ -81,7 +81,12 @@
     "copy": "Copy code",
     "copied": "Copied",
     "expiresIn": "Expires in",
-    "editProfile": "Edit profile"
+    "editProfile": "Edit profile",
+    "displayName": "Display Name",
+    "namePlaceholder": "Your name",
+    "chooseAvatar": "Choose Avatar",
+    "saving": "Saving...",
+    "save": "Save"
   },
   "auth": {
     "loginTitle": "Jodtang",

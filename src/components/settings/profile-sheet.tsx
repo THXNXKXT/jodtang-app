@@ -2,12 +2,14 @@
 import { useState, useRef, useEffect } from "react";
 import { BottomSheet } from "@/components/ui/bottom-sheet";
 import { authClient } from "@/lib/auth-client";
+import { useI18n } from "@/i18n/config";
 import { useAppData } from "@/lib/data-provider";
 import { PRESET_AVATARS, isAvatarUrl } from "@/components/svg/avatars";
 import { Camera } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 export function ProfileSheet({ open, onClose, currentName, currentAvatar }: { open: boolean; onClose: () => void; currentName: string; currentAvatar: string | null }) {
+  const { t } = useI18n();
   const { reload } = useAppData();
   const [name, setName] = useState(currentName);
   const [avatar, setAvatar] = useState(currentAvatar ?? "");
@@ -37,7 +39,7 @@ export function ProfileSheet({ open, onClose, currentName, currentAvatar }: { op
   const initial = (name || "?")[0]?.toUpperCase() ?? "?";
 
   return (
-    <BottomSheet open={open} onClose={onClose} title="โปรไฟล์">
+    <BottomSheet open={open} onClose={onClose} title={t("settings.profile")}>
       <div className="space-y-5 p-6 pb-8">
         <div className="flex justify-center">
           <div className="relative">
@@ -54,13 +56,13 @@ export function ProfileSheet({ open, onClose, currentName, currentAvatar }: { op
         </div>
 
         <div>
-          <p className="mb-2 text-xs text-[var(--color-text-secondary)]">ชื่อที่แสดง</p>
-          <input type="text" value={name} onChange={(e) => setName(e.target.value)} placeholder="ชื่อของคุณ"
+          <p className="mb-2 text-xs text-[var(--color-text-secondary)]">{t("settings.displayName")}</p>
+          <input type="text" value={name} onChange={(e) => setName(e.target.value)} placeholder={t("settings.namePlaceholder")}
             className="w-full rounded-xl border border-[var(--color-border)] bg-[var(--color-bg)] px-4 py-3 text-sm outline-none" />
         </div>
 
         <div>
-          <p className="mb-2 text-xs text-[var(--color-text-secondary)]">เลือกรูปประจำตัว</p>
+          <p className="mb-2 text-xs text-[var(--color-text-secondary)]">{t("settings.chooseAvatar")}</p>
           <div className="grid grid-cols-5 gap-2">
             {PRESET_AVATARS.map((a) => (
               <button key={a.id} onClick={() => setAvatar(a.url)}
@@ -75,7 +77,7 @@ export function ProfileSheet({ open, onClose, currentName, currentAvatar }: { op
 
         <button type="button" onClick={handleSave} disabled={saving || !name.trim()}
           className="w-full rounded-xl bg-[var(--color-primary)] py-3.5 text-sm font-semibold text-white disabled:opacity-50">
-          {saving ? "กำลังบันทึก..." : "บันทึก"}
+          {saving ? t("settings.saving") : t("settings.save")}
         </button>
       </div>
     </BottomSheet>
