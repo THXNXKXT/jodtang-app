@@ -6,7 +6,7 @@ import { requireUserId } from "@/server/session";
 
 export async function generateLinkCode(): Promise<string> {
   const userId = await requireUserId();
-  const code = Math.random().toString().slice(2, 8);
+  const code = crypto.randomUUID().replace(/-/g, "").slice(0, 8).toUpperCase();
   await db.update(users).set({ lineId: `pending:${code}` }).where(eq(users.id, userId));
   return code;
 }
