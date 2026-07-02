@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 export function Logo({ size = 32, className }: { size?: number; className?: string }) {
   return (
     <svg width={size} height={size} viewBox="0 0 48 48" fill="none" className={className} xmlns="http://www.w3.org/2000/svg">
-      {/* Body — bigger */}
+      {/* Body */}
       <path d="M12 26C12 18 17 14 24 14C31 14 38 18 38 26C38 28 37 30 35 31L37 38L30 34C28 35 26 35 24 35C17 35 12 32 12 26Z" fill="var(--color-primary)" />
       {/* Ear */}
       <path d="M10 20L6 15L13 18Z" fill="var(--color-primary)" />
@@ -22,13 +22,15 @@ export function Logo({ size = 32, className }: { size?: number; className?: stri
       <rect x="27.5" y="33" width="3.5" height="6" rx="1.75" fill="var(--color-primary)" />
       {/* Tail */}
       <path d="M11 25C7 25 5 22 5 19" stroke="var(--color-primary)" strokeWidth="2.5" strokeLinecap="round" fill="none" />
-      {/* Falling coin */}
-      <motion.circle
-        cx="24" cy="4" r="3" fill="#fbbf24"
-        initial={{ y: -8, opacity: 0 }}
-        animate={{ y: [-8, 4], opacity: [0, 1, 0] }}
-        transition={{ duration: 1.5, repeat: Infinity, repeatDelay: 1, ease: "easeIn" }}
-      />
+      {/* Coin: falls, shrinks into slot */}
+      <motion.g
+        initial={{ y: -10, opacity: 0, scale: 1 }}
+        animate={{ y: [-10, 0, 14], opacity: [0, 1, 1, 0], scale: [1, 1, 0.3] }}
+        transition={{ duration: 1.2, repeat: Infinity, repeatDelay: 0.8, ease: "easeIn", times: [0, 0.3, 0.7, 1] }}
+      >
+        <circle cx="24" cy="4" r="3" fill="#fbbf24" stroke="#f59e0b" strokeWidth="0.5" />
+        <text x="24" y="6" textAnchor="middle" fontSize="4" fill="#f59e0b" fontWeight="bold">B</text>
+      </motion.g>
     </svg>
   );
 }
