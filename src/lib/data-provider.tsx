@@ -1,7 +1,6 @@
 "use client";
 import { createContext, useContext, useEffect, useState, useCallback, type ReactNode } from "react";
 import type { Transaction, Wallet, Category, Budget, SavingsGoal } from "@/types";
-import type { Database } from "@/server/db";
 
 interface AppData {
   wallets: Wallet[];
@@ -62,24 +61,6 @@ export function DataProvider({ children }: { children: ReactNode }) {
       const [wallets, categories, transactions, budgets, goals] = await Promise.all([
         getWallets(), getCategories(), getTransactions(), getBudgets(), getGoals(),
       ]);
-
-      // Auto-seed if empty
-      if (wallets.length === 0) {
-        const { seedDefaultData } = await import("@/server/actions/seed");
-        const { requireUserId } = await import("@/server/session");
-        try {
-          const userId = await requireUserId();
-          await seedDefaultData(userId);
-          const [w2, c2] = await Promise.all([getWallets(), getCategories()]);
-          setData({
-            wallets: (w2 as DbWallet[]).map(mapWallet),
-            categories: (c2 as DbCategory[]).map(mapCategory),
-            transactions: [], budgets: [], goals: [], loading: false,
-          });
-          return;
-        } catch { /* not logged in */ }
-      }
-
       setData({
         wallets: (wallets as DbWallet[]).map(mapWallet),
         categories: (categories as DbCategory[]).map(mapCategory),
