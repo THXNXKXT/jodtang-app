@@ -1,243 +1,141 @@
 <div align="center">
 
-# จดตัง · Jodtang
+# 💰 จดตัง · Jodtang
 
-**Mobile-first Personal Finance PWA**
+### Mobile-first Personal Finance PWA
 
-จดบันทึกรายรับ-รายจ่าย ตั้งงบประมาณ ออมเป้าหมาย และรับรายงานอัตโนมัติผ่าน LINE
+จดบันทึกรายรับ-รายจ่าย ตั้งงบประมาณ ออมเป้าหมาย และรับรายงานอัตโนมัติผ่าน LINE — ทุกบัญชีแยกข้อมูลอิสระ (multi-user data isolation)
 
-<br>
-
-<img alt="Next.js" src="https://img.shields.io/badge/Next.js_16-000000?style=flat-square&logo=nextdotjs&logoColor=white">
-<img alt="TypeScript" src="https://img.shields.io/badge/TypeScript-3178C6?style=flat-square&logo=typescript&logoColor=white">
-<img alt="Neon" src="https://img.shields.io/badge/Neon_Postgres-312E81?style=flat-square&logo=neon&logoColor=white">
-<img alt="Tailwind" src="https://img.shields.io/badge/Tailwind_v4-06B6D4?style=flat-square&logo=tailwindcss&logoColor=white">
-<img alt="Framer Motion" src="https://img.shields.io/badge/Framer_Motion-FF0066?style=flat-square&logo=framer&logoColor=white">
-<img alt="License" src="https://img.shields.io/badge/License-All_Rights_Reserved-6B7280?style=flat-square">
-
-<br><br>
-
-[ฟีเจอร์](#-ฟีเจอร์) · [Tech Stack](#-tech-stack) · [เริ่มต้นใช้งาน](#-เริ่มต้นใช้งาน) · [LINE Bot](#-line-bot-setup) · [Deploy](#-deployment-vercel)
+**License:** © THXNXKXT. All rights reserved.
 
 </div>
 
 ---
 
-## ✦ ฟีเจอร์
+## 🛠 Tech Stack
+
+| Layer | Technology |
+|-------|-----------|
+| **Framework** | Next.js 16 (App Router, Turbopack) |
+| **Language** | TypeScript 5 (strict mode) |
+| **UI** | React 19 + Tailwind CSS v4 + Framer Motion |
+| **Database** | Neon (Serverless PostgreSQL) + Drizzle ORM |
+| **Auth** | Better-Auth (email + password, rate limited) |
+| **Validation** | Zod schemas (every mutation) |
+| **Charts** | Recharts |
+| **i18n** | Custom provider (TH/EN, real-time switch) |
+| **Icons** | lucide-react |
+| **Notifications** | LINE Messaging API (push daily/monthly reports) |
+| **Deploy** | Vercel + Vercel Cron |
+| **Package Manager** | pnpm |
+
+---
+
+## ✨ Core Features
 
 ### การเงิน
-
-| ฟีเจอร์ | รายละเอียด |
-|---------|-----------|
-| ธุรกรรม | บันทึกรายรับ/รายจ่าย พร้อมหมวดหมู่และกระเป๋าเงิน |
-| งบประมาณ | ตั้งวงเงินรายเดือนต่อหมวดหมู่ พร้อมดูประวัติย้อนหลัง |
-| เป้าหมายออม | ตั้งเป้าหมาย เติมเงิน ติดตามความคืบหน้าด้วย Progress Ring |
-| กระเป๋าเงิน | หลายกระเป๋า — เงินสด บัญชีธนาคาร กระเป๋าอิเล็กตรอนิกส์ |
+- **ธุรกรรม** — บันทึกรายรับ/รายจ่าย พร้อมหมวดหมู่และกระเป๋าเงิน
+- **งบประมาณรายเดือน** — ตั้งวงเงินต่อหมวดหมู่ เลื่อนดูประวัติย้อนหลัง
+- **เป้าหมายออม** — ตั้งเป้าหมาย เติมเงิน ติดตามด้วย Progress Ring
+- **กระเป๋าเงิน** — หลายกระเป๋า (เงินสด บัญชี อิเล็กตรอนิกส์)
 
 ### รายงาน & กราฟ
-
-| ฟีเจอร์ | รายละเอียด |
-|---------|-----------|
-| แดชบอร์ด | ภาพรวมยอดคงเหลือ รายรับ-รายจ่าย งบประมาณล่าสุด |
-| กราฟแนวโน้ม | ยอดรายวัน 7 วัน พร้อม AnimatedNumber |
-| สัดส่วนรายจ่าย | Pie chart แสดงสัดส่วนตามหมวดหมู่ |
+- **แดชบอร์ด** — ภาพรวมยอดคงเหลือ รายรับ-รายจ่าย งบประมาณ
+- **กราฟแนวโน้ม** — ยอดรายวัน 7 วัน พร้อม AnimatedNumber
+- **สัดส่วนรายจ่าย** — Pie chart ตามหมวดหมู่
 
 ### การแจ้งเตือน LINE
-
-| ฟีเจอร์ | รายละเอียด |
-|---------|-----------|
-| รายงานรายวัน | ส่งสรุปธุรกรรมทุกเที่ยงคืน ICT |
-| รายงานรายเดือน | ส่งสรุปรายรับ-รายจ่ายทุกวันที่ 1 |
-| เชื่อมต่อง่าย | เพิ่มบอทเป็นเพื่อน ส่งรหัส 8 หลัก เป็นอันใช้ได้ |
+- **รายงานรายวัน** — ส่งสรุปธุรกรรมทุกเที่ยงคืน ICT
+- **รายงานรายเดือน** — ส่งสรุปรายรับ-รายจ่ายทุกวันที่ 1
+- **เชื่อมต่อง่าย** — เพิ่มบอทเป็นเพื่อน → ส่งรหัส 8 หลัก → เสร็จ (หมดอายุ 5 นาที)
 
 ### อื่นๆ
-
-| ฟีเจอร์ | รายละเอียด |
-|---------|-----------|
-| 2 ภาษา | ไทย / English — เปลี่ยนได้ในแอปแบบ real-time |
-| 3 โหมดธีม | Dark / Light / System — กัน FOUC |
-| โปรไฟล์ | อวตาร DiceBear (10 แบบ) หรืออัพโหลดเอง |
-| Multi-user | แยกข้อมูลอิสระต่อบัญชี (data isolation) |
+- **2 ภาษา** — ไทย / English เปลี่ยนได้ในแอปแบบ real-time
+- **3 โหมดธีม** — Dark / Light / System (กัน FOUC)
+- **โปรไฟล์** — อวตาร DiceBear (10 แบบ) หรืออัพโหลดเอง
+- **Multi-user** — แยกข้อมูลอิสระต่อบัญชี
 
 ---
 
-## ✦ Tech Stack
+## 🏗 Architecture & Security
 
-<table>
-<tr><td valign="top" width="50%">
+> - **Ownership checks:** ทุก query มี `and(eq(id), eq(userId))` — ไม่มีทางเห็นข้อมูลคนอื่น
+> - **Zod validation:** ทุก input ผ่าน schema validation ก่อนเข้า DB
+> - **Rate limiting:** ป้องกัน brute force บน auth endpoints
+> - **Proxy/middleware:** redirect unauthenticated users ไป /login
+> - **Error handling:** try/catch ทุก server action + ErrorBoundary
 
-**Frontend**
-- Next.js 16 (App Router, Turbopack)
-- React 19
-- Tailwind CSS v4
-- Framer Motion
-- Recharts
-- lucide-react
-
-</td><td valign="top" width="50%">
-
-**Backend**
-- Neon (Serverless PostgreSQL)
-- Drizzle ORM
-- Better-Auth (email + password)
-- Server Actions + API Routes
-- Zod validation
-- Vercel Cron
-
-</td></tr>
-</table>
+```
+User Browser
+    |
+Next.js App Router
+    |-- Server Actions (CRUD, Zod validated, userId scoped)
+    |-- API Routes
+    |   |-- /api/auth/*        (Better-Auth)
+    |   |-- /api/line/webhook  (LINE bot PIN matching)
+    |   |-- /api/cron/daily    (Vercel Cron: midnight ICT)
+    |   |-- /api/cron/monthly  (Vercel Cron: 1st of month)
+    |
+Drizzle ORM
+    |
+Neon PostgreSQL (Serverless)
+    |
+LINE Messaging API (push reports)
+```
 
 ---
 
-## ✦ เริ่มต้นใช้งาน
+## 🚀 Quick Start
 
-### สิ่งที่ต้องมี
-
-- Node.js 18+
-- pnpm
-- Neon database account
-- LINE Developers account *(สำหรับ LINE bot)*
-
-### ติดตั้ง
+**Prerequisites:** Node.js 18+, pnpm, Neon database account.
 
 ```bash
+# Clone & install
 git clone https://github.com/THXNXKXT/jodtang-app.git
 cd jodtang-app
 pnpm install
+
+# Configure environment
+cp .env.example .env.local   # or create manually (see below)
+
+# Create database tables
+npx drizzle-kit push
+
+# Run!
+pnpm dev
 ```
 
-### Environment Variables
+**Required Environment Variables:**
 
-สร้าง `.env.local`:
-
-```env
-DATABASE_URL=postgresql://...
-BETTER_AUTH_SECRET=..._URL=http://localhost:3000
-
-# LINE (optional)
-LINE_CHANNEL_ACCESS_TOKEN=...
-
-# Cron
-CRON_SECRET=...
-```
-
-### รัน Development
-
-```bash
-pnpm dev                # start dev server
-npx drizzle-kit push    # create database tables
-```
-
-เปิด `http://localhost:3000`
+| Variable | Required | Description |
+|----------|----------|-------------|
+| `DATABASE_URL` | Yes | Neon PostgreSQL connection string |
+| `BETTER_AUTH_SECRET` | Yes | Session encryption secret |
+| `BETTER_AUTH_URL` | Yes | App URL (localhost:3000 or production) |
+| `LINE_CHANNEL_ACCESS_TOKEN` | Optional | LINE Messaging API token |
+| `CRON_SECRET` | Optional | Protects cron endpoints |
 
 ---
 
-## ✦ วิธีใช้งานแอพ
+## 📡 API Reference
 
-**1. สมัคร / เข้าสู่ระบบ** — หน้า /signup หรือ /login กรอกอีเมล + รหัสผ่าน
+| Endpoint | Methods | Description |
+|----------|---------|-------------|
+| `/api/auth/*` | GET, POST | Better-Auth (login, signup, session) |
+| `/api/line/webhook` | POST | LINE bot webhook (follow + PIN matching) |
+| `/api/cron/daily` | GET | Daily LINE report (Vercel Cron, midnight ICT) |
+| `/api/cron/monthly` | GET | Monthly LINE report (Vercel Cron, 1st of month) |
 
-**2. บันทึกธุรกรรม** — กดปุ่ม + กลางแท็บบาร์ → เลือกหมวดหมู่ → ใส่จำนวนเงิน → บันทึก (ลาก sheet ลงเพื่อปิด)
-
-**3. ตั้งงบประมาณ** — แท็บรายงาน → งบประมาณ → กด + เลือกหมวดหมู่ + วงเงิน (เลื่อนดูเดือนก่อนหน้าได้)
-
-**4. ตั้งเป้าหมายออม** — แท็บรายงาน → เป้าหมาย → กด + ตั้งชื่อ + จำนวน (แตะเป้าหมายเพื่อเติมเงิน/ลบ)
-
-**5. เชื่อมต่อ LINE** — หน้าตั้งค่า → เชื่อมต่อ LINE → เพิ่มเพื่อน [@071fddut](https://line.me/R/ti/p/@071fddut) → ส่งรหัส → เลือกรายวัน/รายเดือน
-
-**6. แก้ไขโปรไฟล์** — หน้าตั้งค่า → แตะการ์ดผู้ใช้ → เปลี่ยนชื่อ / เลือกอวตาร / อัพโหลด
+> CRUD operations use **Server Actions** (not REST routes) — typed, validated, userId-scoped.
 
 ---
 
-## ✦ LINE Bot Setup
+## 📁 Project Structure
 
-<details>
-<summary><b>คลิกเพื่อดูวิธีตั้งค่า LINE Bot</b></summary>
-
-#### 1. สร้าง LINE Official Account
-- ไปที่ [LINE Official Account Manager](https://manager.line.biz) → สมัคร
-- สร้างบัญชี (เช่น "Jodtang")
-- เปิด **Messaging API** ในการตั้งค่า
-
-#### 2. เอา Channel Access Token
-- ไปที่ [LINE Developers Console](https://developers.line.biz/console)
-- เลือก Messaging API channel → แท็บ **Messaging API**
-- **Channel access token (long-lived)** → กด **Issue** → คัดลอก
-
-#### 3. ตั้งค่า Webhook
-- Webhook URL: `https://your-domain/api/line/webhook`
-- เปิด **Use webhook** = ON
-- ปิด **Auto-reply** และ **Greeting messages**
-
-#### 4. สำหรับ Dev (ngrok)
-```bash
-ngrok http 3000
-# ใส่ URL ที่ได้ใน Webhook URL + trustedOrigins + allowedDevOrigins
-```
-
-</details>
-
----
-
-## ✦ สถาปัตยกรรม
-
-```
-+-------------------------------------+
-|           User Browser               |
-|         (Next.js App Router)         |
-+----------+----------+---------------+
-| Server   | API      | Cron           |
-| Actions  | Routes   | (Vercel)       |
-| (CRUD)   |          |                |
-|          | Auth     | Daily Report   |
-| Zod      | LINE     | Monthly Report |
-| Validate | Webhook  |                |
-+----------+----------+---------------+
-|          Drizzle ORM                 |
-|      (ownership-scoped queries)      |
-+--------------------------------------+
-|      Neon PostgreSQL (Serverless)    |
-+--------------------------------------+
-            |
-            v
-    LINE Messaging API
-    (push daily/monthly reports)
-```
-
-### Security
-- **Ownership checks** — ทุก query มี `and(eq(id), eq(userId))`
-- **Zod validation** — ทุก input ผ่าน schema validation
-- **Rate limiting** — ป้องกัน brute force บน auth
-- **Proxy/middleware** — redirect unauthenticated users
-
----
-
-## ✦ Deployment (Vercel)
-
-```bash
-pnpm build    # verify production build
-vercel        # deploy
-```
-
-เพิ่ม Environment Variables ใน Vercel Dashboard:
-
-| Variable | ใช้สำหรับ |
-|----------|----------|
-| `DATABASE_URL` | Neon connection |
-| `BETTER_AUTH_SECRET` | Session encryption |
-| `BETTER_AUTH_URL` | Production domain |
-| `LINE_CHANNEL_ACCESS_TOKEN` | LINE push messages |
-| `CRON_SECRET` | Protect cron endpoints |
-
-> Cron: รายวัน `0 17 * * *` (00:00 ICT) · รายเดือน `0 17 1 * *` (วันที่ 1)
-
----
-
-## ✦ Project Structure
-
-```
+```text
 src/
 |-- app/
-|   |-- (auth)/              # login + signup
+|   |-- (auth)/              # login + signup pages
 |   |-- api/
 |   |   |-- auth/[...all]/   # Better-Auth handler
 |   |   |-- cron/daily/      # LINE daily report
@@ -267,7 +165,13 @@ src/
 
 ---
 
-## ✦ Scripts
+## 📷 Screenshots
+
+> Screenshots coming soon.
+
+---
+
+## 📜 Scripts
 
 | Command | Description |
 |---------|-------------|
@@ -279,18 +183,47 @@ src/
 
 ---
 
-<div align="center">
+## 📐 LINE Bot Setup
 
-<br>
+<details>
+<summary><b>คลิกเพื่อดูวิธีตั้งค่า</b></summary>
+
+1. สร้าง LINE Official Account ที่ [manager.line.biz](https://manager.line.biz)
+2. เปิด **Messaging API** ในการตั้งค่า
+3. ไปที่ [LINE Developers Console](https://developers.line.biz/console) → Messaging API channel
+4. **Channel access token (long-lived)** → Issue → คัดลอก
+5. ตั้ง Webhook URL: `https://your-domain/api/line/webhook`
+6. เปิด **Use webhook** = ON
+7. ปิด Auto-reply และ Greeting messages
+8. ใส่ token ใน `.env.local`: `LINE_CHANNEL_ACCESS_TOKEN=...`
+
+**สำหรับ Dev (ngrok):**
+```bash
+ngrok http 3000
+# ใส่ URL ใน Webhook + trustedOrigins (auth.ts) + allowedDevOrigins (next.config.ts)
+```
+
+</details>
+
+---
+
+## 🚀 Deployment (Vercel)
+
+```bash
+pnpm build    # verify production build
+vercel        # deploy
+```
+
+เพิ่ม Environment Variables ใน Vercel Dashboard → Settings → Environment Variables (see table above).
+
+> Cron: รายวัน `0 17 * * *` (00:00 ICT) · รายเดือน `0 17 1 * *` (วันที่ 1)
+
+---
+
+<div align="center">
 
 ## License
 
 © THXNXKXT. All rights reserved.
-
-<br>
-
----
-
-<sub>Built with Next.js 16 · Neon · Drizzle · Better-Auth · Tailwind v4 · Framer Motion</sub>
 
 </div>
