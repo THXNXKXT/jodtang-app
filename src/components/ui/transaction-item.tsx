@@ -1,12 +1,14 @@
+import { useI18n } from "@/i18n/config";
 "use client";
 import { motion } from "framer-motion";
 import { CATEGORY_ICONS, CATEGORY_COLORS } from "@/lib/constants";
-import { formatCurrency, formatRelativeDate } from "@/lib/utils";
+import { formatCurrency, formatRelativeDate, catName } from "@/lib/utils";
 import { useAppData } from "@/lib/data-provider";
 import type { Transaction } from "@/types";
 
 export function TransactionItem({ transaction }: { transaction: Transaction }) {
   const { categories, wallets } = useAppData();
+  const { locale } = useI18n();
   const category = categories.find((c) => c.id === transaction.categoryId);
   const wallet = wallets.find((w) => w.id === transaction.walletId);
   const Icon = category ? CATEGORY_ICONS[category.icon] : CATEGORY_ICONS.other_expense;
@@ -23,7 +25,7 @@ export function TransactionItem({ transaction }: { transaction: Transaction }) {
       </div>
       <div className="min-w-0 flex-1">
         <p className="truncate text-sm font-medium text-[var(--color-text-primary)]">
-          {transaction.note || category?.name}
+          {transaction.note || catName(category, locale)}
         </p>
         <p className="mt-0.5 text-xs text-[var(--color-text-secondary)]">
           {wallet?.name} - {formatRelativeDate(transaction.date)}

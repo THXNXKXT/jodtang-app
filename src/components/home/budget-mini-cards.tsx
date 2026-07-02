@@ -1,15 +1,16 @@
+import { useI18n } from "@/i18n/config";
 "use client";
 
 import { motion } from "framer-motion";
 import { Card } from "@/components/ui/card";
 import { CATEGORY_COLORS, CATEGORY_ICONS } from "@/lib/constants";
-import { useI18n } from "@/i18n/config";
 import { useAppData } from "@/lib/data-provider";
-import { formatCurrency } from "@/lib/utils";
+import { formatCurrency, catName } from "@/lib/utils";
 
 export function BudgetMiniCards() {
   const { t } = useI18n();
   const { budgets, categories, transactions } = useAppData();
+  const { locale } = useI18n();
 
   const topBudgets = [...budgets]
     .map((budget) => {
@@ -49,7 +50,7 @@ export function BudgetMiniCards() {
                 </div>
                 <div className="min-w-0 flex-1">
                   <p className="text-sm font-medium text-[var(--color-text-primary)]">
-                    {category?.name ?? "—"}
+                    {catName(category, locale) || "—"}
                   </p>
                   <p className="text-xs text-[var(--color-text-secondary)]">
                     {formatCurrency(spent)} / {formatCurrency(budget.amount)}

@@ -6,6 +6,7 @@ import { Card } from "@/components/ui/card";
 import { CATEGORY_COLORS, CATEGORY_ICONS } from "@/lib/constants";
 import { useI18n } from "@/i18n/config";
 import { useAppData } from "@/lib/data-provider";
+import { catName } from "@/lib/utils";
 import { formatCurrency } from "@/lib/utils";
 
 interface SliceDatum {
@@ -20,6 +21,7 @@ const ellipsis = "overflow-hidden text-ellipsis whitespace-nowrap";
 export function CategoryBreakdownChart() {
   const { t } = useI18n();
   const { transactions, categories } = useAppData();
+  const { locale } = useI18n();
 
   const data = useMemo<SliceDatum[]>(() => {
     const total = transactions
@@ -28,7 +30,7 @@ export function CategoryBreakdownChart() {
     const slices = categories
       .filter((c) => c.type === "expense")
       .map((c) => ({
-        name: c.name,
+        name: catName(c, locale),
         value: transactions
           .filter((tx) => tx.type === "expense" && tx.categoryId === c.id)
           .reduce((s, tx) => s + tx.amount, 0),

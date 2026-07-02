@@ -6,7 +6,7 @@ import { CATEGORY_COLORS, CATEGORY_ICONS } from "@/lib/constants";
 import { useI18n } from "@/i18n/config";
 import { useAppData } from "@/lib/data-provider";
 import { createTransaction } from "@/server/actions/transactions";
-import { cn } from "@/lib/utils";
+import { cn, catName } from "@/lib/utils";
 import type { TransactionType } from "@/types";
 
 interface Props { open: boolean; onClose: () => void; }
@@ -17,7 +17,7 @@ const SEGS = [
 ];
 
 export function AddTransactionSheet({ open, onClose }: Props) {
-  const { t } = useI18n();
+  const { t, locale } = useI18n();
   const { categories: allCats, wallets, reload } = useAppData();
   const [type, setType] = useState<TransactionType>("expense");
   const [amount, setAmount] = useState("");
@@ -77,7 +77,7 @@ export function AddTransactionSheet({ open, onClose }: Props) {
                     <span className="flex h-8 w-8 items-center justify-center rounded-full" style={{ backgroundColor: color + "1a", color }}>
                       {Icon && <Icon size={16} />}
                     </span>
-                    <span className="text-[10px] text-[var(--color-text-secondary)]">{c.name}</span>
+                    <span className="text-[10px] text-[var(--color-text-secondary)]">{catName(c, locale)}</span>
                   </button>
                 );
               })}

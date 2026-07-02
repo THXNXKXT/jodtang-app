@@ -46,3 +46,8 @@ export function formatRelativeDate(date: Date | string): string {
   if (isSameDay(d, yesterday)) return "เมื่อวาน";
   return formatDateShort(d);
 }
+
+export function catName(cat: { name: string; nameEn: string } | undefined | null, locale: string): string {
+  if (!cat) return "";
+  return locale === "en" ? cat.nameEn : cat.name;
+}
