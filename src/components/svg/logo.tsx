@@ -24,19 +24,27 @@ export function Logo({ size = 32, className }: { size?: number; className?: stri
       {/* Tentacle 3 — center */}
       <path d="M24 37V46" stroke="var(--color-primary)" strokeWidth="3" strokeLinecap="round" fill="none" />
 
-      {/* Tentacle 4 — right inner, holds pencil + writing motion */}
+      {/* Tentacle 4 — right inner, holds pencil */}
       <motion.g
-        animate={{ rotate: [0, -8, 0, -8, 0] }}
+        animate={{ rotate: [0, -10, 0, -10, 0] }}
         transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
         style={{ transformOrigin: "31px 36px" }}
       >
         <path d="M31 36C32 40 34 43 37 44" stroke="var(--color-primary)" strokeWidth="3" strokeLinecap="round" fill="none" />
-        {/* Pencil */}
-        <motion.g style={{ transformOrigin: "37px 44px" }}>
-          <rect x="35" y="41" width="3" height="8" rx="0.5" fill="#fbbf24" transform="rotate(-15 37 41)" />
-          <path d="M35.5 48.5L37 51L38.5 48.5Z" fill="#475569" transform="rotate(-15 37 41)" />
-          <rect x="35" y="41" width="3" height="1.5" fill="#f59e0b" transform="rotate(-15 37 41)" />
-        </motion.g>
+        {/* Writing line */}
+        <motion.path
+          d="M39 46L44 48"
+          stroke="var(--color-text-secondary)" strokeWidth="1" strokeLinecap="round" fill="none"
+          animate={{ pathLength: [0, 1], opacity: [0, 0.5, 0] }}
+          transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+        />
+        {/* Pencil — inside viewBox */}
+        <g transform="rotate(-30 37 42)">
+          <rect x="35.5" y="39" width="3" height="7" rx="0.5" fill="#fbbf24" />
+          <rect x="35.5" y="39" width="3" height="1.5" fill="#f59e0b" />
+          <path d="M35.5 46L37 48L38.5 46Z" fill="#374151" />
+          <rect x="35.5" y="36.5" width="3" height="2.5" rx="0.5" fill="#ec4263" />
+        </g>
       </motion.g>
 
       {/* Tentacle 5 — right outer */}
