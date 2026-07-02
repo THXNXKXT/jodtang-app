@@ -3,7 +3,6 @@ import { useRouter } from "next/navigation";
 import { PageTransition } from "@/components/layout/page-transition";
 import { Card } from "@/components/ui/card";
 import { WalletList } from "@/components/settings/wallet-list";
-import { CategoryList } from "@/components/settings/category-list";
 import { ThemeToggle } from "@/components/theme/theme-toggle";
 import { Logo } from "@/components/svg/logo";
 import { useI18n, type Locale } from "@/i18n/config";
@@ -61,8 +60,6 @@ export default function SettingsPage() {
           <WalletList />
         </div>
         <div>
-          <p className="mb-2 text-xs font-medium uppercase text-[var(--color-text-muted)]">หมวดหมู่</p>
-          <CategoryList />
         </div>
         <div className="space-y-2">
           <button className="flex w-full items-center gap-3 rounded-xl border border-[var(--color-border)] px-4 py-3 text-sm">
