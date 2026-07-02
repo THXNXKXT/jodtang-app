@@ -52,7 +52,6 @@
   "settings": {
     "title": "ตั้งค่า",
     "profile": "บัญชีของฉัน",
-    "loggedIn": "เข้าสู่ระบบแล้ว",
     "wallets": "กระเป๋าเงิน",
     "preferences": "การตั้งค่า",
     "language": "ภาษา",
@@ -62,7 +61,6 @@
     "themeLight": "สว่าง",
     "themeDark": "มืด",
     "themeSystem": "ระบบ",
-    "export": "ส่งออกข้อมูล",
     "signOut": "ออกจากระบบ",
     "walletType": {
       "cash": "เงินสด",
@@ -82,7 +80,8 @@
     "addFriend": "เพิ่มเพื่อน LINE",
     "copy": "คัดลอกรหัส",
     "copied": "คัดลอกแล้ว",
-    "expiresIn": "หมดอายุใน"
+    "expiresIn": "หมดอายุใน",
+    "editProfile": "แก้ไขโปรไฟล์"
   },
   "auth": {
     "loginTitle": "จดตัง",

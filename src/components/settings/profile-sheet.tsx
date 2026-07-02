@@ -1,5 +1,5 @@
 "use client";
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { BottomSheet } from "@/components/ui/bottom-sheet";
 import { authClient } from "@/lib/auth-client";
 import { useAppData } from "@/lib/data-provider";
@@ -11,6 +11,7 @@ export function ProfileSheet({ open, onClose, currentName, currentAvatar }: { op
   const { reload } = useAppData();
   const [name, setName] = useState(currentName);
   const [avatar, setAvatar] = useState(currentAvatar ?? "");
+  useEffect(() => { setAvatar(currentAvatar ?? ""); setName(currentName); }, [currentAvatar, currentName]);
   const [saving, setSaving] = useState(false);
   const fileRef = useRef<HTMLInputElement>(null);
 

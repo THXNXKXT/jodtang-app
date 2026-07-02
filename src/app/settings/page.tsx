@@ -1,6 +1,7 @@
 "use client";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
+import { motion } from "framer-motion";
 import { PageTransition } from "@/components/layout/page-transition";
 import { Card } from "@/components/ui/card";
 import { WalletList } from "@/components/settings/wallet-list";
@@ -12,7 +13,7 @@ import { useI18n, type Locale } from "@/i18n/config";
 import { authClient } from "@/lib/auth-client";
 import { getProfile } from "@/server/actions/profile";
 import { isAvatarUrl } from "@/components/svg/avatars";
-import { Globe, Download, LogOut, Palette } from "lucide-react";
+import { Globe, LogOut, Palette, ChevronRight } from "lucide-react";
 
 export default function SettingsPage() {
   const { t, locale, setLocale } = useI18n();
@@ -27,7 +28,7 @@ export default function SettingsPage() {
 
   async function handleSignOut() {
     await authClient.signOut();
-    router.push("/login"); router.refresh();
+    window.location.href = "/login";
   }
 
   return (
@@ -38,19 +39,26 @@ export default function SettingsPage() {
           <h1 className="text-lg font-bold tracking-tight">{t("app.name")}</h1>
         </div>
 
-        <Card className="flex cursor-pointer items-center gap-3" onClick={() => setProfileOpen(true)}>
-          {isAvatarUrl(avatar) ? (
-            <img src={avatar ?? undefined} alt="" className="h-12 w-12 rounded-full object-cover" />
-          ) : (
-            <div className="flex h-12 w-12 items-center justify-center rounded-full bg-[var(--color-primary-soft)] text-lg font-bold text-[var(--color-primary)]">
-              {(name || "?")[0]?.toUpperCase()}
+        {/* User card */}
+        <motion.div whileTap={{ scale: 0.98 }} transition={{ type: "spring", stiffness: 400, damping: 17 }}>
+          <Card className="relative overflow-hidden p-4" onClick={() => setProfileOpen(true)}>
+            <div className="pointer-events-none absolute -right-8 -top-8 h-32 w-32 rounded-full bg-[var(--color-primary)] opacity-[0.06]" />
+            <div className="relative flex items-center gap-3">
+              {isAvatarUrl(avatar) ? (
+                <img src={avatar ?? undefined} alt="" className="h-14 w-14 rounded-full object-cover ring-2 ring-[var(--color-border)]" />
+              ) : (
+                <div className="flex h-14 w-14 items-center justify-center rounded-full bg-[var(--color-primary-soft)] text-xl font-bold text-[var(--color-primary)] ring-2 ring-[var(--color-border)]">
+                  {(name || "?")[0]?.toUpperCase()}
+                </div>
+              )}
+              <div className="flex-1">
+                <p className="text-base font-semibold">{name}</p>
+                <p className="text-xs text-[var(--color-text-secondary)]">{t("settings.editProfile")}</p>
+              </div>
+              <ChevronRight size={18} className="text-[var(--color-text-muted)]" />
             </div>
-          )}
-          <div className="flex-1">
-            <p className="text-sm font-medium">{name}</p>
-            <p className="text-xs text-[var(--color-text-secondary)]">{t("settings.loggedIn")}</p>
-          </div>
-        </Card>
+          </Card>
+        </motion.div>
 
         <div>
           <p className="mb-2 flex items-center gap-2 text-xs font-medium uppercase text-[var(--color-text-muted)]">
@@ -76,18 +84,12 @@ export default function SettingsPage() {
           <p className="mb-2 text-xs font-medium uppercase text-[var(--color-text-muted)]">{t("settings.wallets")}</p>
           <WalletList />
         </div>
+
         <LineSection />
 
-
-
-        <div className="space-y-2">
-          <button className="flex w-full items-center gap-3 rounded-xl border border-[var(--color-border)] px-4 py-3 text-sm">
-            <Download size={16} /> {t("settings.export")}
-          </button>
-          <button onClick={handleSignOut} className="flex w-full items-center gap-3 rounded-xl px-4 py-3 text-sm text-[var(--color-expense)]">
-            <LogOut size={16} /> {t("settings.signOut")}
-          </button>
-        </div>
+        <button onClick={handleSignOut} className="flex w-full items-center justify-center gap-2 rounded-xl px-4 py-3 text-sm font-medium text-[var(--color-expense)]">
+          <LogOut size={16} /> {t("settings.signOut")}
+        </button>
       </div>
 
       <ProfileSheet open={profileOpen} onClose={() => setProfileOpen(false)} currentName={name} currentAvatar={avatar} />

@@ -52,7 +52,6 @@
   "settings": {
     "title": "Settings",
     "profile": "My Account",
-    "loggedIn": "Signed in",
     "wallets": "Wallets",
     "preferences": "Preferences",
     "language": "Language",
@@ -62,7 +61,6 @@
     "themeLight": "Light",
     "themeDark": "Dark",
     "themeSystem": "System",
-    "export": "Export Data",
     "signOut": "Sign Out",
     "walletType": {
       "cash": "Cash",
@@ -82,7 +80,8 @@
     "addFriend": "Add LINE Friend",
     "copy": "Copy code",
     "copied": "Copied",
-    "expiresIn": "Expires in"
+    "expiresIn": "Expires in",
+    "editProfile": "Edit profile"
   },
   "auth": {
     "loginTitle": "Jodtang",
