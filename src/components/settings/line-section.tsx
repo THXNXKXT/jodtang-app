@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import { Card } from "@/components/ui/card";
 import { useI18n } from "@/i18n/config";
 import { generateLinkCode, updateNotifyFreq, getLineSettings } from "@/server/actions/line";
-import { Bell, Copy, Check, MessageCircle } from "lucide-react";
+import { Bell, Copy, Check, MessageCircle, ExternalLink } from "lucide-react";
 
 export function LineSection() {
   const { t } = useI18n();
@@ -66,6 +66,7 @@ export function LineSection() {
   }
 
   if (code) {
+    const steps = t("settings.lineSteps").split("\n");
     return (
       <div className="space-y-3">
         <div className="flex items-center gap-2 px-1">
@@ -73,12 +74,27 @@ export function LineSection() {
           <span className="text-sm font-medium">{t("settings.lineNotifications")}</span>
         </div>
         <Card className="space-y-4 p-4">
-          <p className="text-sm text-[var(--color-text-secondary)]">
-            {t("settings.lineSteps")}
-          </p>
+          <div className="space-y-2.5">
+            {steps.map((step, i) => (
+              <div key={i} className="flex items-start gap-2.5 text-sm text-[var(--color-text-secondary)]">
+                <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-[var(--color-surface-2)] text-xs font-bold text-[var(--color-text-primary)]">{i + 1}</span>
+                <span className="leading-relaxed">{step}</span>
+              </div>
+            ))}
+          </div>
+          <a
+            href="https://line.me/R/ti/p/@071fddut"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center justify-center gap-2 rounded-xl bg-[#06C755] py-3 text-sm font-medium text-white transition-opacity active:opacity-80"
+          >
+            <MessageCircle size={16} />
+            {t("settings.addFriend")}
+            <ExternalLink size={12} className="opacity-70" />
+          </a>
           <div className="flex items-center gap-3">
             <div className="flex-1 rounded-xl bg-[var(--color-surface-2)] px-4 py-3 text-center">
-              <span className="text-2xl font-bold tracking-[0.3em] tabular-nums">{code}</span>
+              <span className="text-2xl font-bold tracking-[0.2em] tabular-nums">{code}</span>
             </div>
             <button
               onClick={() => { navigator.clipboard.writeText(code); setCopied(true); setTimeout(() => setCopied(false), 2000); }}

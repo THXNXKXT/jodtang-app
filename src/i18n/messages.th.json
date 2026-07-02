@@ -72,13 +72,14 @@
     },
     "lineNotifications": "การแจ้งเตือน LINE",
     "connectLine": "เชื่อมต่อ LINE",
-    "connectLineDesc": "รับรายงานรายวัน/รายเดือน",
+    "connectLineDesc": "รับรายงานรายวัน/รายเดือนผ่าน LINE",
     "connected": "เชื่อมต่อแล้ว",
     "freq_daily": "รายวัน",
     "freq_monthly": "รายเดือน",
     "freq_off": "ปิด",
-    "lineSteps": "1. เพิ่มบอท Jodtang เป็นเพื่อนใน LINE 2. ส่งรหัสด้านล่างไปยังบอท",
-    "cancel": "ยกเลิก"
+    "lineSteps": "1. เพิ่มเพื่อน LINE @071fddut\n2. ส่งรหัสด้านล่างไปยังบัญชีนั้น\n3. รอข้อความยืนยันจากระบบ",
+    "cancel": "ยกเลิก",
+    "addFriend": "เพิ่มเพื่อน LINE"
   },
   "auth": {
     "loginTitle": "จดตัง",

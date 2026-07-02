@@ -72,13 +72,14 @@
     },
     "lineNotifications": "LINE Notifications",
     "connectLine": "Connect LINE",
-    "connectLineDesc": "Get daily/monthly reports",
+    "connectLineDesc": "Get daily/monthly reports via LINE",
     "connected": "Connected",
     "freq_daily": "Daily",
     "freq_monthly": "Monthly",
     "freq_off": "Off",
-    "lineSteps": "1. Add Jodtang bot as friend in LINE 2. Send the code below to the bot",
-    "cancel": "Cancel"
+    "lineSteps": "1. Add LINE @071fddut as friend\n2. Send the code below to that account\n3. Wait for confirmation from the system",
+    "cancel": "Cancel",
+    "addFriend": "Add LINE Friend"
   },
   "auth": {
     "loginTitle": "Jodtang",
