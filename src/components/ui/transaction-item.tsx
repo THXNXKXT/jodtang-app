@@ -1,5 +1,5 @@
-import { useI18n } from "@/i18n/config";
 "use client";
+import { useI18n } from "@/i18n/config";
 import { motion } from "framer-motion";
 import { CATEGORY_ICONS, CATEGORY_COLORS } from "@/lib/constants";
 import { formatCurrency, formatRelativeDate, catName } from "@/lib/utils";
