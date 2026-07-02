@@ -6,6 +6,23 @@ import { generateLinkCode, updateNotifyFreq, getLineSettings } from "@/server/ac
 import { CODE_EXPIRY_MS } from "@/lib/budget-utils";
 import { Bell, Copy, Check, MessageCircle, ExternalLink, Clock } from "lucide-react";
 
+async function copyText(text: string): Promise<boolean> {
+  try {
+    await navigator.clipboard.writeText(text);
+    return true;
+  } catch {
+    const ta = document.createElement("textarea");
+    ta.value = text;
+    ta.style.position = "fixed";
+    ta.style.opacity = "0";
+    document.body.appendChild(ta);
+    ta.select();
+    const ok = document.execCommand("copy");
+    document.body.removeChild(ta);
+    return ok;
+  }
+}
+
 export function LineSection() {
   const { t } = useI18n();
   const [lineId, setLineId] = useState<string | null>(null);
@@ -59,7 +76,7 @@ export function LineSection() {
     setCode(c);
     setCodeExpiry(Date.now() + CODE_EXPIRY_MS);
     setLineId(`pending:${c}`);
-    navigator.clipboard.writeText(c);
+    await copyText(c);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
   }
@@ -132,7 +149,7 @@ export function LineSection() {
               <span className="text-2xl font-bold tracking-[0.2em] tabular-nums">{code}</span>
             </div>
             <button
-              onClick={() => { navigator.clipboard.writeText(code); setCopied(true); setTimeout(() => setCopied(false), 2000); }}
+              onClick={async () => { await copyText(code); setCopied(true); setTimeout(() => setCopied(false), 2000); }}
               className="mx-auto flex items-center gap-2 rounded-xl bg-[var(--color-surface-2)] px-4 py-2.5 text-xs"
             >
               {copied ? <Check size={14} className="text-emerald-500" /> : <Copy size={14} />}
