@@ -35,29 +35,33 @@ export async function GET(req: NextRequest) {
     const net = income - expense;
     const dateStr = dayStart.toLocaleDateString("th-TH", { day: "numeric", month: "short" });
 
-    function txRow(label: string, amount: string, color: string): Record<string, unknown> {
+    function row(label: string, amount: string, color: string, bold = false): Record<string, unknown> {
       return {
         type: "box", layout: "horizontal",
         contents: [
-          { type: "text", text: label, size: "xs", color, flex: 1 },
-          { type: "text", text: amount, size: "xs", color, flex: 0 },
+          { type: "text", text: label, size: "xs", color, flex: 1, weight: bold ? "bold" : "regular" },
+          { type: "text", text: amount, size: "xs", color, flex: 0, weight: bold ? "bold" : "regular" },
         ],
       };
     }
 
-    // Card 1: Summary
-    const summaryBody: Record<string, unknown>[] = [];
-    if (incTxns.length > 0) {
-      summaryBody.push(txRow("รายรับ", `+${formatCurrency(income)}`, "#10b981"));
-      summaryBody.push(txRow("รายจ่าย", `-${formatCurrency(expense)}`, "#ef4444"));
-    } else {
-      summaryBody.push(txRow("รายจ่าย", `-${formatCurrency(expense)}`, "#ef4444"));
-    }
-    summaryBody.push({ type: "separator", margin: "sm" });
-    summaryBody.push(txRow("ยอดสุทธิ", `${net >= 0 ? "+" : ""}${formatCurrency(net)}`, net >= 0 ? "#10b981" : "#ef4444"));
+    const body: Record<string, unknown>[] = [];
 
-    const cards: Record<string, unknown>[] = [{
-      type: "bubble", size: "kilo",
+    if (incTxns.length > 0) {
+      body.push(row(`รายรับ (${incTxns.length})`, `+${formatCurrency(income)}`, "#10b981", true));
+      for (const t of incTxns) body.push(row(`  ${t.catName}`, formatCurrency(Number(t.amount)), "#999999"));
+    }
+    if (expTxns.length > 0) {
+      if (incTxns.length > 0) body.push({ type: "separator", margin: "sm" });
+      body.push(row(`รายจ่าย (${expTxns.length})`, `-${formatCurrency(expense)}`, "#ef4444", true));
+      for (const t of expTxns) body.push(row(`  ${t.catName}`, formatCurrency(Number(t.amount)), "#999999"));
+    }
+    body.push({ type: "separator", margin: "sm" });
+    body.push(row("ยอดสุทธิ", `${net >= 0 ? "+" : ""}${formatCurrency(net)}`, net >= 0 ? "#10b981" : "#ef4444", true));
+
+    const flex = {
+      type: "bubble",
+      size: "kilo",
       header: {
         type: "box", layout: "vertical",
         backgroundColor: net >= 0 ? "#10b981" : "#ef4444",
@@ -67,38 +71,12 @@ export async function GET(req: NextRequest) {
           { type: "text", text: `สรุปประจำวันที่ ${dateStr}`, size: "lg", color: "#ffffff", weight: "bold" },
         ],
       },
-      body: { type: "box", layout: "vertical", paddingAll: "16px", contents: summaryBody },
-    }];
-
-    // Card 2: Income details (all items)
-    if (incTxns.length > 0) {
-      const items = incTxns.map(t => txRow(t.catName ?? "-", formatCurrency(Number(t.amount)), "#10b981"));
-      cards.push({
-        type: "bubble", size: "kilo",
-        header: {
-          type: "box", layout: "vertical",
-          backgroundColor: "#10b981", paddingAll: "16px",
-          contents: [{ type: "text", text: `💚 รายรับ ${incTxns.length} รายการ`, size: "sm", color: "#ffffff", weight: "bold" }],
-        },
-        body: { type: "box", layout: "vertical", paddingAll: "12px", contents: items },
-      });
-    }
-
-    // Card 3: Expense details (all items)
-    if (expTxns.length > 0) {
-      const items = expTxns.map(t => txRow(t.catName ?? "-", formatCurrency(Number(t.amount)), "#ef4444"));
-      cards.push({
-        type: "bubble", size: "kilo",
-        header: {
-          type: "box", layout: "vertical",
-          backgroundColor: "#ef4444", paddingAll: "16px",
-          contents: [{ type: "text", text: `❤️ รายจ่าย ${expTxns.length} รายการ`, size: "sm", color: "#ffffff", weight: "bold" }],
-        },
-        body: { type: "box", layout: "vertical", paddingAll: "12px", contents: items },
-      });
-    }
-
-    const flex = { type: "carousel", contents: cards };
+      body: {
+        type: "box", layout: "vertical", paddingAll: "16px", spacing: "xs",
+        contents: body,
+      },
+      styles: { footer: { separator: true } },
+    };
 
     try {
       const res = await fetch("https://api.line.me/v2/bot/message/push", {
