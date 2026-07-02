@@ -10,6 +10,8 @@ function validateEnv() {
     BETTER_AUTH_URL: process.env.BETTER_AUTH_URL ?? "http://localhost:3000",
     GOOGLE_CLIENT_ID: process.env.GOOGLE_CLIENT_ID ?? "",
     GOOGLE_CLIENT_SECRET: process.env.GOOGLE_CLIENT_SECRET ?? "",
+    LINE_CHANNEL_ACCESS_TOKEN: process.env.LINE_CHANNEL_ACCESS_TOKEN ?? "",
+    CRON_SECRET: process.env.CRON_SECRET ?? "dev-cron-secret",
   };
 }
 

@@ -13,6 +13,8 @@ export const users = pgTable("users", {
   image: text("image"),
   createdAt: timestamp("created_at").defaultNow(),
   updatedAt: timestamp("updated_at").defaultNow(),
+  lineId: text("line_id"),
+  notifyFreq: text("notify_freq").default("off"),
 });
 
 export const sessions = pgTable("sessions", {
@@ -24,6 +26,8 @@ export const sessions = pgTable("sessions", {
   userAgent: text("user_agent"),
   createdAt: timestamp("created_at").defaultNow(),
   updatedAt: timestamp("updated_at").defaultNow(),
+  lineId: text("line_id"),
+  notifyFreq: text("notify_freq").default("off"),
 });
 
 export const wallets = pgTable("wallets", {
@@ -140,6 +144,8 @@ export const accounts = pgTable("account", {
   password: text("password"),
   createdAt: timestamp("created_at").defaultNow(),
   updatedAt: timestamp("updated_at").defaultNow(),
+  lineId: text("line_id"),
+  notifyFreq: text("notify_freq").default("off"),
 });
 
 export const verifications = pgTable("verification", {
@@ -149,4 +155,6 @@ export const verifications = pgTable("verification", {
   expiresAt: timestamp("expires_at").notNull(),
   createdAt: timestamp("created_at").defaultNow(),
   updatedAt: timestamp("updated_at").defaultNow(),
+  lineId: text("line_id"),
+  notifyFreq: text("notify_freq").default("off"),
 });

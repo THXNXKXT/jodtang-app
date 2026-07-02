@@ -6,6 +6,7 @@ import { Card } from "@/components/ui/card";
 import { WalletList } from "@/components/settings/wallet-list";
 import { ThemeToggle } from "@/components/theme/theme-toggle";
 import { ProfileSheet } from "@/components/settings/profile-sheet";
+import { LineSection } from "@/components/settings/line-section";
 import { Logo } from "@/components/svg/logo";
 import { useI18n, type Locale } from "@/i18n/config";
 import { authClient } from "@/lib/auth-client";
@@ -73,6 +74,8 @@ export default function SettingsPage() {
 
         <div>
           <p className="mb-2 text-xs font-medium uppercase text-[var(--color-text-muted)]">{t("settings.wallets")}</p>
+        <LineSection />
+
           <WalletList />
         </div>
 
