@@ -1,22 +1,31 @@
 "use client";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { PageTransition } from "@/components/layout/page-transition";
 import { Card } from "@/components/ui/card";
 import { WalletList } from "@/components/settings/wallet-list";
 import { ThemeToggle } from "@/components/theme/theme-toggle";
+import { ProfileSheet } from "@/components/settings/profile-sheet";
 import { Logo } from "@/components/svg/logo";
 import { useI18n, type Locale } from "@/i18n/config";
 import { authClient } from "@/lib/auth-client";
+import { getProfile } from "@/server/actions/profile";
 import { Globe, Download, LogOut, Palette } from "lucide-react";
 
 export default function SettingsPage() {
-  const { locale, setLocale, t } = useI18n();
+  const { t, locale, setLocale } = useI18n();
   const router = useRouter();
+  const [profileOpen, setProfileOpen] = useState(false);
+  const [name, setName] = useState("ผู้ใช้");
+  const [avatar, setAvatar] = useState<string | null>(null);
+
+  useEffect(() => {
+    getProfile().then((p) => { setName(p.name); setAvatar(p.image ?? null); }).catch(() => {});
+  }, [profileOpen]);
 
   async function handleSignOut() {
     await authClient.signOut();
-    router.push("/login");
-    router.refresh();
+    router.push("/login"); router.refresh();
   }
 
   return (
@@ -24,13 +33,19 @@ export default function SettingsPage() {
       <div className="space-y-6 p-4 pt-6">
         <div className="flex items-center gap-2.5">
           <Logo size={32} />
-          <h1 className="text-lg font-bold tracking-tight">จดตัง</h1>
+          <h1 className="text-lg font-bold tracking-tight">{t("app.name")}</h1>
         </div>
 
-        <Card className="flex items-center gap-3">
-          <div className="flex h-12 w-12 items-center justify-center rounded-full bg-[var(--color-primary-soft)] text-lg font-bold text-[var(--color-primary)]">จ</div>
+        <Card className="flex cursor-pointer items-center gap-3" onClick={() => setProfileOpen(true)}>
+          {avatar?.startsWith("data:") ? (
+            <img src={avatar} alt="" className="h-12 w-12 rounded-full object-cover" />
+          ) : (
+            <div className="flex h-12 w-12 items-center justify-center rounded-full bg-[var(--color-primary-soft)] text-lg font-bold text-[var(--color-primary)]">
+              {(name || "?")[0]?.toUpperCase()}
+            </div>
+          )}
           <div className="flex-1">
-            <p className="text-sm font-medium">{t("settings.profile")}</p>
+            <p className="text-sm font-medium">{name}</p>
             <p className="text-xs text-[var(--color-text-secondary)]">{t("settings.loggedIn")}</p>
           </div>
         </Card>
@@ -69,6 +84,8 @@ export default function SettingsPage() {
           </button>
         </div>
       </div>
+
+      <ProfileSheet open={profileOpen} onClose={() => setProfileOpen(false)} currentName={name} currentAvatar={avatar} />
     </PageTransition>
   );
 }
