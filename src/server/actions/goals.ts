@@ -5,9 +5,22 @@ import { eq } from "drizzle-orm";
 import { requireUserId } from "@/server/session";
 import { revalidatePath } from "next/cache";
 
+const defaultGoals = [
+  { name: "เงินฉุกเฉิน", targetAmount: 50000, icon: "savings", color: "#10b981" },
+  { name: "ทะเลปีหน้า", targetAmount: 20000, icon: "travel", color: "#3b82f6" },
+];
+
 export async function getGoals() {
   const userId = await requireUserId();
-  return db.select().from(savingsGoals).where(eq(savingsGoals.userId, userId));
+  let result = await db.select().from(savingsGoals).where(eq(savingsGoals.userId, userId));
+
+  // Auto-seed if empty
+  if (result.length === 0) {
+    await db.insert(savingsGoals).values(defaultGoals.map((g) => ({ ...g, userId })));
+    result = await db.select().from(savingsGoals).where(eq(savingsGoals.userId, userId));
+  }
+
+  return result;
 }
 
 export async function createGoal(data: {

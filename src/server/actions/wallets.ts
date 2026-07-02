@@ -1,6 +1,6 @@
 "use server";
 import { db } from "@/server/db";
-import { wallets, categories } from "@/server/db/schema";
+import { wallets, categories, budgets, savingsGoals } from "@/server/db/schema";
 import { eq } from "drizzle-orm";
 import { requireUserId } from "@/server/session";
 import { revalidatePath } from "next/cache";
@@ -23,6 +23,11 @@ const defaultCategories = [
   { name: "ฟรีแลนซ์", nameEn: "Freelance", type: "income" as const, icon: "freelance", color: "#059669", sortOrder: 1 },
 ];
 
+const defaultGoals = [
+  { name: "เงินฉุกเฉิน", targetAmount: 50000, icon: "savings", color: "#10b981" },
+  { name: "ทะเลปีหน้า", targetAmount: 20000, icon: "travel", color: "#3b82f6" },
+];
+
 export async function getWallets() {
   const userId = await requireUserId();
   let result = await db.select().from(wallets).where(eq(wallets.userId, userId)).orderBy(wallets.sortOrder);
@@ -31,6 +36,24 @@ export async function getWallets() {
   if (result.length === 0) {
     await db.insert(wallets).values(defaultWallets.map((w) => ({ ...w, userId })));
     await db.insert(categories).values(defaultCategories.map((c) => ({ ...c, userId })));
+
+    // Create default budgets for expense categories
+    const expenseCats = await db.select().from(categories)
+      .where(eq(categories.userId, userId));
+    const budgetAmounts: Record<string, number> = {
+      food: 8000, transport: 3000, shopping: 5000,
+      entertainment: 2000, utilities: 2500, health: 2000,
+    };
+    const budgetValues = expenseCats
+      .filter((c) => c.type === "expense" && budgetAmounts[c.icon])
+      .map((c) => ({ userId, categoryId: c.id, amount: budgetAmounts[c.icon]! }));
+    if (budgetValues.length > 0) {
+      await db.insert(budgets).values(budgetValues);
+    }
+
+    // Create default savings goals
+    await db.insert(savingsGoals).values(defaultGoals.map((g) => ({ ...g, userId })));
+
     result = await db.select().from(wallets).where(eq(wallets.userId, userId)).orderBy(wallets.sortOrder);
   }
 
