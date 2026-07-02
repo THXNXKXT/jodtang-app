@@ -32,9 +32,9 @@ export function BottomNav() {
         transition={{ type: "spring", stiffness: 400, damping: 17 }}
         onClick={() => setAddOpen(true)}
         aria-label={t("nav.add")}
-        className="flex h-14 w-14 -translate-y-3 items-center justify-center rounded-2xl bg-gradient-to-br from-[var(--color-primary)] to-[var(--color-primary)] text-white shadow-lg shadow-[var(--color-primary)]/30 ring-4 ring-[var(--color-surface)]"
+        className="flex h-14 w-14 -translate-y-5 items-center justify-center rounded-full bg-gradient-to-br from-[var(--color-primary)] to-[#1d4ed8] text-white shadow-xl shadow-[var(--color-primary)]/40 ring-[3px] ring-[var(--color-surface)]"
       >
-        <Plus size={24} />
+        <Plus size={26} strokeWidth={2.5} />
       </motion.button>
       {navItems.slice(2).map((item) => (
         <NavButton key={item.href} item={item} active={pathname === item.href} onClick={() => router.push(item.href)} t={t} />
