@@ -74,10 +74,11 @@ export default function SettingsPage() {
 
         <div>
           <p className="mb-2 text-xs font-medium uppercase text-[var(--color-text-muted)]">{t("settings.wallets")}</p>
-        <LineSection />
-
           <WalletList />
         </div>
+        <LineSection />
+
+
 
         <div className="space-y-2">
           <button className="flex w-full items-center gap-3 rounded-xl border border-[var(--color-border)] px-4 py-3 text-sm">
