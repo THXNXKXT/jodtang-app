@@ -61,11 +61,11 @@ export default function LoginPage() {
             </div>
             {error && <p className="text-sm text-[var(--color-expense)]">{error}</p>}
             <button type="submit" disabled={loading} className="flex w-full items-center justify-center gap-2 rounded-xl bg-[var(--color-primary)] py-3 text-sm font-semibold text-white disabled:opacity-50">
-              {loading ? "..." : t("auth.signIn")}
+              {loading ? "..." : t("auth.loginBtn")}
             </button>
           </form>
           <p className="mt-6 text-center text-sm text-[var(--color-text-secondary)]">
-            {t("auth.noAccount")} <a href="/signup" className="font-medium text-[var(--color-primary)]">{t("auth.signUp")}</a>
+            {t("auth.noAccount")} <a href="/signup" className="font-medium text-[var(--color-primary)]">{t("auth.signupBtn")}</a>
           </p>
         </motion.div>
       </div>
