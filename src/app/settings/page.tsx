@@ -37,12 +37,12 @@ export default function SettingsPage() {
 
         <div>
           <p className="mb-2 flex items-center gap-2 text-xs font-medium uppercase text-[var(--color-text-muted)]">
-            <Globe size={14} /> ภาษา
+            <Globe size={14} /> {t("settings.language")}
           </p>
           <div className="flex gap-2">
             {(["th", "en"] as Locale[]).map((l) => (
               <button key={l} onClick={() => setLocale(l)} className={`flex-1 rounded-xl border px-4 py-2.5 text-sm ${locale === l ? "border-[var(--color-primary)] text-[var(--color-primary)]" : "border-[var(--color-border)] text-[var(--color-text-secondary)]"}`}>
-                {l === "th" ? "ไทย" : "English"}
+                {l === "th" ? t("settings.thai") : t("settings.english")}
               </button>
             ))}
           </div>
@@ -50,7 +50,7 @@ export default function SettingsPage() {
 
         <div>
           <p className="mb-2 flex items-center gap-2 text-xs font-medium uppercase text-[var(--color-text-muted)]">
-            <Palette size={14} /> ธีม
+            <Palette size={14} /> {t("settings.theme")}
           </p>
           <ThemeToggle />
         </div>
