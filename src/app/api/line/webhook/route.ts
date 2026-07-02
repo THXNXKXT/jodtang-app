@@ -3,7 +3,7 @@ import { db } from "@/server/db";
 import { users } from "@/server/db/schema";
 import { eq, like } from "drizzle-orm";
 import { env } from "@/lib/env";
-import { isExpired } from "@/server/actions/line";
+import { isExpired } from "@/lib/budget-utils";
 
 export async function POST(req: NextRequest) {
   const body = await req.json();

@@ -3,13 +3,16 @@ import { useState, useEffect } from "react";
 import { Card } from "@/components/ui/card";
 import { useI18n } from "@/i18n/config";
 import { generateLinkCode, updateNotifyFreq, getLineSettings } from "@/server/actions/line";
-import { Bell, Copy, Check, MessageCircle, ExternalLink } from "lucide-react";
+import { CODE_EXPIRY_MS } from "@/lib/budget-utils";
+import { Bell, Copy, Check, MessageCircle, ExternalLink, Clock } from "lucide-react";
 
 export function LineSection() {
   const { t } = useI18n();
   const [lineId, setLineId] = useState<string | null>(null);
   const [freq, setFreq] = useState<"daily" | "monthly" | "off">("off");
   const [code, setCode] = useState<string | null>(null);
+  const [codeExpiry, setCodeExpiry] = useState<number>(0);
+  const [remaining, setRemaining] = useState(0);
   const [copied, setCopied] = useState(false);
 
   useEffect(() => {
@@ -18,11 +21,32 @@ export function LineSection() {
     }).catch(() => {});
   }, []);
 
+  // Countdown
+  useEffect(() => {
+    if (!codeExpiry) return;
+    const tick = () => {
+      const left = codeExpiry - Date.now();
+      if (left <= 0) {
+        setCode(null);
+        setCodeExpiry(0);
+        setRemaining(0);
+        return;
+      }
+      setRemaining(left);
+    };
+    tick();
+    const id = setInterval(tick, 1000);
+    return () => clearInterval(id);
+  }, [codeExpiry]);
+
   const connected = lineId && !lineId.startsWith("pending:");
+  const mins = Math.floor(remaining / 60000);
+  const secs = Math.floor((remaining % 60000) / 1000);
 
   async function handleConnect() {
     const c = await generateLinkCode();
     setCode(c);
+    setCodeExpiry(Date.now() + CODE_EXPIRY_MS);
     setLineId(`pending:${c}`);
     navigator.clipboard.writeText(c);
     setCopied(true);
@@ -104,7 +128,13 @@ export function LineSection() {
               <span>{copied ? t("settings.copied") : t("settings.copy")}</span>
             </button>
           </div>
-          <button onClick={() => setCode(null)} className="text-xs text-[var(--color-text-secondary)] underline">
+          <div className="flex items-center justify-center gap-1.5 text-xs text-[var(--color-text-muted)]">
+            <Clock size={12} />
+            <span className={remaining < 60000 ? "text-[var(--color-expense)]" : ""}>
+              {t("settings.expiresIn")} {mins}:{secs.toString().padStart(2, "0")}
+            </span>
+          </div>
+          <button onClick={() => { setCode(null); setCodeExpiry(0); }} className="text-xs text-[var(--color-text-secondary)] underline">
             {t("settings.cancel")}
           </button>
         </Card>

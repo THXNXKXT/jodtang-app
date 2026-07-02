@@ -81,7 +81,8 @@
     "cancel": "ยกเลิก",
     "addFriend": "เพิ่มเพื่อน LINE",
     "copy": "คัดลอกรหัส",
-    "copied": "คัดลอกแล้ว"
+    "copied": "คัดลอกแล้ว",
+    "expiresIn": "หมดอายุใน"
   },
   "auth": {
     "loginTitle": "จดตัง",

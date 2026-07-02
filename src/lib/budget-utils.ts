@@ -20,3 +20,16 @@ export function getMonthLabel(year?: number, month?: number): string {
   const m = month ?? d.getMonth();
   return new Date(y, m).toLocaleDateString("th-TH", { month: "long", year: "numeric" });
 }
+
+export const CODE_EXPIRY_MS = 5 * 60 * 1000;
+
+export function isExpired(pendingValue: string): boolean {
+  const ts = Number(pendingValue.split(":")[2] ?? 0);
+  return Date.now() - ts > CODE_EXPIRY_MS;
+}
+
+export function getCodeExpiryMs(pendingValue: string): number | null {
+  const ts = Number(pendingValue.split(":")[2] ?? 0);
+  if (!ts) return null;
+  return ts + CODE_EXPIRY_MS;
+}

@@ -81,7 +81,8 @@
     "cancel": "Cancel",
     "addFriend": "Add LINE Friend",
     "copy": "Copy code",
-    "copied": "Copied"
+    "copied": "Copied",
+    "expiresIn": "Expires in"
   },
   "auth": {
     "loginTitle": "Jodtang",
