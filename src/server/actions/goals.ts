@@ -1,52 +1,98 @@
 "use server";
+import { z } from "zod";
 import { db } from "@/server/db";
 import { savingsGoals, savingsContributions } from "@/server/db/schema";
-import { eq } from "drizzle-orm";
+import { eq, and, sql } from "drizzle-orm";
 import { requireUserId } from "@/server/session";
 import { revalidatePath } from "next/cache";
-
-const defaultGoals = [
-  { name: "เงินฉุกเฉิน", targetAmount: 50000, icon: "savings", color: "#10b981" },
-  { name: "ทะเลปีหน้า", targetAmount: 20000, icon: "travel", color: "#3b82f6" },
-];
+import {
+  createGoalSchema,
+  contributeSchema,
+  type ActionResult,
+} from "@/server/validations/schemas";
 
 export async function getGoals() {
   const userId = await requireUserId();
-  let result = await db.select().from(savingsGoals).where(eq(savingsGoals.userId, userId));
+  return db.select().from(savingsGoals).where(eq(savingsGoals.userId, userId));
+}
 
-  // Auto-seed if empty
-  if (result.length === 0) {
-    await db.insert(savingsGoals).values(defaultGoals.map((g) => ({ ...g, userId })));
-    result = await db.select().from(savingsGoals).where(eq(savingsGoals.userId, userId));
+export async function createGoal(
+  input: z.infer<typeof createGoalSchema>,
+): Promise<ActionResult> {
+  const userId = await requireUserId();
+  try {
+    const data = createGoalSchema.parse(input);
+    const [goal] = await db
+      .insert(savingsGoals)
+      .values({
+        userId,
+        name: data.name,
+        targetAmount: data.targetAmount,
+        icon: data.icon,
+        color: data.color,
+        deadline: data.deadline ? new Date(data.deadline) : null,
+      })
+      .returning();
+    revalidatePath("/");
+    return { success: true, data: goal };
+  } catch (error) {
+    return {
+      success: false,
+      error: error instanceof Error ? error.message : "Failed to create goal",
+    };
   }
-
-  return result;
 }
 
-export async function createGoal(data: {
-  name: string; targetAmount: number; icon: string; color: string; deadline?: string;
-}) {
+export async function contributeToGoal(input: {
+  goalId: number;
+  amount: number;
+}): Promise<ActionResult> {
   const userId = await requireUserId();
-  await db.insert(savingsGoals).values({
-    ...data, userId,
-    deadline: data.deadline ? new Date(data.deadline) : null,
-  });
-  revalidatePath("/");
-}
+  try {
+    const { goalId, amount } = contributeSchema.parse(input);
 
-export async function contributeToGoal(goalId: number, amount: number) {
-  const userId = await requireUserId();
-  await db.insert(savingsContributions).values({ goalId, userId, amount });
-  const [goal] = await db.select().from(savingsGoals).where(eq(savingsGoals.id, goalId));
-  if (goal) {
-    await db.update(savingsGoals)
-      .set({ currentAmount: goal.currentAmount + amount })
+    // Verify the goal belongs to the user before mutating
+    const [goal] = await db
+      .select()
+      .from(savingsGoals)
+      .where(and(eq(savingsGoals.id, goalId), eq(savingsGoals.userId, userId)));
+    if (!goal) {
+      return { success: false, error: "Goal not found" };
+    }
+
+    await db.insert(savingsContributions).values({ goalId, userId, amount });
+    await db
+      .update(savingsGoals)
+      .set({ currentAmount: sql`${savingsGoals.currentAmount} + ${amount}` })
       .where(eq(savingsGoals.id, goalId));
+
+    revalidatePath("/");
+    return { success: true, data: { goalId, amount } };
+  } catch (error) {
+    return {
+      success: false,
+      error:
+        error instanceof Error ? error.message : "Failed to contribute to goal",
+    };
   }
-  revalidatePath("/");
 }
 
-export async function deleteGoal(id: number) {
-  await db.delete(savingsGoals).where(eq(savingsGoals.id, id));
-  revalidatePath("/");
+export async function deleteGoal(id: number): Promise<ActionResult> {
+  const userId = await requireUserId();
+  try {
+    const [deleted] = await db
+      .delete(savingsGoals)
+      .where(and(eq(savingsGoals.id, id), eq(savingsGoals.userId, userId)))
+      .returning();
+    if (!deleted) {
+      return { success: false, error: "Goal not found" };
+    }
+    revalidatePath("/");
+    return { success: true, data: deleted };
+  } catch (error) {
+    return {
+      success: false,
+      error: error instanceof Error ? error.message : "Failed to delete goal",
+    };
+  }
 }

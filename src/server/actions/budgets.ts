@@ -1,46 +1,82 @@
 "use server";
+import { z } from "zod";
 import { db } from "@/server/db";
-import { budgets, categories } from "@/server/db/schema";
-import { eq } from "drizzle-orm";
+import { budgets } from "@/server/db/schema";
+import { eq, and } from "drizzle-orm";
 import { requireUserId } from "@/server/session";
 import { revalidatePath } from "next/cache";
-
-const defaultBudgetAmounts: Record<string, number> = {
-  food: 8000, transport: 3000, shopping: 5000,
-  entertainment: 2000, utilities: 2500, health: 2000,
-};
+import {
+  createBudgetSchema,
+  updateBudgetSchema,
+  type ActionResult,
+} from "@/server/validations/schemas";
 
 export async function getBudgets() {
   const userId = await requireUserId();
-  let result = await db.select().from(budgets).where(eq(budgets.userId, userId));
-
-  // Auto-seed if user has categories but no budgets
-  if (result.length === 0) {
-    const cats = await db.select().from(categories).where(eq(categories.userId, userId));
-    const budgetValues = cats
-      .filter((c) => c.type === "expense" && defaultBudgetAmounts[c.icon])
-      .map((c) => ({ userId, categoryId: c.id, amount: defaultBudgetAmounts[c.icon]! }));
-    if (budgetValues.length > 0) {
-      await db.insert(budgets).values(budgetValues);
-      result = await db.select().from(budgets).where(eq(budgets.userId, userId));
-    }
-  }
-
-  return result;
+  return db.select().from(budgets).where(eq(budgets.userId, userId));
 }
 
-export async function createBudget(data: { categoryId: number; amount: number }) {
+export async function createBudget(
+  input: z.infer<typeof createBudgetSchema>,
+): Promise<ActionResult> {
   const userId = await requireUserId();
-  await db.insert(budgets).values({ ...data, userId });
-  revalidatePath("/");
+  try {
+    const data = createBudgetSchema.parse(input);
+    const [budget] = await db
+      .insert(budgets)
+      .values({ ...data, userId })
+      .returning();
+    revalidatePath("/");
+    return { success: true, data: budget };
+  } catch (error) {
+    return {
+      success: false,
+      error: error instanceof Error ? error.message : "Failed to create budget",
+    };
+  }
 }
 
-export async function updateBudget(id: number, data: Partial<{ amount: number; active: boolean }>) {
-  await db.update(budgets).set(data).where(eq(budgets.id, id));
-  revalidatePath("/");
+export async function updateBudget(
+  id: number,
+  input: z.infer<typeof updateBudgetSchema>,
+): Promise<ActionResult> {
+  const userId = await requireUserId();
+  try {
+    const data = updateBudgetSchema.parse(input);
+    const [updated] = await db
+      .update(budgets)
+      .set(data)
+      .where(and(eq(budgets.id, id), eq(budgets.userId, userId)))
+      .returning();
+    if (!updated) {
+      return { success: false, error: "Budget not found" };
+    }
+    revalidatePath("/");
+    return { success: true, data: updated };
+  } catch (error) {
+    return {
+      success: false,
+      error: error instanceof Error ? error.message : "Failed to update budget",
+    };
+  }
 }
 
-export async function deleteBudget(id: number) {
-  await db.delete(budgets).where(eq(budgets.id, id));
-  revalidatePath("/");
+export async function deleteBudget(id: number): Promise<ActionResult> {
+  const userId = await requireUserId();
+  try {
+    const [deleted] = await db
+      .delete(budgets)
+      .where(and(eq(budgets.id, id), eq(budgets.userId, userId)))
+      .returning();
+    if (!deleted) {
+      return { success: false, error: "Budget not found" };
+    }
+    revalidatePath("/");
+    return { success: true, data: deleted };
+  } catch (error) {
+    return {
+      success: false,
+      error: error instanceof Error ? error.message : "Failed to delete budget",
+    };
+  }
 }
