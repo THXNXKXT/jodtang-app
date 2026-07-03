@@ -23,7 +23,10 @@
     "title": "รายการทั้งหมด",
     "search": "ค้นหา...",
     "all": "ทั้งหมด",
-    "noResults": "ไม่พบรายการ"
+    "noResults": "ไม่พบรายการ",
+    "date": "วันที่",
+    "time": "เวลา",
+    "delete": "ลบรายการ"
   },
   "add": {
     "title": "เพิ่มรายการ",
@@ -96,7 +99,7 @@
     "signupTitle": "สมัครสมาชิก",
     "signupSubtitle": "สร้างบัญชีจดตังของคุณ",
     "email": "อีเมล",
-    "password": "รหัสผ่าน",
+    "password": "***",
     "name": "ชื่อ",
     "emailPlaceholder": "you@example.com",
     "namePlaceholder": "ชื่อของคุณ",

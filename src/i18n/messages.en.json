@@ -23,7 +23,10 @@
     "title": "All Transactions",
     "search": "Search...",
     "all": "All",
-    "noResults": "No transactions found"
+    "noResults": "No transactions found",
+    "date": "Date",
+    "time": "Time",
+    "delete": "Delete"
   },
   "add": {
     "title": "Add Transaction",
@@ -96,7 +99,7 @@
     "signupTitle": "Sign Up",
     "signupSubtitle": "Create your Jodtang account",
     "email": "Email",
-    "password": "Password",
+    "password": "***",
     "name": "Name",
     "emailPlaceholder": "you@example.com",
     "namePlaceholder": "Your name",
