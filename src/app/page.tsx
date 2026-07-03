@@ -1,11 +1,21 @@
 "use client";
+
+import dynamic from "next/dynamic";
 import { PageTransition } from "@/components/layout/page-transition";
 import { BalanceCard } from "@/components/home/balance-card";
-import { SpendingTrendChart } from "@/components/home/spending-trend-chart";
-import { CategoryBreakdownChart } from "@/components/home/category-breakdown-chart";
 import { BudgetMiniCards } from "@/components/home/budget-mini-cards";
 import { RecentTransactions } from "@/components/home/recent-transactions";
 import { Logo } from "@/components/svg/logo";
+
+// ponytail: defer recharts (2MB) — splits chart chunk out of initial paint
+const SpendingTrendChart = dynamic(
+  () => import("@/components/home/spending-trend-chart").then((m) => m.SpendingTrendChart),
+  { loading: () => <div className="h-28 animate-pulse rounded-xl bg-[var(--color-surface)]" />, ssr: false },
+);
+const CategoryBreakdownChart = dynamic(
+  () => import("@/components/home/category-breakdown-chart").then((m) => m.CategoryBreakdownChart),
+  { loading: () => <div className="h-32 animate-pulse rounded-xl bg-[var(--color-surface)]" />, ssr: false },
+);
 
 export default function HomePage() {
   return (
