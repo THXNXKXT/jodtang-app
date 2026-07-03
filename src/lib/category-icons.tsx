@@ -1,13 +1,13 @@
 import {
-  Utensils, Car, ShoppingBag, Film, Zap, HeartPulse, GraduationCap, Plane, Gift, Dumbbell, Phone, Droplets,
-  CircleMinus, Briefcase, Wallet, TrendingUp, RotateCcw, Home, Coffee, PawPrint, Wrench, Store, Banknote, Landmark, Smartphone, PiggyBank,
+  Utensils, Car, ShoppingBag, Clapperboard, Zap, HeartPulse, GraduationCap, Plane, Gift, Dumbbell, Phone, Droplets,
+  HelpCircle, CirclePlus, Briefcase, Wallet, TrendingUp, RotateCcw, Home, Coffee, PawPrint, Wrench, Store, Banknote, Landmark, Smartphone, PiggyBank, Trophy,
 } from "lucide-react";
 
 export const CATEGORY_ICONS: Record<string, typeof Utensils> = {
   food: Utensils,
   transport: Car,
   shopping: ShoppingBag,
-  entertainment: Film,
+  entertainment: Clapperboard,
   utilities: Zap,
   health: HeartPulse,
   education: GraduationCap,
@@ -16,12 +16,13 @@ export const CATEGORY_ICONS: Record<string, typeof Utensils> = {
   fitness: Dumbbell,
   phone: Phone,
   water: Droplets,
-  other_expense: CircleMinus,
+  other_expense: HelpCircle,
   salary: Briefcase,
+  bonus: Trophy,
   freelance: Wallet,
   investment: TrendingUp,
   gift_income: Gift,
-  other_income: CircleMinus,
+  other_income: CirclePlus,
   refund: RotateCcw,
   rent: Home,
   coffee: Coffee,

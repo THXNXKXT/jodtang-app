@@ -25,7 +25,7 @@ export const defaultCategories = [
   { name: "ของขวัญ", nameEn: "Gift", type: "income" as const, icon: "gift", color: "#ec4899", sortOrder: 2 },
   { name: "คืนเงิน", nameEn: "Refund", type: "income" as const, icon: "refund", color: "#14b8a6", sortOrder: 3 },
   { name: "ลงทุน", nameEn: "Investment", type: "income" as const, icon: "investment", color: "#f59e0b", sortOrder: 4 },
-  { name: "โบนัส", nameEn: "Bonus", type: "income" as const, icon: "salary", color: "#16a34a", sortOrder: 5 },
+  { name: "โบนัส", nameEn: "Bonus", type: "income" as const, icon: "bonus", color: "#16a34a", sortOrder: 5 },
   { name: "ขายของ", nameEn: "Selling", type: "income" as const, icon: "selling", color: "#0d9488", sortOrder: 6 },
   { name: "อื่นๆ", nameEn: "Other", type: "income" as const, icon: "other_income", color: "#6b7280", sortOrder: 7 },
 ];
