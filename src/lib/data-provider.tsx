@@ -3,6 +3,7 @@ import { createContext, useContext, useEffect, useState, useCallback, type React
 import { usePathname } from "next/navigation";
 import type { Transaction, Wallet, Category, Budget, SavingsGoal } from "@/types";
 
+
 interface AppData {
   wallets: Wallet[];
   categories: Category[];
@@ -18,6 +19,7 @@ const DataContext = createContext<AppData>({
   loading: true, reload: async () => {},
 });
 
+// ponytail: raw DB types match schema column types
 type DbWallet = { id: number; name: string; type: string; icon: string; color: string; openingBalance: number; sortOrder: number };
 type DbCategory = { id: number; name: string; nameEn: string; type: string; icon: string; color: string; sortOrder: number };
 type DbTransaction = { id: number; type: string; amount: number; categoryId: number | null; walletId: number | null; toWalletId: number | null; date: Date; note: string | null };
@@ -51,23 +53,14 @@ export function DataProvider({ children }: { children: ReactNode }) {
 
   const load = useCallback(async () => {
     try {
-      const [{ getWallets }, { getCategories }, { getTransactions }, { getBudgets }, { getGoals }] =
-        await Promise.all([
-          import("@/server/actions/wallets"),
-          import("@/server/actions/categories"),
-          import("@/server/actions/transactions"),
-          import("@/server/actions/budgets"),
-          import("@/server/actions/goals"),
-        ]);
-      const [wallets, categories, transactions, budgets, goals] = await Promise.all([
-        getWallets(), getCategories(), getTransactions(), getBudgets(), getGoals(),
-      ]);
+      const { getAppData } = await import("@/server/actions/app-data");
+      const raw = await getAppData();
       setData({
-        wallets: (wallets as DbWallet[]).map(mapWallet),
-        categories: (categories as DbCategory[]).map(mapCategory),
-        transactions: (transactions as DbTransaction[]).map(mapTransaction),
-        budgets: (budgets as DbBudget[]).map(mapBudget),
-        goals: (goals as DbGoal[]).map(mapGoal),
+        wallets: (raw.wallets as DbWallet[]).map(mapWallet),
+        categories: (raw.categories as DbCategory[]).map(mapCategory),
+        transactions: (raw.transactions as DbTransaction[]).map(mapTransaction),
+        budgets: (raw.budgets as DbBudget[]).map(mapBudget),
+        goals: (raw.goals as DbGoal[]).map(mapGoal),
         loading: false,
       });
     } catch {
@@ -79,7 +72,6 @@ export function DataProvider({ children }: { children: ReactNode }) {
   const isAuthRoute = pathname === "/login" || pathname === "/signup";
   useEffect(() => { if (!isAuthRoute) load(); }, [load, isAuthRoute]);
 
-  // Reload on route change (handles post-login data fetch)
   useEffect(() => { if (pathname === "/") load(); }, [pathname, load]);
   return <DataContext.Provider value={{ ...data, reload: load }}>{children}</DataContext.Provider>;
 }
@@ -87,3 +79,4 @@ export function DataProvider({ children }: { children: ReactNode }) {
 export function useAppData() {
   return useContext(DataContext);
 }
+
