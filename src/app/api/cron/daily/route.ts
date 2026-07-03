@@ -9,9 +9,12 @@ export async function GET(req: NextRequest) {
   if (req.headers.get("authorization") !== `Bearer ${env.CRON_SECRET}`)
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
-  const now = new Date();
-  const dayStart = new Date(now.getFullYear(), now.getMonth(), now.getDate() - 1);
-  const dayEnd = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+  // ponytail: ICT=UTC+7, Vercel runs in UTC — shift before extracting date parts
+  const ICT = 7 * 60 * 60 * 1000;
+  const ict = new Date(Date.now() + ICT);
+  const y = ict.getUTCFullYear(), m = ict.getUTCMonth(), d = ict.getUTCDate() - 1;
+  const dayStart = new Date(Date.UTC(y, m, d) - ICT);
+  const dayEnd = new Date(Date.UTC(y, m, d + 1) - ICT);
 
   const dailyUsers = await db.select().from(users).where(eq(users.notifyFreq, "daily"));
   let sent = 0;
@@ -33,7 +36,7 @@ export async function GET(req: NextRequest) {
     const income = incTxns.reduce((s, t) => s + Number(t.amount), 0);
     const expense = expTxns.reduce((s, t) => s + Number(t.amount), 0);
     const net = income - expense;
-    const dateStr = dayStart.toLocaleDateString("th-TH", { day: "numeric", month: "short" });
+    const dateStr = new Intl.DateTimeFormat("th-TH", { day: "numeric", month: "short" }).format(new Date(Date.UTC(y, m, d)));
 
     function row(label: string, amount: string, color: string, bold = false): Record<string, unknown> {
       return {
