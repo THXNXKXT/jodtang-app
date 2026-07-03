@@ -35,7 +35,9 @@
     "wallet": "Wallet",
     "note": "Note",
     "save": "Save",
-    "saving": "Saving..."
+    "saving": "Saving...",
+    "fromWallet": "From",
+    "toWallet": "To"
   },
   "reports": {
     "title": "Reports",

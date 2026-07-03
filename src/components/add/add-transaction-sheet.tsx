@@ -23,23 +23,27 @@ export function AddTransactionSheet({ open, onClose }: Props) {
   const [amount, setAmount] = useState("");
   const [categoryId, setCategoryId] = useState("");
   const [walletId, setWalletId] = useState("");
+  const [toWalletId, setToWalletId] = useState("");
   const [note, setNote] = useState("");
   const [saving, setSaving] = useState(false);
 
   const cats = useMemo(() => allCats.filter((c) => c.type === type), [allCats, type]);
 
   useEffect(() => { if (wallets.length > 0 && !walletId) setWalletId(wallets[0]!.id); }, [wallets, walletId]);
+  useEffect(() => { if (wallets.length > 1 && !toWalletId) setToWalletId(wallets[1]!.id); }, [wallets, toWalletId]);
   useEffect(() => { if (cats.length > 0 && !categoryId) setCategoryId(cats[0]!.id); }, [cats, categoryId]);
 
   async function handleSave() {
     const parsed = parseFloat(amount);
     if (!Number.isFinite(parsed) || parsed <= 0 || !walletId) return;
+    if (type === "transfer" && (!toWalletId || toWalletId === walletId)) return;
     setSaving(true);
     try {
       await createTransaction({
         type, amount: parsed,
         categoryId: type === "transfer" ? undefined : Number(categoryId),
         walletId: Number(walletId),
+        toWalletId: type === "transfer" ? Number(toWalletId) : undefined,
         note: note.trim() || t("add." + type),
         date: new Date().toISOString(),
       });
@@ -55,6 +59,7 @@ export function AddTransactionSheet({ open, onClose }: Props) {
       <div className="space-y-5 p-6 pb-8">
         <SegmentedControl segments={SEGS.map((s) => ({ value: s.value, label: t(s.labelKey) }))} value={type}
           onChange={(v) => { setType(v as TransactionType); setCategoryId(""); }} />
+
         <div className="text-center py-2">
           <div className="flex items-center justify-center gap-1">
             <span className="text-2xl text-[var(--color-text-secondary)]">฿</span>
@@ -63,6 +68,7 @@ export function AddTransactionSheet({ open, onClose }: Props) {
               className="w-44 bg-transparent text-center text-4xl font-bold text-[var(--color-text-primary)] outline-none placeholder:text-[var(--color-text-muted)]" />
           </div>
         </div>
+
         {type !== "transfer" && (
           <div>
             <p className="mb-2 text-xs text-[var(--color-text-secondary)]">{t("add.category")}</p>
@@ -84,8 +90,9 @@ export function AddTransactionSheet({ open, onClose }: Props) {
             </div>
           </div>
         )}
+
         <div>
-          <p className="mb-2 text-xs text-[var(--color-text-secondary)]">{t("add.wallet")}</p>
+          <p className="mb-2 text-xs text-[var(--color-text-secondary)]">{type === "transfer" ? t("add.fromWallet") : t("add.wallet")}</p>
           <div className="flex flex-wrap gap-2">
             {wallets.map((w) => {
               const Icon = CATEGORY_ICONS[w.icon];
@@ -99,6 +106,25 @@ export function AddTransactionSheet({ open, onClose }: Props) {
             })}
           </div>
         </div>
+
+        {type === "transfer" && (
+          <div>
+            <p className="mb-2 text-xs text-[var(--color-text-secondary)]">{t("add.toWallet")}</p>
+            <div className="flex flex-wrap gap-2">
+              {wallets.filter((w) => w.id !== walletId).map((w) => {
+                const Icon = CATEGORY_ICONS[w.icon];
+                return (
+                  <button key={w.id} type="button" onClick={() => setToWalletId(w.id)}
+                    className={cn("flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-sm",
+                      toWalletId === w.id ? "border-[var(--color-primary)] bg-[var(--color-surface-hover)]" : "border-[var(--color-border)]")}>
+                    {Icon && <Icon size={14} />} {w.name}
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+        )}
+
         <input type="text" value={note} onChange={(e) => setNote(e.target.value)} placeholder={t("add.note")}
           className="w-full rounded-xl border border-[var(--color-border)] bg-[var(--color-bg)] px-4 py-3 text-sm outline-none placeholder:text-[var(--color-text-muted)]" />
         <button type="button" onClick={handleSave} disabled={saving}

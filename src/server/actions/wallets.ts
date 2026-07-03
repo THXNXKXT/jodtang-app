@@ -25,8 +25,14 @@ const defaultCategories = [
   { name: "บันเทิง", nameEn: "Entertainment", type: "expense" as const, icon: "entertainment", color: "#8b5cf6", sortOrder: 3 },
   { name: "สาธารณูปโภค", nameEn: "Utilities", type: "expense" as const, icon: "utilities", color: "#eab308", sortOrder: 4 },
   { name: "สุขภาพ", nameEn: "Health", type: "expense" as const, icon: "health", color: "#ef4444", sortOrder: 5 },
+  { name: "โทรศัพท์", nameEn: "Phone", type: "expense" as const, icon: "phone", color: "#6366f1", sortOrder: 6 },
+  { name: "การศึกษา", nameEn: "Education", type: "expense" as const, icon: "education", color: "#0ea5e9", sortOrder: 7 },
+  { name: "ของขวัญ", nameEn: "Gift", type: "expense" as const, icon: "gift", color: "#d946ef", sortOrder: 8 },
   { name: "เงินเดือน", nameEn: "Salary", type: "income" as const, icon: "salary", color: "#10b981", sortOrder: 0 },
   { name: "ฟรีแลนซ์", nameEn: "Freelance", type: "income" as const, icon: "freelance", color: "#059669", sortOrder: 1 },
+  { name: "ของขวัญ", nameEn: "Gift", type: "income" as const, icon: "gift", color: "#ec4899", sortOrder: 2 },
+  { name: "คืนเงิน", nameEn: "Refund", type: "income" as const, icon: "refund", color: "#14b8a6", sortOrder: 3 },
+  { name: "ลงทุน", nameEn: "Investment", type: "income" as const, icon: "investment", color: "#f59e0b", sortOrder: 4 },
 ];
 
 export async function getWallets() {

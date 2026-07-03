@@ -18,10 +18,19 @@ export function WalletList() {
   };
 
   function getWalletBalance(walletId: string, opening: number) {
-    const walletTxns = transactions.filter((t) => t.walletId === walletId);
-    const income = walletTxns.filter((t) => t.type === "income").reduce((s, t) => s + t.amount, 0);
-    const expense = walletTxns.filter((t) => t.type === "expense").reduce((s, t) => s + t.amount, 0);
-    return opening + income - expense;
+    let balance = opening;
+    for (const tx of transactions) {
+      if (tx.walletId === walletId) {
+        if (tx.type === "income") balance += tx.amount;
+        else if (tx.type === "expense") balance -= tx.amount;
+        else if (tx.type === "transfer") balance -= tx.amount; // source wallet
+      }
+      // ponytail: toWalletId stored on transaction, mapped in data-provider
+      if (tx.toWalletId === walletId && tx.type === "transfer") {
+        balance += tx.amount; // destination wallet
+      }
+    }
+    return balance;
   }
 
   return (

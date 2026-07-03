@@ -20,7 +20,7 @@ const DataContext = createContext<AppData>({
 
 type DbWallet = { id: number; name: string; type: string; icon: string; color: string; openingBalance: number; sortOrder: number };
 type DbCategory = { id: number; name: string; nameEn: string; type: string; icon: string; color: string; sortOrder: number };
-type DbTransaction = { id: number; type: string; amount: number; categoryId: number | null; walletId: number | null; date: Date; note: string | null };
+type DbTransaction = { id: number; type: string; amount: number; categoryId: number | null; walletId: number | null; toWalletId: number | null; date: Date; note: string | null };
 type DbBudget = { id: number; categoryId: number; amount: number; active: boolean };
 type DbGoal = { id: number; name: string; targetAmount: number; currentAmount: number; icon: string; color: string };
 
@@ -35,7 +35,7 @@ function mapTransaction(t: DbTransaction): Transaction {
     categoryId: t.categoryId != null ? String(t.categoryId) : "",
     walletId: t.walletId != null ? String(t.walletId) : "",
     date: t.date instanceof Date ? t.date.toISOString() : String(t.date),
-    note: t.note ?? "", tags: [] };
+    note: t.note ?? "", tags: [], toWalletId: t.toWalletId != null ? String(t.toWalletId) : undefined };
 }
 function mapBudget(b: DbBudget): Budget {
   return { id: String(b.id), categoryId: String(b.categoryId), amount: b.amount, period: "monthly" as const, active: b.active };
