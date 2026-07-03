@@ -87,7 +87,7 @@ export function CategoryBreakdownChart() {
           </ResponsiveContainer>
         </div>
 
-        <ul className="min-w-0 flex-1 space-y-1.5">
+        <ul className="min-w-0 flex-1 grid grid-cols-2 gap-x-3 gap-y-1.5">
           {data.map((slice) => {
             const Icon = CATEGORY_ICONS[slice.icon ?? "other_expense"];
             return (
