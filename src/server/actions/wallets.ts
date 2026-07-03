@@ -18,7 +18,7 @@ const defaultWallets = [
   { name: "เงินออม", type: "savings" as const, icon: "savings", color: "#a855f7", openingBalance: 0, sortOrder: 3 },
 ];
 
-const defaultCategories = [
+export const defaultCategories = [
   { name: "อาหาร", nameEn: "Food", type: "expense" as const, icon: "food", color: "#f97316", sortOrder: 0 },
   { name: "เดินทาง", nameEn: "Transport", type: "expense" as const, icon: "transport", color: "#3b82f6", sortOrder: 1 },
   { name: "ช้อปปิ้ง", nameEn: "Shopping", type: "expense" as const, icon: "shopping", color: "#ec4899", sortOrder: 2 },
