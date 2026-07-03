@@ -27,6 +27,7 @@ export function TransactionItem({ transaction }: { transaction: Transaction }) {
   const timeStr = d.toLocaleTimeString(locale === "th" ? "th-TH" : "en-GB", { hour: "2-digit", minute: "2-digit" });
 
   async function handleDelete() {
+    if (!confirm(locale === "th" ? "ลบรายการนี้?" : "Delete this transaction?")) return;
     setDeleting(true);
     await deleteTransaction(Number(transaction.id));
     await reload();
