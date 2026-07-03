@@ -25,8 +25,8 @@ export default function SignupPage() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ name, email, password }),
       }).then(r => r.json());
-    if (!res.token && !res.user) {
-      setError(t("auth.signupError"));
+    if (res.error || (!res.token && !res.user)) {
+      setError(res.error?.message || res.error || t("auth.signupError"));
       setLoading(false);
     } else {
       window.location.href = "/";

@@ -21,8 +21,8 @@ export default function LoginPage() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password }),
       }).then(r => r.json());
-      if (!res.token && !res.user) {
-        setError(res.error.message || t("auth.loginError"));
+      if (res.error || (!res.token && !res.user)) {
+        setError(res.error?.message || res.error || t("auth.loginError"));
         setLoading(false);
       } else {
         window.location.href = "/";
