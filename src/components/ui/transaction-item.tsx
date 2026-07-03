@@ -1,7 +1,7 @@
 "use client";
 import { useState } from "react";
 import { useI18n } from "@/i18n/config";
-import { motion } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import { CATEGORY_ICONS, CATEGORY_COLORS } from "@/lib/constants";
 import { formatCurrency, formatRelativeDate, catName } from "@/lib/utils";
 import { useAppData } from "@/lib/data-provider";
@@ -13,6 +13,7 @@ export function TransactionItem({ transaction }: { transaction: Transaction }) {
   const { categories, wallets, reload } = useAppData();
   const { locale, t } = useI18n();
   const [open, setOpen] = useState(false);
+  const [confirmDelete, setConfirmDelete] = useState(false);
   const [deleting, setDeleting] = useState(false);
   const category = categories.find((c) => c.id === transaction.categoryId);
   const wallet = wallets.find((w) => w.id === transaction.walletId);
@@ -27,11 +28,11 @@ export function TransactionItem({ transaction }: { transaction: Transaction }) {
   const timeStr = d.toLocaleTimeString(locale === "th" ? "th-TH" : "en-GB", { hour: "2-digit", minute: "2-digit" });
 
   async function handleDelete() {
-    if (!confirm(locale === "th" ? "ลบรายการนี้?" : "Delete this transaction?")) return;
     setDeleting(true);
     await deleteTransaction(Number(transaction.id));
     await reload();
     setOpen(false);
+    setConfirmDelete(false);
   }
 
   return (
@@ -90,7 +91,7 @@ export function TransactionItem({ transaction }: { transaction: Transaction }) {
         {/* Actions */}
         <div className="flex gap-3 pt-4">
           <button
-            onClick={handleDelete}
+            onClick={() => setConfirmDelete(true)}
             disabled={deleting}
             className="flex flex-1 items-center justify-center gap-2 rounded-xl border border-[var(--color-expense)] py-3 text-sm font-medium text-[var(--color-expense)] disabled:opacity-50"
           >
@@ -98,6 +99,48 @@ export function TransactionItem({ transaction }: { transaction: Transaction }) {
           </button>
         </div>
       </BottomSheet>
+
+      {/* Confirm delete modal */}
+      <AnimatePresence>
+        {confirmDelete && (
+          <motion.div
+            key="confirm-backdrop"
+            className="fixed inset-0 z-[60] flex items-center justify-center bg-black/60 backdrop-blur-sm px-6"
+            initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+            onClick={() => setConfirmDelete(false)}
+          >
+            <motion.div
+              key="confirm-card"
+              className="w-full max-w-[300px] rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)] p-5"
+              initial={{ scale: 0.9, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} exit={{ scale: 0.9, opacity: 0 }}
+              transition={{ type: "spring", stiffness: 400, damping: 30 }}
+              onClick={(e) => e.stopPropagation()}
+            >
+              <p className="text-center text-base font-semibold text-[var(--color-text-primary)]">
+                {locale === "th" ? "ลบรายการนี้?" : "Delete this transaction?"}
+              </p>
+              <p className="mt-1 text-center text-xs text-[var(--color-text-secondary)]">
+                {locale === "th" ? "ไม่สามารถยกเลิกได้" : "This cannot be undone"}
+              </p>
+              <div className="mt-4 flex gap-3">
+                <button
+                  onClick={() => setConfirmDelete(false)}
+                  className="flex-1 rounded-xl border border-[var(--color-border)] py-2.5 text-sm font-medium text-[var(--color-text-secondary)]"
+                >
+                  {t("settings.cancel")}
+                </button>
+                <button
+                  onClick={handleDelete}
+                  disabled={deleting}
+                  className="flex-1 rounded-xl bg-[var(--color-expense)] py-2.5 text-sm font-semibold text-white disabled:opacity-50"
+                >
+                  {deleting ? "..." : (locale === "th" ? "ลบ" : "Delete")}
+                </button>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </>
   );
 }
