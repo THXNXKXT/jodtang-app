@@ -7,9 +7,9 @@ import { requireUserId } from "@/server/session";
 export async function getProfile() {
   try {
     const userId = await requireUserId();
-    const [user] = await db.select({ name: users.name, image: users.image }).from(users).where(eq(users.id, userId));
-    return user ?? { name: "User", image: null };
+    const [user] = await db.select({ name: users.name, email: users.email, image: users.image }).from(users).where(eq(users.id, userId));
+    return user ?? { name: "User", email: "", image: null };
   } catch {
-    return { name: "User", image: null };
+    return { name: "User", email: "", image: null };
   }
 }

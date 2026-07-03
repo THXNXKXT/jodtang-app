@@ -20,10 +20,11 @@ export default function SettingsPage() {
   const router = useRouter();
   const [profileOpen, setProfileOpen] = useState(false);
   const [name, setName] = useState("ผู้ใช้");
+  const [email, setEmail] = useState("");
   const [avatar, setAvatar] = useState<string | null>(null);
 
   useEffect(() => {
-    getProfile().then((p) => { setName(p.name); setAvatar(p.image ?? null); }).catch(() => {});
+    getProfile().then((p) => { setName(p.name); setEmail(p.email ?? ""); setAvatar(p.image ?? null); }).catch(() => {});
   }, [profileOpen]);
 
   async function handleSignOut() {
@@ -53,7 +54,7 @@ export default function SettingsPage() {
               )}
               <div className="flex-1">
                 <p className="text-base font-semibold">{name}</p>
-                <p className="text-xs text-[var(--color-text-secondary)]">{t("settings.editProfile")}</p>
+                <div className="flex flex-col"><p className="text-xs text-[var(--color-text-secondary)]">{email}</p><p className="text-xs text-[var(--color-text-muted)]">{t("settings.editProfile")}</p></div>
               </div>
               <ChevronRight size={18} className="text-[var(--color-text-muted)]" />
             </div>
