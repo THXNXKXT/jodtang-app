@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { Cell, Pie, PieChart, ResponsiveContainer, Tooltip } from "recharts";
 import { Card } from "@/components/ui/card";
 import { CATEGORY_COLORS, CATEGORY_ICONS } from "@/lib/constants";
@@ -49,6 +49,10 @@ export function CategoryBreakdownChart() {
     return slices;
   }, [transactions, categories]);
 
+  const PREVIEW = 6;
+  const [expanded, setExpanded] = useState(false);
+  const shown = expanded ? data : data.slice(0, PREVIEW);
+
   return (
     <Card>
       <h2 className="mb-3 text-sm font-semibold text-[var(--color-text-primary)]">
@@ -87,13 +91,13 @@ export function CategoryBreakdownChart() {
           </ResponsiveContainer>
         </div>
 
-        <ul className="min-w-0 flex-1 grid grid-cols-2 gap-x-3 gap-y-1.5">
-          {data.map((slice) => {
+        <ul className="min-w-0 flex-1 grid grid-cols-2 gap-x-2 gap-y-1">
+          {shown.map((slice) => {
             const Icon = CATEGORY_ICONS[slice.icon ?? "other_expense"];
             return (
-              <li key={slice.name} className="flex items-center gap-2 text-sm">
+              <li key={slice.id} className="flex items-center gap-1.5 text-xs">
                 {Icon ? (
-                  <Icon size={14} style={{ color: slice.color }} className="shrink-0" />
+                  <Icon size={12} style={{ color: slice.color }} className="shrink-0" />
                 ) : null}
                 <span className={`min-w-0 flex-1 ${ellipsis} text-[var(--color-text-secondary)]`}>
                   {slice.name}
@@ -105,10 +109,18 @@ export function CategoryBreakdownChart() {
             );
           })}
           {data.length === 0 ? (
-            <li className="text-sm text-[var(--color-text-muted)]">—</li>
+            <li className="text-xs text-[var(--color-text-muted)]">—</li>
           ) : null}
         </ul>
       </div>
+      {data.length > PREVIEW ? (
+        <button
+          onClick={() => setExpanded((v) => !v)}
+          className="mt-2 w-full text-center text-xs font-medium text-[var(--color-primary)]"
+        >
+          {expanded ? "ย่อ" : `ดูทั้งหมด (${data.length})`}
+        </button>
+      ) : null}
     </Card>
   );
 }
