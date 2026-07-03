@@ -1,6 +1,6 @@
 "use client";
 import { motion } from "framer-motion";
-import { TrendingUp, TrendingDown } from "lucide-react";
+import { TrendingUpIcon, TrendingDownIcon } from "@/components/svg/icons";
 import { AnimatedNumber } from "@/components/ui/animated-number";
 import { useI18n } from "@/i18n/config";
 import { useAppData } from "@/lib/data-provider";
@@ -26,14 +26,14 @@ export function BalanceCard() {
       </div>
       <div className="mt-4 flex gap-3">
         <div className="flex-1 rounded-xl bg-[var(--color-surface-hover)] p-3">
-          <div className="flex items-center gap-1.5 text-xs text-[var(--color-income)]"><TrendingUp size={14} /> {t("home.income")}</div>
+          <div className="flex items-center gap-1.5 text-xs text-[var(--color-income)]"><TrendingUpIcon size={14} /> {t("home.income")}</div>
           <p className="mt-1 text-sm font-semibold">{formatCurrency(income)}</p>
           <div className="mt-2 h-1 overflow-hidden rounded-full bg-[var(--color-border)]">
             <motion.div className="h-full rounded-full bg-[var(--color-income)]" initial={{ width: 0 }} animate={{ width: `${(income / maxVal) * 100}%` }} transition={{ duration: 0.8, delay: 0.2 }} />
           </div>
         </div>
         <div className="flex-1 rounded-xl bg-[var(--color-surface-hover)] p-3">
-          <div className="flex items-center gap-1.5 text-xs text-[var(--color-expense)]"><TrendingDown size={14} /> {t("home.expense")}</div>
+          <div className="flex items-center gap-1.5 text-xs text-[var(--color-expense)]"><TrendingDownIcon size={14} /> {t("home.expense")}</div>
           <p className="mt-1 text-sm font-semibold">{formatCurrency(expense)}</p>
           <div className="mt-2 h-1 overflow-hidden rounded-full bg-[var(--color-border)]">
             <motion.div className="h-full rounded-full bg-[var(--color-expense)]" initial={{ width: 0 }} animate={{ width: `${(expense / maxVal) * 100}%` }} transition={{ duration: 0.8, delay: 0.3 }} />

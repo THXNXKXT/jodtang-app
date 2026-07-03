@@ -3,7 +3,7 @@ import { useState } from "react";
 import { useI18n } from "@/i18n/config";
 import { motion } from "framer-motion";
 import { Card } from "@/components/ui/card";
-import { Plus, ChevronLeft, ChevronRight } from "lucide-react";
+import { PlusIcon, ChevronLeftIcon, ChevronRightIcon } from "@/components/svg/icons";
 import { CATEGORY_COLORS, CATEGORY_ICONS } from "@/lib/constants";
 import { useAppData } from "@/lib/data-provider";
 import { formatCurrency, catName } from "@/lib/utils";
@@ -38,15 +38,15 @@ export function BudgetsTab() {
     <div className="space-y-3">
       <div className="flex items-center justify-between px-1">
         <button onClick={prevMonth} className="rounded-lg p-1.5 text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)]">
-          <ChevronLeft size={18} />
+          <ChevronLeftIcon size={18} />
         </button>
         <p className="text-sm font-medium text-[var(--color-text-secondary)]">{getMonthLabel(viewYear, viewMonth)}</p>
         <button onClick={nextMonth} disabled={isCurrentMonth} className="rounded-lg p-1.5 text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)] disabled:opacity-30">
-          <ChevronRight size={18} />
+          <ChevronRightIcon size={18} />
         </button>
       </div>
       <button onClick={openAdd} className="flex w-full items-center justify-center gap-2 rounded-2xl border border-dashed border-[var(--color-border)] py-3 text-sm text-[var(--color-text-secondary)] transition-colors hover:border-[var(--color-primary)] hover:text-[var(--color-primary)]">
-        <Plus size={18} /> {t("reports.budgets")}
+        <PlusIcon size={18} /> {t("reports.budgets")}
       </button>
       {budgets.map((budget, index) => {
         const category = categories.find((c) => c.id === budget.categoryId);

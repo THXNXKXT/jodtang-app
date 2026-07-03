@@ -1,7 +1,7 @@
 "use client";
 import { useEffect } from "react";
 import { motion } from "framer-motion";
-import { AlertTriangle, RotateCcw } from "lucide-react";
+import { AlertTriangleIcon, RotateCcwIcon } from "@/components/svg/icons";
 import { useI18n } from "@/i18n/config";
 
 export default function Error({ error, reset }: { error: Error; reset: () => void }) {
@@ -12,7 +12,7 @@ export default function Error({ error, reset }: { error: Error; reset: () => voi
       <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }}
         transition={{ type: "spring", stiffness: 300, damping: 25 }}
         className="flex h-16 w-16 items-center justify-center rounded-full bg-[var(--color-expense-soft)]">
-        <AlertTriangle size={28} className="text-[var(--color-expense)]" />
+        <AlertTriangleIcon size={28} className="text-[var(--color-expense)]" />
       </motion.div>
       <div>
         <h2 className="text-lg font-bold">{t("error.title")}</h2>
@@ -20,7 +20,7 @@ export default function Error({ error, reset }: { error: Error; reset: () => voi
       </div>
       <motion.button whileTap={{ scale: 0.97 }} onClick={reset}
         className="flex items-center gap-2 rounded-xl bg-[var(--color-primary)] px-5 py-3 text-sm font-semibold text-white">
-        <RotateCcw size={16} /> {t("error.retry")}
+        <RotateCcwIcon size={16} /> {t("error.retry")}
       </motion.button>
     </div>
   );

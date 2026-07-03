@@ -2,7 +2,7 @@
 import { useState } from "react";
 import { Card } from "@/components/ui/card";
 import { ProgressRing } from "@/components/ui/progress-ring";
-import { Plus } from "lucide-react";
+import { PlusIcon } from "@/components/svg/icons";
 import { useI18n } from "@/i18n/config";
 import { useAppData } from "@/lib/data-provider";
 import { formatCurrency } from "@/lib/utils";
@@ -21,7 +21,7 @@ export function GoalsTab() {
   return (
     <div className="space-y-3">
       <button onClick={openAdd} className="flex w-full items-center justify-center gap-2 rounded-2xl border border-dashed border-[var(--color-border)] py-3 text-sm text-[var(--color-text-secondary)] transition-colors hover:border-[var(--color-primary)] hover:text-[var(--color-primary)]">
-        <Plus size={18} /> {t("reports.goals")}
+        <PlusIcon size={18} /> {t("reports.goals")}
       </button>
       {goals.map((goal) => {
         const pct = goal.targetAmount > 0 ? Math.min(goal.currentAmount / goal.targetAmount, 1) : 0;

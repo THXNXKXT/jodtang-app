@@ -1,6 +1,6 @@
 "use client";
 
-import { Search } from "lucide-react";
+import { SearchIcon } from "@/components/svg/icons";
 import { SegmentedControl } from "@/components/ui/segmented-control";
 import { useI18n } from "@/i18n/config";
 
@@ -22,7 +22,7 @@ export function TransactionFilters({
   return (
     <div className="space-y-3">
       <div className="flex items-center gap-2 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] px-3 py-2.5">
-        <Search size={16} className="shrink-0 text-[var(--color-text-muted)]" />
+        <SearchIcon size={16} className="shrink-0 text-[var(--color-text-muted)]" />
         <input
           type="text"
           value={search}

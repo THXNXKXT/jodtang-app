@@ -1,6 +1,6 @@
 "use client";
 import Link from "next/link";
-import { Home } from "lucide-react";
+import { HomeIcon } from "@/components/svg/icons";
 import { useI18n } from "@/i18n/config";
 
 export default function NotFound() {
@@ -10,7 +10,7 @@ export default function NotFound() {
       <p className="text-4xl font-bold text-[var(--color-text-muted)]">404</p>
       <p className="text-sm text-[var(--color-text-secondary)]">{t("error.notFound")}</p>
       <Link href="/" className="flex items-center gap-2 rounded-xl bg-[var(--color-primary)] px-5 py-3 text-sm font-semibold text-white">
-        <Home size={16} /> {t("error.goHome")}
+        <HomeIcon size={16} /> {t("error.goHome")}
       </Link>
     </div>
   );

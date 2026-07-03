@@ -6,7 +6,7 @@ import { useAppData } from "@/lib/data-provider";
 import { useI18n } from "@/i18n/config";
 import { cn, formatCurrency } from "@/lib/utils";
 import { createBudget, updateBudget, deleteBudget } from "@/server/actions/budgets";
-import { Plus, Trash2 } from "lucide-react";
+import { PlusIcon, Trash2Icon } from "@/components/svg/icons";
 import type { Budget } from "@/types";
 
 export function BudgetSheet({ open, onClose, editing }: { open: boolean; onClose: () => void; editing?: Budget | null }) {
@@ -78,7 +78,7 @@ export function BudgetSheet({ open, onClose, editing }: { open: boolean; onClose
         {editing && (
           <button type="button" onClick={handleDelete}
             className="flex w-full items-center justify-center gap-2 py-2 text-sm text-[var(--color-expense)]">
-            <Trash2 size={16} /> {t("reports.budgets")} - {formatCurrency(0)}
+            <Trash2Icon size={16} /> {t("reports.budgets")} - {formatCurrency(0)}
           </button>
         )}
       </div>

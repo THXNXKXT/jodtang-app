@@ -2,7 +2,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
-import { Mail, Lock, User, Loader2 } from "lucide-react";
+import { MailIcon, LockIcon, UserIcon, Loader2Icon } from "@/components/svg/icons";
 import { Logo } from "@/components/svg/logo";
 import { useI18n } from "@/i18n/config";
 
@@ -45,27 +45,27 @@ export default function SignupPage() {
         <div>
           <label className="mb-1.5 block text-xs font-medium text-[var(--color-text-secondary)]">{t("auth.name")}</label>
           <div className="relative">
-            <User size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-[var(--color-text-muted)]" />
+            <UserIcon size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-[var(--color-text-muted)]" />
             <input type="text" required value={name} onChange={(e) => setName(e.target.value)} placeholder={t("auth.namePlaceholder")} className="w-full rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] py-3 pl-10 pr-4 text-sm outline-none focus:border-[var(--color-primary)]" />
           </div>
         </div>
         <div>
           <label className="mb-1.5 block text-xs font-medium text-[var(--color-text-secondary)]">{t("auth.email")}</label>
           <div className="relative">
-            <Mail size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-[var(--color-text-muted)]" />
+            <MailIcon size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-[var(--color-text-muted)]" />
             <input type="email" required value={email} onChange={(e) => setEmail(e.target.value)} placeholder={t("auth.emailPlaceholder")} className="w-full rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] py-3 pl-10 pr-4 text-sm outline-none focus:border-[var(--color-primary)]" />
           </div>
         </div>
         <div>
           <label className="mb-1.5 block text-xs font-medium text-[var(--color-text-secondary)]">{t("auth.password")}</label>
           <div className="relative">
-            <Lock size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-[var(--color-text-muted)]" />
+            <LockIcon size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-[var(--color-text-muted)]" />
             <input type="password" required value={password} onChange={(e) => setPassword(e.target.value)} placeholder={t("auth.passwordPlaceholder")} className="w-full rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] py-3 pl-10 pr-4 text-sm outline-none focus:border-[var(--color-primary)]" />
           </div>
         </div>
         {error && <p className="text-sm text-[var(--color-expense)]">{error}</p>}
         <motion.button type="submit" disabled={loading} whileTap={{ scale: 0.97 }} className="flex w-full items-center justify-center gap-2 rounded-xl bg-[var(--color-primary)] py-3 text-sm font-semibold text-white disabled:opacity-50">
-          {loading && <Loader2 size={16} className="animate-spin" />}
+          {loading && <Loader2Icon size={16} className="animate-spin" />}
           {loading ? t("auth.signupLoading") : t("auth.signupBtn")}
         </motion.button>
       </form>

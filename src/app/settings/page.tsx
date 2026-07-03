@@ -13,7 +13,7 @@ import { useI18n, type Locale } from "@/i18n/config";
 import { authClient } from "@/lib/auth-client";
 import { getProfile } from "@/server/actions/profile";
 import { isAvatarUrl } from "@/components/svg/avatars";
-import { Globe, LogOut, Palette, ChevronRight } from "lucide-react";
+import { GlobeIcon, LogOutIcon, PaletteIcon, ChevronRightIcon } from "@/components/svg/icons";
 
 export default function SettingsPage() {
   const { t, locale, setLocale } = useI18n();
@@ -40,7 +40,7 @@ export default function SettingsPage() {
           <h1 className="text-lg font-bold tracking-tight">{t("app.name")}</h1>
         </div>
 
-        {/* User card */}
+        {/* UserIcon card */}
         <motion.div whileTap={{ scale: 0.98 }} transition={{ type: "spring", stiffness: 400, damping: 17 }}>
           <Card className="relative overflow-hidden p-4" onClick={() => setProfileOpen(true)}>
             <div className="pointer-events-none absolute -right-8 -top-8 h-32 w-32 rounded-full bg-[var(--color-primary)] opacity-[0.06]" />
@@ -56,14 +56,14 @@ export default function SettingsPage() {
                 <p className="text-base font-semibold">{name}</p>
                 <div className="flex flex-col"><p className="text-xs text-[var(--color-text-secondary)]">{email}</p><p className="text-xs text-[var(--color-text-muted)]">{t("settings.editProfile")}</p></div>
               </div>
-              <ChevronRight size={18} className="text-[var(--color-text-muted)]" />
+              <ChevronRightIcon size={18} className="text-[var(--color-text-muted)]" />
             </div>
           </Card>
         </motion.div>
 
         <div>
           <p className="mb-2 flex items-center gap-2 text-xs font-medium uppercase text-[var(--color-text-muted)]">
-            <Globe size={14} /> {t("settings.language")}
+            <GlobeIcon size={14} /> {t("settings.language")}
           </p>
           <div className="flex gap-2">
             {(["th", "en"] as Locale[]).map((l) => (
@@ -76,7 +76,7 @@ export default function SettingsPage() {
 
         <div>
           <p className="mb-2 flex items-center gap-2 text-xs font-medium uppercase text-[var(--color-text-muted)]">
-            <Palette size={14} /> {t("settings.theme")}
+            <PaletteIcon size={14} /> {t("settings.theme")}
           </p>
           <ThemeToggle />
         </div>
@@ -89,7 +89,7 @@ export default function SettingsPage() {
         <LineSection />
 
         <button onClick={handleSignOut} className="flex w-full items-center justify-center gap-2 rounded-xl px-4 py-3 text-sm font-medium text-[var(--color-expense)]">
-          <LogOut size={16} /> {t("settings.signOut")}
+          <LogOutIcon size={16} /> {t("settings.signOut")}
         </button>
       </div>
 

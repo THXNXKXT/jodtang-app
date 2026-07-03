@@ -1,6 +1,6 @@
 "use client";
 import { AnimatePresence, motion, type PanInfo } from "framer-motion";
-import { X } from "lucide-react";
+import { XIcon } from "@/components/svg/icons";
 import type { ReactNode } from "react";
 
 interface BottomSheetProps {
@@ -36,7 +36,7 @@ export function BottomSheet({ open, onClose, children, title }: BottomSheetProps
               <h2 className="text-base font-semibold text-[var(--color-text-primary)]">{title}</h2>
               <button type="button" onClick={onClose} aria-label="close"
                 className="rounded-full p-1 text-[var(--color-text-secondary)] transition-colors hover:text-[var(--color-text-primary)]">
-                <X size={20} />
+                <XIcon size={20} />
               </button>
             </div>
           )}

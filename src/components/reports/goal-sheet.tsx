@@ -6,7 +6,7 @@ import { useAppData } from "@/lib/data-provider";
 import { useI18n } from "@/i18n/config";
 import { cn, formatCurrency } from "@/lib/utils";
 import { createGoal, deleteGoal, contributeToGoal } from "@/server/actions/goals";
-import { Trash2 } from "lucide-react";
+import { Trash2Icon } from "@/components/svg/icons";
 import type { SavingsGoal } from "@/types";
 
 const ICON_OPTIONS = ["savings", "shopping", "travel", "bank", "health", "education"];
@@ -112,7 +112,7 @@ export function GoalSheet({ open, onClose, editing }: { open: boolean; onClose: 
                   </button>
                   <button type="button" onClick={handleDelete}
                     className="flex items-center justify-center rounded-xl border border-[var(--color-border)] px-4 text-[var(--color-expense)]">
-                    <Trash2 size={18} />
+                    <Trash2Icon size={18} />
                   </button>
                 </div>
               </>

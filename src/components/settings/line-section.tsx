@@ -4,7 +4,7 @@ import { Card } from "@/components/ui/card";
 import { useI18n } from "@/i18n/config";
 import { generateLinkCode, updateNotifyFreq, getLineSettings } from "@/server/actions/line";
 import { CODE_EXPIRY_MS } from "@/lib/budget-utils";
-import { Bell, Copy, Check, MessageCircle, ExternalLink, Clock } from "lucide-react";
+import { BellIcon, CopyIcon, CheckIcon, MessageCircleIcon, ExternalLinkIcon, ClockIcon } from "@/components/svg/icons";
 
 async function copyText(text: string): Promise<boolean> {
   try {
@@ -92,10 +92,10 @@ export function LineSection() {
     return (
       <div className="space-y-3">
         <div className="flex items-center gap-2 px-1">
-          <MessageCircle size={16} className="text-[var(--color-primary)]" />
+          <MessageCircleIcon size={16} className="text-[var(--color-primary)]" />
           <span className="text-sm font-medium">{t("settings.lineNotifications")}</span>
           <span className="ml-auto flex items-center gap-1 text-xs text-emerald-500">
-            <Check size={12} /> {t("settings.connected")}
+            <CheckIcon size={12} /> {t("settings.connected")}
           </span>
         </div>
         <Card className="space-y-3 p-4">
@@ -124,7 +124,7 @@ export function LineSection() {
     return (
       <div className="space-y-3">
         <div className="flex items-center gap-2 px-1">
-          <MessageCircle size={16} className="text-[var(--color-primary)]" />
+          <MessageCircleIcon size={16} className="text-[var(--color-primary)]" />
           <span className="text-sm font-medium">{t("settings.lineNotifications")}</span>
         </div>
         <Card className="space-y-4 p-4">
@@ -142,9 +142,9 @@ export function LineSection() {
             rel="noopener noreferrer"
             className="flex items-center justify-center gap-2 rounded-xl bg-[#06C755] py-3 text-sm font-medium text-white transition-opacity active:opacity-80"
           >
-            <MessageCircle size={16} />
+            <MessageCircleIcon size={16} />
             {t("settings.addFriend")}
-            <ExternalLink size={12} className="opacity-70" />
+            <ExternalLinkIcon size={12} className="opacity-70" />
           </a>
           <div className="space-y-3">
             <div className="rounded-xl bg-[var(--color-surface-2)] px-4 py-4 text-center">
@@ -154,12 +154,12 @@ export function LineSection() {
               onClick={async () => { await copyText(code); setCopied(true); setTimeout(() => setCopied(false), 2000); }}
               className="mx-auto flex items-center gap-2 rounded-xl bg-[var(--color-surface-2)] px-4 py-2.5 text-xs"
             >
-              {copied ? <Check size={14} className="text-emerald-500" /> : <Copy size={14} />}
+              {copied ? <CheckIcon size={14} className="text-emerald-500" /> : <CopyIcon size={14} />}
               <span>{copied ? t("settings.copied") : t("settings.copy")}</span>
             </button>
           </div>
           <div className="flex items-center justify-center gap-1.5 text-xs text-[var(--color-text-muted)]">
-            <Clock size={12} />
+            <ClockIcon size={12} />
             <span className={remaining < 60000 ? "text-[var(--color-expense)]" : ""}>
               {t("settings.expiresIn")} {mins}:{secs.toString().padStart(2, "0")}
             </span>
@@ -175,13 +175,13 @@ export function LineSection() {
   return (
     <div className="space-y-3">
       <div className="flex items-center gap-2 px-1">
-        <Bell size={16} className="text-[var(--color-primary)]" />
+        <BellIcon size={16} className="text-[var(--color-primary)]" />
         <span className="text-sm font-medium">{t("settings.lineNotifications")}</span>
       </div>
       <Card className="cursor-pointer p-4" onClick={handleConnect}>
         <div className="flex items-center gap-3">
           <div className="flex h-10 w-10 items-center justify-center rounded-full bg-[var(--color-surface-2)]">
-            <MessageCircle size={20} className="text-[var(--color-primary)]" />
+            <MessageCircleIcon size={20} className="text-[var(--color-primary)]" />
           </div>
           <div>
             <p className="text-sm font-medium">{t("settings.connectLine")}</p>

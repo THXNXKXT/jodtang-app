@@ -5,7 +5,7 @@ import { authClient } from "@/lib/auth-client";
 import { useI18n } from "@/i18n/config";
 import { useAppData } from "@/lib/data-provider";
 import { PRESET_AVATARS, isAvatarUrl } from "@/components/svg/avatars";
-import { Camera } from "lucide-react";
+import { CameraIcon } from "@/components/svg/icons";
 import { cn } from "@/lib/utils";
 
 export function ProfileSheet({ open, onClose, currentName, currentAvatar }: { open: boolean; onClose: () => void; currentName: string; currentAvatar: string | null }) {
@@ -49,7 +49,7 @@ export function ProfileSheet({ open, onClose, currentName, currentAvatar }: { op
               <div className="flex h-20 w-20 items-center justify-center rounded-2xl bg-[var(--color-primary-soft)] text-2xl font-bold text-[var(--color-primary)]">{initial}</div>
             )}
             <button onClick={() => fileRef.current?.click()} className="absolute -bottom-1 -right-1 flex h-7 w-7 items-center justify-center rounded-full bg-[var(--color-primary)] text-white shadow">
-              <Camera size={14} />
+              <CameraIcon size={14} />
             </button>
             <input ref={fileRef} type="file" accept="image/*" onChange={handleUpload} className="hidden" />
           </div>

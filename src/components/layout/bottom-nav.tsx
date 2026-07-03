@@ -2,19 +2,19 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { useRouter, usePathname } from "next/navigation";
-import { LayoutDashboard, ReceiptText, BarChart3, Settings } from "lucide-react";
+import { LayoutDashboardIcon, ReceiptTextIcon, BarChart3Icon, SettingsIcon } from "@/components/svg/icons";
 import { AddButtonSVG } from "@/components/svg/add-button";
 import { AddTransactionSheet } from "@/components/add/add-transaction-sheet";
 import { useI18n } from "@/i18n/config";
 import { cn } from "@/lib/utils";
 
-interface NavItem { href: string; labelKey: string; icon: typeof LayoutDashboard; }
+interface NavItem { href: string; labelKey: string; icon: typeof LayoutDashboardIcon; }
 
 const navItems: NavItem[] = [
-  { href: "/", labelKey: "nav.home", icon: LayoutDashboard },
-  { href: "/transactions", labelKey: "nav.transactions", icon: ReceiptText },
-  { href: "/reports", labelKey: "nav.reports", icon: BarChart3 },
-  { href: "/settings", labelKey: "nav.settings", icon: Settings },
+  { href: "/", labelKey: "nav.home", icon: LayoutDashboardIcon },
+  { href: "/transactions", labelKey: "nav.transactions", icon: ReceiptTextIcon },
+  { href: "/reports", labelKey: "nav.reports", icon: BarChart3Icon },
+  { href: "/settings", labelKey: "nav.settings", icon: SettingsIcon },
 ];
 
 export function BottomNav() {
