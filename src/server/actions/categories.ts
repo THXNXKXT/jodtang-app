@@ -11,30 +11,39 @@ import {
   type ActionResult,
 } from "@/server/validations/schemas";
 
-// ponytail: default names for auto-sync — keeps existing users up to date
-const defaultCatNames = [
-  "อาหาร", "เดินทาง", "ช้อปปิ้ง", "บันเทิง", "สาธารณูปโภค", "สุขภาพ",
-  "โทรศัพท์", "การศึกษา", "ของขวัญ", "ค่าเช่า", "กาแฟ", "สัตว์เลี้ยง",
-  "ซ่อมบำรุง", "อื่นๆ",
-  "เงินเดือน", "ฟรีแลนซ์", "ของขวัญ", "คืนเงิน", "ลงทุน", "โบนัส", "ขายของ", "อื่นๆ",
-];
-
 export async function getCategories() {
   const userId = await requireUserId();
   const existing = await db.select().from(categories).where(eq(categories.userId, userId)).orderBy(categories.sortOrder);
+  const { defaultCategories } = await import("@/server/seed-data");
 
-  // ponytail: auto-add missing default categories for existing users
-  if (existing.length < 14) {
-    const existingNames = new Set(existing.map(c => c.name));
-    const missingNames = defaultCatNames.filter(n => !existingNames.has(n));
-    if (missingNames.length > 0) {
-      const { defaultCategories, defaultCatNames } = await import("@/server/seed-data");
-      const missing = defaultCategories.filter(c => missingNames.includes(c.name));
-      if (missing.length > 0) {
-        await db.insert(categories).values(missing.map(c => ({ ...c, userId })));
-        return db.select().from(categories).where(eq(categories.userId, userId)).orderBy(categories.sortOrder);
-      }
+  // ponytail: sync defaults by nameEn (stable key, survives Thai name edits)
+  // 1. insert missing categories
+  // 2. update icon+color for existing defaults whose icon drifted from seed
+  const defaultsByKey = new Map(defaultCategories.map(c => [`${c.type}:${c.nameEn}`, c]));
+  const existingKeys = new Set(existing.map(c => `${c.type}:${c.nameEn}`));
+
+  let changed = false;
+
+  // insert missing
+  const missing = defaultCategories.filter(c => !existingKeys.has(`${c.type}:${c.nameEn}`));
+  if (missing.length > 0) {
+    await db.insert(categories).values(missing.map(c => ({ ...c, userId })));
+    changed = true;
+  }
+
+  // update drifted icon/color on existing defaults
+  for (const cat of existing) {
+    const def = defaultsByKey.get(`${cat.type}:${cat.nameEn}`);
+    if (def && (cat.icon !== def.icon || cat.color !== def.color)) {
+      await db.update(categories)
+        .set({ icon: def.icon, color: def.color })
+        .where(and(eq(categories.id, cat.id), eq(categories.userId, userId)));
+      changed = true;
     }
+  }
+
+  if (changed) {
+    return db.select().from(categories).where(eq(categories.userId, userId)).orderBy(categories.sortOrder);
   }
   return existing;
 }
