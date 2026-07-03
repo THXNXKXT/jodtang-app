@@ -1,22 +1,7 @@
-import {
-  Home, Utensils, Car, ShoppingBag, Film, Zap, Heart,
-  GraduationCap, Plane, Gift, Dumbbell, Phone, Droplet,
-  Wallet, CreditCard, Banknote, Smartphone, PiggyBank,
-  Briefcase, TrendingUp, Plus, Minus, ArrowLeftRight, RotateCcw, Coffee, PawPrint, Wrench, Store,
-  type LucideIcon,
-} from "lucide-react";
+import { Plus, Minus, ArrowLeftRight, type LucideIcon } from "lucide-react";
+import { CATEGORY_ICONS } from "./category-icons";
 
-export const CATEGORY_ICONS: Record<string, LucideIcon> = {
-  food: Utensils, transport: Car, shopping: ShoppingBag,
-  entertainment: Film, utilities: Zap, health: Heart,
-  education: GraduationCap, travel: Plane, gift: Gift,
-  fitness: Dumbbell, phone: Phone, water: Droplet,
-  other_expense: ShoppingBag,
-  salary: Briefcase, freelance: Wallet, investment: TrendingUp,
-  gift_income: Gift, other_income: Plus, refund: RotateCcw,
-  rent: Home, coffee: Coffee, pet: PawPrint, repair: Wrench, selling: Store,
-  cash: Banknote, bank: CreditCard, ewallet: Smartphone, savings: PiggyBank,
-};
+export { CATEGORY_ICONS };
 
 export const CATEGORY_COLORS: Record<string, string> = {
   food: "#f97316", transport: "#3b82f6", shopping: "#ec4899",
