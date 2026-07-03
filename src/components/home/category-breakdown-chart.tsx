@@ -42,7 +42,6 @@ export function CategoryBreakdownChart() {
       }))
       .filter((s) => s.value > 0)
       .sort((a, b) => b.value - a.value)
-      .slice(0, 5)
       .map((s) => ({
         ...s,
         pct: total > 0 ? (s.value / total) * 100 : 0,
