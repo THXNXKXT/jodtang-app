@@ -4,7 +4,8 @@ import { motion } from "framer-motion";
 import { useRouter, usePathname } from "next/navigation";
 import { LayoutDashboardIcon, ReceiptTextIcon, BarChart3Icon, SettingsIcon } from "@/components/svg/icons";
 import { AddButtonSVG } from "@/components/svg/add-button";
-import { AddTransactionSheet } from "@/components/add/add-transaction-sheet";
+import dynamic from "next/dynamic";
+const AddTransactionSheet = dynamic(() => import("@/components/add/add-transaction-sheet").then((m) => m.AddTransactionSheet), { ssr: false });
 import { useI18n } from "@/i18n/config";
 import { cn } from "@/lib/utils";
 

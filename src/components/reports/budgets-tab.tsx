@@ -8,7 +8,8 @@ import { CATEGORY_COLORS, CATEGORY_ICONS } from "@/lib/constants";
 import { useAppData } from "@/lib/data-provider";
 import { formatCurrency, catName } from "@/lib/utils";
 import { getMonthSpent, getMonthLabel } from "@/lib/budget-utils";
-import { BudgetSheet } from "./budget-sheet";
+import dynamic from "next/dynamic";
+const BudgetSheet = dynamic(() => import("./budget-sheet").then((m) => m.BudgetSheet), { ssr: false });
 import type { Budget } from "@/types";
 
 export function BudgetsTab() {

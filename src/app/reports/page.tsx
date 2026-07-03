@@ -3,9 +3,10 @@
 import { useState } from "react";
 import { PageTransition } from "@/components/layout/page-transition";
 import { SegmentedControl } from "@/components/ui/segmented-control";
-import { BudgetsTab } from "@/components/reports/budgets-tab";
-import { GoalsTab } from "@/components/reports/goals-tab";
-import { OverviewTab } from "@/components/reports/overview-tab";
+import dynamic from "next/dynamic";
+const OverviewTab = dynamic(() => import("@/components/reports/overview-tab").then((m) => m.OverviewTab), { ssr: false });
+const BudgetsTab = dynamic(() => import("@/components/reports/budgets-tab").then((m) => m.BudgetsTab), { ssr: false });
+const GoalsTab = dynamic(() => import("@/components/reports/goals-tab").then((m) => m.GoalsTab), { ssr: false });
 import { useI18n } from "@/i18n/config";
 
 export default function ReportsPage() {

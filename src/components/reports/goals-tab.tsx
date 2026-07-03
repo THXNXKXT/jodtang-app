@@ -6,7 +6,8 @@ import { PlusIcon } from "@/components/svg/icons";
 import { useI18n } from "@/i18n/config";
 import { useAppData } from "@/lib/data-provider";
 import { formatCurrency } from "@/lib/utils";
-import { GoalSheet } from "./goal-sheet";
+import dynamic from "next/dynamic";
+const GoalSheet = dynamic(() => import("./goal-sheet").then((m) => m.GoalSheet), { ssr: false });
 import type { SavingsGoal } from "@/types";
 
 export function GoalsTab() {
