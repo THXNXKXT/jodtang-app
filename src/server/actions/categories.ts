@@ -28,7 +28,7 @@ export async function getCategories() {
     const existingNames = new Set(existing.map(c => c.name));
     const missingNames = defaultCatNames.filter(n => !existingNames.has(n));
     if (missingNames.length > 0) {
-      const { defaultCategories } = await import("@/server/actions/wallets");
+      const { defaultCategories, defaultCatNames } = await import("@/server/seed-data");
       const missing = defaultCategories.filter(c => missingNames.includes(c.name));
       if (missing.length > 0) {
         await db.insert(categories).values(missing.map(c => ({ ...c, userId })));
