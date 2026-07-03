@@ -19,7 +19,6 @@ const DataContext = createContext<AppData>({
   loading: true, reload: async () => {},
 });
 
-// ponytail: raw DB types match schema column types
 type DbWallet = { id: number; name: string; type: string; icon: string; color: string; openingBalance: number; sortOrder: number };
 type DbCategory = { id: number; name: string; nameEn: string; type: string; icon: string; color: string; sortOrder: number };
 type DbTransaction = { id: number; type: string; amount: number; categoryId: number | null; walletId: number | null; toWalletId: number | null; date: Date; note: string | null };
@@ -46,23 +45,36 @@ function mapGoal(g: DbGoal): SavingsGoal {
   return { id: String(g.id), name: g.name, targetAmount: g.targetAmount, currentAmount: g.currentAmount, icon: g.icon, color: g.color };
 }
 
+function mapRaw(raw: Record<string, unknown>) {
+  return {
+    wallets: (raw.wallets as DbWallet[]).map(mapWallet),
+    categories: (raw.categories as DbCategory[]).map(mapCategory),
+    transactions: (raw.transactions as DbTransaction[]).map(mapTransaction),
+    budgets: (raw.budgets as DbBudget[]).map(mapBudget),
+    goals: (raw.goals as DbGoal[]).map(mapGoal),
+  };
+}
+
+const CACHE_KEY = "jodtang-app-data";
+
 export function DataProvider({ children }: { children: ReactNode }) {
   const [data, setData] = useState<Omit<AppData, "reload">>({
     wallets: [], categories: [], transactions: [], budgets: [], goals: [], loading: true,
   });
 
   const load = useCallback(async () => {
+    // ponytail: SWR — show stale localStorage data instantly, refetch in background
+    try {
+      const cached = localStorage.getItem(CACHE_KEY);
+      if (cached) setData({ ...JSON.parse(cached), loading: false });
+    } catch {}
+
     try {
       const { getAppData } = await import("@/server/actions/app-data");
       const raw = await getAppData();
-      setData({
-        wallets: (raw.wallets as DbWallet[]).map(mapWallet),
-        categories: (raw.categories as DbCategory[]).map(mapCategory),
-        transactions: (raw.transactions as DbTransaction[]).map(mapTransaction),
-        budgets: (raw.budgets as DbBudget[]).map(mapBudget),
-        goals: (raw.goals as DbGoal[]).map(mapGoal),
-        loading: false,
-      });
+      const mapped = mapRaw(raw as unknown as Record<string, unknown>);
+      setData({ ...mapped, loading: false });
+      try { localStorage.setItem(CACHE_KEY, JSON.stringify(mapped)); } catch {}
     } catch {
       setData((prev) => ({ ...prev, loading: false }));
     }
