@@ -1,6 +1,6 @@
 "use server";
 import { db } from "@/server/db";
-import { wallets, categories, transactions, budgets, savingsGoals } from "@/server/db/schema";
+import { wallets, categories, transactions, budgets, savingsGoals, users } from "@/server/db/schema";
 import { eq, and, desc } from "drizzle-orm";
 import { requireUserId } from "@/server/session";
 
@@ -10,12 +10,13 @@ export async function getAppData() {
   const { defaultCategories } = await import("@/server/seed-data");
 
   // Run all reads in parallel
-  const [w, existingCats, t, b, g] = await Promise.all([
+  const [w, existingCats, t, b, g, u] = await Promise.all([
     db.select().from(wallets).where(eq(wallets.userId, userId)).orderBy(wallets.sortOrder),
     db.select().from(categories).where(eq(categories.userId, userId)).orderBy(categories.sortOrder),
     db.select().from(transactions).where(eq(transactions.userId, userId)).orderBy(desc(transactions.date)).limit(200),
     db.select().from(budgets).where(eq(budgets.userId, userId)),
     db.select().from(savingsGoals).where(eq(savingsGoals.userId, userId)),
+    db.select({ name: users.name, email: users.email, image: users.image }).from(users).where(eq(users.id, userId)),
   ]);
 
   // Sync categories by nameEn (insert missing + update drifted icon/color)
@@ -43,5 +44,5 @@ export async function getAppData() {
     ? await db.select().from(categories).where(eq(categories.userId, userId)).orderBy(categories.sortOrder)
     : existingCats;
 
-  return { wallets: w, categories: finalCats, transactions: t, budgets: b, goals: g };
+  return { wallets: w, categories: finalCats, transactions: t, budgets: b, goals: g, profile: u[0] ?? { name: "User", email: "", image: null } };
 }

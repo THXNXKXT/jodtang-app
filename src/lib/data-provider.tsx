@@ -10,12 +10,14 @@ interface AppData {
   transactions: Transaction[];
   budgets: Budget[];
   goals: SavingsGoal[];
+  profile: { name: string; email: string | null; image: string | null };
   loading: boolean;
   reload: () => Promise<void>;
 }
 
 const DataContext = createContext<AppData>({
   wallets: [], categories: [], transactions: [], budgets: [], goals: [],
+  profile: { name: "ผู้ใช้", email: null, image: null },
   loading: true, reload: async () => {},
 });
 
@@ -52,6 +54,7 @@ function mapRaw(raw: Record<string, unknown>) {
     transactions: (raw.transactions as DbTransaction[]).map(mapTransaction),
     budgets: (raw.budgets as DbBudget[]).map(mapBudget),
     goals: (raw.goals as DbGoal[]).map(mapGoal),
+    profile: (raw.profile as AppData["profile"]) ?? { name: "ผู้ใช้", email: null, image: null },
   };
 }
 
@@ -59,7 +62,8 @@ const CACHE_KEY = "jodtang-app-data";
 
 export function DataProvider({ children }: { children: ReactNode }) {
   const [data, setData] = useState<Omit<AppData, "reload">>({
-    wallets: [], categories: [], transactions: [], budgets: [], goals: [], loading: true,
+    wallets: [], categories: [], transactions: [], budgets: [], goals: [],
+    profile: { name: "ผู้ใช้", email: null, image: null }, loading: true,
   });
 
   const load = useCallback(async () => {
@@ -74,6 +78,7 @@ export function DataProvider({ children }: { children: ReactNode }) {
       const raw = await getAppData();
       const mapped = mapRaw(raw as unknown as Record<string, unknown>);
       setData({ ...mapped, loading: false });
+      try { localStorage.setItem(CACHE_KEY, JSON.stringify(mapped)); } catch {}
       try { localStorage.setItem(CACHE_KEY, JSON.stringify(mapped)); } catch {}
     } catch {
       setData((prev) => ({ ...prev, loading: false }));
@@ -91,4 +96,3 @@ export function DataProvider({ children }: { children: ReactNode }) {
 export function useAppData() {
   return useContext(DataContext);
 }
-

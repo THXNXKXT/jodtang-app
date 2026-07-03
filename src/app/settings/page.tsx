@@ -1,6 +1,5 @@
 "use client";
-import { useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
+import { useState } from "react";
 import { motion } from "framer-motion";
 import { PageTransition } from "@/components/layout/page-transition";
 import { Card } from "@/components/ui/card";
@@ -12,21 +11,17 @@ import { LineSection } from "@/components/settings/line-section";
 import { Logo } from "@/components/svg/logo";
 import { useI18n, type Locale } from "@/i18n/config";
 import { authClient } from "@/lib/auth-client";
-import { getProfile } from "@/server/actions/profile";
+import { useAppData } from "@/lib/data-provider";
 import { isAvatarUrl } from "@/components/svg/avatars";
 import { GlobeIcon, LogOutIcon, PaletteIcon, ChevronRightIcon } from "@/components/svg/icons";
 
 export default function SettingsPage() {
   const { t, locale, setLocale } = useI18n();
-  const router = useRouter();
+  const { profile, reload } = useAppData();
   const [profileOpen, setProfileOpen] = useState(false);
-  const [name, setName] = useState("ผู้ใช้");
-  const [email, setEmail] = useState("");
-  const [avatar, setAvatar] = useState<string | null>(null);
-
-  useEffect(() => {
-    getProfile().then((p) => { setName(p.name); setEmail(p.email ?? ""); setAvatar(p.image ?? null); }).catch(() => {});
-  }, [profileOpen]);
+  const name = profile.name;
+  const email = profile.email ?? "";
+  const avatar = profile.image;
 
   async function handleSignOut() {
     await authClient.signOut();
@@ -94,7 +89,8 @@ export default function SettingsPage() {
         </button>
       </div>
 
-      <ProfileSheet open={profileOpen} onClose={() => setProfileOpen(false)} currentName={name} currentAvatar={avatar} />
+      <ProfileSheet open={profileOpen} onClose={() => { setProfileOpen(false); reload(); }} currentName={name} currentAvatar={avatar} />
     </PageTransition>
   );
 }
+
