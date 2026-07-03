@@ -10,6 +10,8 @@ import { catName } from "@/lib/utils";
 import { formatCurrency } from "@/lib/utils";
 
 interface SliceDatum {
+  id: string;
+  icon: string;
   name: string;
   value: number;
   color: string;
@@ -30,6 +32,8 @@ export function CategoryBreakdownChart() {
     const slices = categories
       .filter((c) => c.type === "expense")
       .map((c) => ({
+        id: c.id,
+        icon: c.icon,
         name: catName(c, locale),
         value: transactions
           .filter((tx) => tx.type === "expense" && tx.categoryId === c.id)
@@ -86,9 +90,7 @@ export function CategoryBreakdownChart() {
 
         <ul className="min-w-0 flex-1 space-y-1.5">
           {data.map((slice) => {
-            const Icon = CATEGORY_ICONS[
-              categories.find((c) => c.name === slice.name)?.icon ?? "other_expense"
-            ];
+            const Icon = CATEGORY_ICONS[slice.icon ?? "other_expense"];
             return (
               <li key={slice.name} className="flex items-center gap-2 text-sm">
                 {Icon ? (
