@@ -19,11 +19,19 @@ const defaultCategories = [
   { name: "โทรศัพท์", nameEn: "Phone", type: "expense" as const, icon: "phone", color: "#6366f1", sortOrder: 6 },
   { name: "การศึกษา", nameEn: "Education", type: "expense" as const, icon: "education", color: "#0ea5e9", sortOrder: 7 },
   { name: "ของขวัญ", nameEn: "Gift", type: "expense" as const, icon: "gift", color: "#d946ef", sortOrder: 8 },
+  { name: "ค่าเช่า", nameEn: "Rent", type: "expense" as const, icon: "utilities", color: "#0891b2", sortOrder: 9 },
+  { name: "กาแฟ", nameEn: "Coffee", type: "expense" as const, icon: "food", color: "#92400e", sortOrder: 10 },
+  { name: "สัตว์เลี้ยง", nameEn: "Pet", type: "expense" as const, icon: "other_expense", color: "#7c3aed", sortOrder: 11 },
+  { name: "ซ่อมบำรุง", nameEn: "Repair", type: "expense" as const, icon: "other_expense", color: "#78716c", sortOrder: 12 },
+  { name: "อื่นๆ", nameEn: "Other", type: "expense" as const, icon: "other_expense", color: "#6b7280", sortOrder: 13 },
   { name: "เงินเดือน", nameEn: "Salary", type: "income" as const, icon: "salary", color: "#10b981", sortOrder: 0 },
   { name: "ฟรีแลนซ์", nameEn: "Freelance", type: "income" as const, icon: "freelance", color: "#059669", sortOrder: 1 },
   { name: "ของขวัญ", nameEn: "Gift", type: "income" as const, icon: "gift", color: "#ec4899", sortOrder: 2 },
   { name: "คืนเงิน", nameEn: "Refund", type: "income" as const, icon: "refund", color: "#14b8a6", sortOrder: 3 },
   { name: "ลงทุน", nameEn: "Investment", type: "income" as const, icon: "investment", color: "#f59e0b", sortOrder: 4 },
+  { name: "โบนัส", nameEn: "Bonus", type: "income" as const, icon: "salary", color: "#16a34a", sortOrder: 5 },
+  { name: "ขายของ", nameEn: "Selling", type: "income" as const, icon: "other_income", color: "#0d9488", sortOrder: 6 },
+  { name: "อื่นๆ", nameEn: "Other", type: "income" as const, icon: "other_income", color: "#6b7280", sortOrder: 7 },
 ];
 
 export async function seedDefaultData(userId: string) {
