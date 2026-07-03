@@ -2,7 +2,7 @@ import {
   Home, Utensils, Car, ShoppingBag, Film, Zap, Heart,
   GraduationCap, Plane, Gift, Dumbbell, Phone, Droplet,
   Wallet, CreditCard, Banknote, Smartphone, PiggyBank,
-  Briefcase, TrendingUp, Plus, Minus, ArrowLeftRight, RotateCcw, Coffee, BookOpen, Baby, PawPrint, Wrench,
+  Briefcase, TrendingUp, Plus, Minus, ArrowLeftRight, RotateCcw, Coffee, PawPrint, Wrench, Store,
   type LucideIcon,
 } from "lucide-react";
 
@@ -14,6 +14,7 @@ export const CATEGORY_ICONS: Record<string, LucideIcon> = {
   other_expense: ShoppingBag,
   salary: Briefcase, freelance: Wallet, investment: TrendingUp,
   gift_income: Gift, other_income: Plus, refund: RotateCcw,
+  rent: Home, coffee: Coffee, pet: PawPrint, repair: Wrench, selling: Store,
   cash: Banknote, bank: CreditCard, ewallet: Smartphone, savings: PiggyBank,
 };
 
@@ -22,7 +23,7 @@ export const CATEGORY_COLORS: Record<string, string> = {
   entertainment: "#8b5cf6", utilities: "#eab308", health: "#ef4444",
   education: "#06b6d4", travel: "#14b8a6", gift: "#a855f7",
   fitness: "#22c55e", phone: "#6366f1", water: "#0ea5e9",
-  salary: "#22c55e", freelance: "#10b981", investment: "#f59e0b", refund: "#14b8a6",
+  salary: "#22c55e", freelance: "#10b981", investment: "#f59e0b", refund: "#14b8a6", rent: "#0891b2", coffee: "#92400e", pet: "#7c3aed", repair: "#78716c", selling: "#0d9488",
 };
 
 export const TRANSACTION_TYPE_META = {
