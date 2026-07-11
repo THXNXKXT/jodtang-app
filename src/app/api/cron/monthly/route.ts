@@ -32,6 +32,10 @@ export async function GET(req: NextRequest) {
 
     const income = txns.filter(t => t.type === "income").reduce((s, t) => s + Number(t.amount), 0);
     const expense = txns.filter(t => t.type === "expense").reduce((s, t) => s + Number(t.amount), 0);
+
+    // ponytail: skip users with no activity this month — don't send empty slips
+    if (txns.length === 0) continue;
+
     const net = income - expense;
     const rate = income > 0 ? Math.round((net / income) * 100) : 0;
     const monthName = new Intl.DateTimeFormat("th-TH", { month: "long", year: "numeric" }).format(new Date(Date.UTC(my, mm, 1)));
