@@ -15,6 +15,19 @@ const plex = IBM_Plex_Sans_Thai({
 export const metadata: Metadata = {
   title: "Jodtang - จดตัง",
   description: "Mobile-first personal finance tracker",
+  manifest: "/manifest.webmanifest",
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "black-translucent",
+    title: "จดตัง",
+  },
+};
+
+export const viewport = {
+  themeColor: "#3b82f6",
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 1,
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
