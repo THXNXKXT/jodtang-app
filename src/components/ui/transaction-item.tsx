@@ -37,6 +37,7 @@ export function TransactionItem({ transaction }: { transaction: Transaction }) {
     setDeleting(true);
     await deleteTransaction(Number(transaction.id));
     await reload();
+    navigator.vibrate?.(20);
     setOpen(false);
     setConfirmDelete(false);
   }

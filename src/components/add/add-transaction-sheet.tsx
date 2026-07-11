@@ -70,6 +70,7 @@ export function AddTransactionSheet({ open, onClose, editing }: Props) {
         await createTransaction({ ...common, date: new Date().toISOString() });
       }
       await reload();
+      navigator.vibrate?.(20);
       setAmount(""); setNote(""); setCategoryId(""); setManualCat(false);
       onClose();
     } catch (e) { console.error("Save error:", e); }
