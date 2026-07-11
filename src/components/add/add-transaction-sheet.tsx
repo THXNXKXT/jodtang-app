@@ -5,19 +5,19 @@ import { SegmentedControl } from "@/components/ui/segmented-control";
 import { CATEGORY_COLORS, CATEGORY_ICONS } from "@/lib/constants";
 import { useI18n } from "@/i18n/config";
 import { useAppData } from "@/lib/data-provider";
-import { createTransaction } from "@/server/actions/transactions";
+import { createTransaction, updateTransaction } from "@/server/actions/transactions";
 import { cn, catName } from "@/lib/utils";
 import { suggestCategoryIcon } from "@/lib/note-keywords";
-import type { TransactionType } from "@/types";
+import type { Transaction, TransactionType } from "@/types";
 
-interface Props { open: boolean; onClose: () => void; }
+interface Props { open: boolean; onClose: () => void; editing?: Transaction | null; }
 const SEGS = [
   { value: "expense", labelKey: "add.expense" },
   { value: "income", labelKey: "add.income" },
   { value: "transfer", labelKey: "add.transfer" },
 ];
 
-export function AddTransactionSheet({ open, onClose }: Props) {
+export function AddTransactionSheet({ open, onClose, editing }: Props) {
   const { t, locale } = useI18n();
   const { categories: allCats, wallets, reload } = useAppData();
   const [type, setType] = useState<TransactionType>("expense");
@@ -29,21 +29,27 @@ export function AddTransactionSheet({ open, onClose }: Props) {
   const [saving, setSaving] = useState(false);
   const [manualCat, setManualCat] = useState(false);
 
+  // ponytail: when opening in edit mode, hydrate state from the transaction once
+  useEffect(() => {
+    if (!open || !editing) return;
+    setType(editing.type);
+    setAmount(String(editing.amount));
+    setCategoryId(editing.categoryId);
+    setWalletId(editing.walletId);
+    setToWalletId(editing.toWalletId ?? "");
+    setNote(editing.note);
+    setManualCat(true);
+  }, [open, editing]);
+
   const cats = useMemo(() => allCats.filter((c) => c.type === type), [allCats, type]);
 
   useEffect(() => { if (wallets.length > 0 && !walletId) setWalletId(wallets[0]!.id); }, [wallets, walletId]);
   useEffect(() => { if (wallets.length > 1 && !toWalletId) setToWalletId(wallets[1]!.id); }, [wallets, toWalletId]);
-  // ponytail: default first category when none selected and user hasn't picked
-  useEffect(() => { if (cats.length > 0 && !categoryId && !manualCat) setCategoryId(cats[0]!.id); }, [cats, categoryId, manualCat]);
-
-  // ponytail: auto-suggest category from note — only if user hasn't manually picked
-  useEffect(() => {
-    if (manualCat) return;
-    const sug = suggestCategoryIcon(note);
-    if (!sug) return;
-    const match = cats.find((c) => c.icon === sug);
-    if (match && match.id !== categoryId) setCategoryId(match.id);
-  }, [note, cats, manualCat, categoryId]);
+  // ponytail: derived — suggestion overrides default unless user manually picked
+  const suggestedFromNote = !manualCat ? cats.find((c) => c.icon === suggestCategoryIcon(note))?.id : undefined;
+  const effectiveCategoryId = suggestedFromNote ?? categoryId;
+  // ponytail: default first category when nothing else applies
+  useEffect(() => { if (cats.length > 0 && !effectiveCategoryId) setCategoryId(cats[0]!.id); }, [cats, effectiveCategoryId]);
 
   async function handleSave() {
     const parsed = parseFloat(amount);
@@ -51,14 +57,18 @@ export function AddTransactionSheet({ open, onClose }: Props) {
     if (type === "transfer" && (!toWalletId || toWalletId === walletId)) return;
     setSaving(true);
     try {
-      await createTransaction({
+      const common = {
         type, amount: parsed,
-        categoryId: type === "transfer" ? undefined : Number(categoryId),
+        categoryId: type === "transfer" ? undefined : Number(effectiveCategoryId),
         walletId: Number(walletId),
         toWalletId: type === "transfer" ? Number(toWalletId) : undefined,
         note: note.trim() || t("add." + type),
-        date: new Date().toISOString(),
-      });
+      };
+      if (editing) {
+        await updateTransaction(Number(editing.id), { ...common, date: new Date(editing.date) });
+      } else {
+        await createTransaction({ ...common, date: new Date().toISOString() });
+      }
       await reload();
       setAmount(""); setNote(""); setCategoryId(""); setManualCat(false);
       onClose();
@@ -66,8 +76,10 @@ export function AddTransactionSheet({ open, onClose }: Props) {
     finally { setSaving(false); }
   }
 
+  const title = editing ? t("transactions.edit") : t("add.title");
+
   return (
-    <BottomSheet open={open} onClose={onClose} title={t("add.title")}>
+    <BottomSheet open={open} onClose={onClose} title={title}>
       <div className="space-y-5 p-6 pb-8">
         <SegmentedControl segments={SEGS.map((s) => ({ value: s.value, label: t(s.labelKey) }))} value={type}
           onChange={(v) => { setType(v as TransactionType); setCategoryId(""); setManualCat(false); }} />
@@ -91,7 +103,7 @@ export function AddTransactionSheet({ open, onClose }: Props) {
                 return (
                   <button key={c.id} type="button" onClick={() => { setManualCat(true); setCategoryId(c.id); }}
                     className={cn("flex flex-col items-center gap-1 rounded-xl border p-2.5",
-                      categoryId === c.id ? "border-[var(--color-primary)] bg-[var(--color-surface-hover)]" : "border-[var(--color-border)]")}>
+                      effectiveCategoryId === c.id ? "border-[var(--color-primary)] bg-[var(--color-surface-hover)]" : "border-[var(--color-border)]")}>
                     <span className="flex h-8 w-8 items-center justify-center rounded-full" style={{ backgroundColor: color + "1a", color }}>
                       {Icon && <Icon size={16} />}
                     </span>

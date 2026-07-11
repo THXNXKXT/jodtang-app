@@ -3,21 +3,32 @@
 import { SearchIcon } from "@/components/svg/icons";
 import { SegmentedControl } from "@/components/ui/segmented-control";
 import { useI18n } from "@/i18n/config";
+import { useAppData } from "@/lib/data-provider";
+import { catName } from "@/lib/utils";
 
 interface TransactionFiltersProps {
   search: string;
   onSearchChange: (value: string) => void;
   type: string;
   onTypeChange: (value: string) => void;
+  categoryId: string;
+  onCategoryChange: (value: string) => void;
+  walletId: string;
+  onWalletChange: (value: string) => void;
 }
 
+const selectClass =
+  "appearance-none rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] px-3 py-2.5 text-sm text-[var(--color-text-primary)] outline-none";
+
 export function TransactionFilters({
-  search,
-  onSearchChange,
-  type,
-  onTypeChange,
+  search, onSearchChange, type, onTypeChange,
+  categoryId, onCategoryChange, walletId, onWalletChange,
 }: TransactionFiltersProps) {
-  const { t } = useI18n();
+  const { t, locale } = useI18n();
+  const { categories, wallets } = useAppData();
+
+  // ponytail: only categories matching active type — feels right
+  const visibleCats = type === "all" ? categories : categories.filter((c) => c.type === type);
 
   return (
     <div className="space-y-3">
@@ -38,8 +49,23 @@ export function TransactionFilters({
           { value: "income", label: t("add.income") },
         ]}
         value={type}
-        onChange={onTypeChange}
+        onChange={(v) => { onTypeChange(v); onCategoryChange(""); }}
       />
+      {/* ponytail: native selects — shortest diff, no custom dropdown needed */}
+      <div className="grid grid-cols-2 gap-2">
+        <select value={categoryId} onChange={(e) => onCategoryChange(e.target.value)} className={selectClass}>
+          <option value="">{t("add.category")}: {t("transactions.all")}</option>
+          {visibleCats.map((c) => (
+            <option key={c.id} value={c.id}>{catName(c, locale)}</option>
+          ))}
+        </select>
+        <select value={walletId} onChange={(e) => onWalletChange(e.target.value)} className={selectClass}>
+          <option value="">{t("add.wallet")}: {t("transactions.all")}</option>
+          {wallets.map((w) => (
+            <option key={w.id} value={w.id}>{w.name}</option>
+          ))}
+        </select>
+      </div>
     </div>
   );
 }

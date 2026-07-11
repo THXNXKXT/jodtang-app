@@ -27,7 +27,8 @@
     "noResults": "No transactions found",
     "date": "Date",
     "time": "Time",
-    "delete": "Delete"
+    "delete": "Delete",
+    "edit": "Edit"
   },
   "add": {
     "title": "Add Transaction",

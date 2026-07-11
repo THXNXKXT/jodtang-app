@@ -12,15 +12,19 @@ export default function TransactionsPage() {
   const { transactions } = useAppData();
   const [search, setSearch] = useState("");
   const [type, setType] = useState("all");
+  const [categoryId, setCategoryId] = useState("");
+  const [walletId, setWalletId] = useState("");
 
   const filtered = useMemo(() => {
     const q = search.trim().toLowerCase();
     return transactions.filter((tx) => {
       if (type !== "all" && tx.type !== type) return false;
+      if (categoryId && tx.categoryId !== categoryId) return false;
+      if (walletId && tx.walletId !== walletId && tx.toWalletId !== walletId) return false;
       if (q && !tx.note.toLowerCase().includes(q)) return false;
       return true;
     });
-  }, [search, type, transactions]);
+  }, [search, type, categoryId, walletId, transactions]);
 
   return (
     <PageTransition>
@@ -33,6 +37,10 @@ export default function TransactionsPage() {
           onSearchChange={setSearch}
           type={type}
           onTypeChange={setType}
+          categoryId={categoryId}
+          onCategoryChange={setCategoryId}
+          walletId={walletId}
+          onWalletChange={setWalletId}
         />
         <TransactionList transactions={filtered} />
       </div>

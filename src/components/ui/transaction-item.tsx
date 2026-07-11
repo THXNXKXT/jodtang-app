@@ -1,8 +1,9 @@
 "use client";
 import { useState } from "react";
+import dynamic from "next/dynamic";
 import { useI18n } from "@/i18n/config";
 import { AnimatePresence, motion } from "framer-motion";
-import { TrashIcon } from "lucide-react";
+import { TrashIcon, PencilIcon } from "lucide-react";
 import { CATEGORY_ICONS, CATEGORY_COLORS } from "@/lib/constants";
 import { formatCurrency, formatRelativeDate, catName } from "@/lib/utils";
 import { useAppData } from "@/lib/data-provider";
@@ -10,10 +11,14 @@ import { BottomSheet } from "@/components/ui/bottom-sheet";
 import { deleteTransaction } from "@/server/actions/transactions";
 import type { Transaction } from "@/types";
 
+// ponytail: lazy — keep form/chunk out of every tx-item render
+const AddTransactionSheet = dynamic(() => import("@/components/add/add-transaction-sheet").then((m) => m.AddTransactionSheet), { ssr: false });
+
 export function TransactionItem({ transaction }: { transaction: Transaction }) {
   const { categories, wallets, reload } = useAppData();
   const { locale, t } = useI18n();
   const [open, setOpen] = useState(false);
+  const [editOpen, setEditOpen] = useState(false);
   const [confirmDelete, setConfirmDelete] = useState(false);
   const [deleting, setDeleting] = useState(false);
   const category = categories.find((c) => c.id === transaction.categoryId);
@@ -110,6 +115,12 @@ export function TransactionItem({ transaction }: { transaction: Transaction }) {
         {/* Actions */}
         <div className="flex gap-3 pt-4">
           <button
+            onClick={() => { setOpen(false); setEditOpen(true); }}
+            className="flex flex-1 items-center justify-center gap-2 rounded-xl border border-[var(--color-border)] py-3 text-sm font-medium text-[var(--color-text-primary)]"
+          >
+            <PencilIcon size={16} /> {t("transactions.edit")}
+          </button>
+          <button
             onClick={() => setConfirmDelete(true)}
             disabled={deleting}
             className="flex flex-1 items-center justify-center gap-2 rounded-xl border border-[var(--color-expense)] py-3 text-sm font-medium text-[var(--color-expense)] disabled:opacity-50"
@@ -118,6 +129,8 @@ export function TransactionItem({ transaction }: { transaction: Transaction }) {
           </button>
         </div>
       </BottomSheet>
+
+      <AddTransactionSheet open={editOpen} onClose={() => setEditOpen(false)} editing={transaction} />
 
       {/* Confirm delete modal */}
       <AnimatePresence>
