@@ -3,6 +3,7 @@
 import dynamic from "next/dynamic";
 import { PageTransition } from "@/components/layout/page-transition";
 import { BalanceCard } from "@/components/home/balance-card";
+import { InsightsCard } from "@/components/home/insights-card";
 import { BudgetMiniCards } from "@/components/home/budget-mini-cards";
 import { RecentTransactions } from "@/components/home/recent-transactions";
 import { Logo } from "@/components/svg/logo";
@@ -26,6 +27,7 @@ export default function HomePage() {
           <h1 className="text-lg font-bold tracking-tight">จดตัง</h1>
         </div>
         <BalanceCard />
+        <InsightsCard />
         <SpendingTrendChart />
         <CategoryBreakdownChart />
         <BudgetMiniCards />
