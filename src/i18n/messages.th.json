@@ -17,7 +17,8 @@
     "categoryBreakdown": "สัดส่วนรายจ่าย",
     "budgets": "งบประมาณ",
     "recentTransactions": "ล่าสุด",
-    "seeAll": "ดูทั้งหมด"
+    "seeAll": "ดูทั้งหมด",
+    "emptyRecent": "ยังไม่มีรายการ กด + เพื่อเพิ่ม"
   },
   "transactions": {
     "title": "รายการทั้งหมด",

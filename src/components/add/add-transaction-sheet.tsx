@@ -7,6 +7,7 @@ import { useI18n } from "@/i18n/config";
 import { useAppData } from "@/lib/data-provider";
 import { createTransaction } from "@/server/actions/transactions";
 import { cn, catName } from "@/lib/utils";
+import { suggestCategoryIcon } from "@/lib/note-keywords";
 import type { TransactionType } from "@/types";
 
 interface Props { open: boolean; onClose: () => void; }
@@ -26,12 +27,23 @@ export function AddTransactionSheet({ open, onClose }: Props) {
   const [toWalletId, setToWalletId] = useState("");
   const [note, setNote] = useState("");
   const [saving, setSaving] = useState(false);
+  const [manualCat, setManualCat] = useState(false);
 
   const cats = useMemo(() => allCats.filter((c) => c.type === type), [allCats, type]);
 
   useEffect(() => { if (wallets.length > 0 && !walletId) setWalletId(wallets[0]!.id); }, [wallets, walletId]);
   useEffect(() => { if (wallets.length > 1 && !toWalletId) setToWalletId(wallets[1]!.id); }, [wallets, toWalletId]);
-  useEffect(() => { if (cats.length > 0 && !categoryId) setCategoryId(cats[0]!.id); }, [cats, categoryId]);
+  // ponytail: default first category when none selected and user hasn't picked
+  useEffect(() => { if (cats.length > 0 && !categoryId && !manualCat) setCategoryId(cats[0]!.id); }, [cats, categoryId, manualCat]);
+
+  // ponytail: auto-suggest category from note — only if user hasn't manually picked
+  useEffect(() => {
+    if (manualCat) return;
+    const sug = suggestCategoryIcon(note);
+    if (!sug) return;
+    const match = cats.find((c) => c.icon === sug);
+    if (match && match.id !== categoryId) setCategoryId(match.id);
+  }, [note, cats, manualCat, categoryId]);
 
   async function handleSave() {
     const parsed = parseFloat(amount);
@@ -48,7 +60,7 @@ export function AddTransactionSheet({ open, onClose }: Props) {
         date: new Date().toISOString(),
       });
       await reload();
-      setAmount(""); setNote(""); setCategoryId("");
+      setAmount(""); setNote(""); setCategoryId(""); setManualCat(false);
       onClose();
     } catch (e) { console.error("Save error:", e); }
     finally { setSaving(false); }
@@ -58,7 +70,7 @@ export function AddTransactionSheet({ open, onClose }: Props) {
     <BottomSheet open={open} onClose={onClose} title={t("add.title")}>
       <div className="space-y-5 p-6 pb-8">
         <SegmentedControl segments={SEGS.map((s) => ({ value: s.value, label: t(s.labelKey) }))} value={type}
-          onChange={(v) => { setType(v as TransactionType); setCategoryId(""); }} />
+          onChange={(v) => { setType(v as TransactionType); setCategoryId(""); setManualCat(false); }} />
 
         <div className="text-center py-2">
           <div className="flex items-center justify-center gap-1">
@@ -77,7 +89,7 @@ export function AddTransactionSheet({ open, onClose }: Props) {
                 const Icon = CATEGORY_ICONS[c.icon];
                 const color = CATEGORY_COLORS[c.icon] ?? "#525252";
                 return (
-                  <button key={c.id} type="button" onClick={() => setCategoryId(c.id)}
+                  <button key={c.id} type="button" onClick={() => { setManualCat(true); setCategoryId(c.id); }}
                     className={cn("flex flex-col items-center gap-1 rounded-xl border p-2.5",
                       categoryId === c.id ? "border-[var(--color-primary)] bg-[var(--color-surface-hover)]" : "border-[var(--color-border)]")}>
                     <span className="flex h-8 w-8 items-center justify-center rounded-full" style={{ backgroundColor: color + "1a", color }}>

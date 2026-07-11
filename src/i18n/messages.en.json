@@ -17,7 +17,8 @@
     "categoryBreakdown": "Spending by Category",
     "budgets": "Budgets",
     "recentTransactions": "Recent",
-    "seeAll": "See all"
+    "seeAll": "See all",
+    "emptyRecent": "No transactions yet. Tap + to add"
   },
   "transactions": {
     "title": "All Transactions",

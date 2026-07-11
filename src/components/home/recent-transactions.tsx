@@ -25,16 +25,22 @@ export function RecentTransactions() {
         </Link>
       </div>
       <div className="divide-y divide-[var(--color-border)] overflow-hidden rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)]">
-        {recent.map((tx, i) => (
-          <motion.div
-            key={tx.id}
-            initial={{ opacity: 0, y: 8 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.3, ease: "easeOut", delay: 0.05 * i }}
-          >
-            <TransactionItem transaction={tx} />
-          </motion.div>
-        ))}
+        {recent.length === 0 ? (
+          <div className="flex flex-col items-center justify-center py-10 text-center">
+            <p className="text-sm text-[var(--color-text-muted)]">{t("home.emptyRecent")}</p>
+          </div>
+        ) : (
+          recent.map((tx, i) => (
+            <motion.div
+              key={tx.id}
+              initial={{ opacity: 0, y: 8 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.3, ease: "easeOut", delay: 0.05 * i }}
+            >
+              <TransactionItem transaction={tx} />
+            </motion.div>
+          ))
+        )}
       </div>
     </div>
   );
