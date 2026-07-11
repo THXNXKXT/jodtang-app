@@ -32,7 +32,6 @@ export function AddTransactionSheet({ open, onClose, editing }: Props) {
   // ponytail: when opening in edit mode, hydrate state from the transaction once
   useEffect(() => {
     if (!open || !editing) return;
-    // eslint-disable-next-line react-hooks/set-state-in-effect — one-time hydration on edit open
     setType(editing.type);
     setAmount(String(editing.amount));
     setCategoryId(editing.categoryId);
