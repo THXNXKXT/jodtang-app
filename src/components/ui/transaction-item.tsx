@@ -43,8 +43,17 @@ export function TransactionItem({ transaction }: { transaction: Transaction }) {
 
   return (
     <>
-      {/* ponytail: swipe-left delete — red action behind, drag-x reveals it */}
-      <div className="relative overflow-hidden">
+      {/* ponytail: swipe-left reveal — edit (deeper) + delete (edge).
+          Parent bg covers buttons so layout anims don't flash them. */}
+      <div className="relative overflow-hidden bg-[var(--color-surface)]">
+        <button
+          type="button"
+          onClick={() => setEditOpen(true)}
+          className="absolute inset-y-0 right-20 flex w-20 items-center justify-center bg-[var(--color-primary)] text-white"
+          aria-label="edit"
+        >
+          <PencilIcon size={18} />
+        </button>
         <button
           type="button"
           onClick={() => setConfirmDelete(true)}
@@ -54,13 +63,13 @@ export function TransactionItem({ transaction }: { transaction: Transaction }) {
           <TrashIcon size={18} />
         </button>
         <motion.div
-          layout
           drag="x"
-          dragConstraints={{ left: -80, right: 0 }}
+          dragConstraints={{ left: -160, right: 0 }}
           dragElastic={0.1}
           onDragEnd={(_, info) => {
-            // ponytail: deep swipe → trigger confirm directly
+            // ponytail: deep swipe → delete, mid swipe → edit
             if (info.offset.x < -120) setConfirmDelete(true);
+            else if (info.offset.x < -60) setEditOpen(true);
           }}
           onClick={() => setOpen(true)}
           className="relative flex cursor-pointer items-center gap-3.5 bg-[var(--color-surface)] px-4 py-4 transition-colors hover:bg-[var(--color-surface-hover)] active:bg-[var(--color-surface-hover)]"
