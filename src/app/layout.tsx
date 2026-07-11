@@ -35,6 +35,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="th" className={plex.variable} suppressHydrationWarning>
       <head>
         <script dangerouslySetInnerHTML={{ __html: `(() => { try { const t = localStorage.getItem('jodtang-theme'); if (!t || t === 'dark' || (t === 'system' && matchMedia('(prefers-color-scheme: dark)').matches)) document.documentElement.classList.add('dark'); } catch(e) { document.documentElement.classList.add('dark'); } })()` }} />
+        {/* ponytail: register SW only in production — dev server cache fights HMR */}
+        {process.env.NODE_ENV === "production" && (
+          <script dangerouslySetInnerHTML={{ __html: `if ('serviceWorker' in navigator) window.addEventListener('load', () => navigator.serviceWorker.register('/sw.js').catch(() => {}));` }} />
+        )}
       </head>
       <body>
         <ThemeProvider>
