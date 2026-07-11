@@ -1,0 +1,17 @@
+name: Daily LINE Report
+
+on:
+  schedule:
+    # 17:00 UTC = 00:00 ICT (Bangkok)
+    - cron: "0 17 * * *"
+  workflow_dispatch: # manual trigger for testing
+
+jobs:
+  trigger:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Hit cron endpoint
+        run: |
+          curl -fsS -X GET \
+            -H "Authorization: Bearer ${{ secrets.CRON_SECRET }}" \
+            "https://jodtang-app.vercel.app/api/cron/daily"
