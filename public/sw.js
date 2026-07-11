@@ -1,6 +1,6 @@
 // ponytail: vanilla SW — no @serwist dep, ~30 lines
-const CACHE = "jodtang-v1";
-const SHELL = ["/", "/manifest.webmanifest", "/icon.svg", "/apple-icon.png"];
+const CACHE = "jodtang-v2";
+const SHELL = ["/", "/transactions", "/reports", "/settings", "/manifest.webmanifest", "/icon.svg", "/apple-icon.png"];
 
 self.addEventListener("install", (e) => {
   e.waitUntil(caches.open(CACHE).then((c) => c.addAll(SHELL)).then(() => self.skipWaiting()));
