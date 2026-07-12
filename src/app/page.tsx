@@ -80,12 +80,10 @@ export default function HomePage() {
         <div className="flex items-center gap-2.5">
           <Logo size={32} />
           <h1 className="text-lg font-bold tracking-tight">จดตัง</h1>
+          <div className="ml-auto"><StreakBadge /></div>
         </div>
         <BalanceCard />
-        <div className="flex items-center justify-between gap-3">
-          <InsightsCard />
-          <StreakBadge />
-        </div>
+        <InsightsCard />
         <SpendingTrendChart />
         <CategoryBreakdownChart />
         <BudgetMiniCards />
