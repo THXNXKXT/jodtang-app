@@ -57,6 +57,7 @@ function WalletRow({
   typeLabel: string;
   reload: () => Promise<void>;
 }) {
+  const { t } = useI18n();
   const controls = useAnimation();
   const Icon = CATEGORY_ICONS[wallet.icon];
   const id = Number(wallet.id);
@@ -93,17 +94,16 @@ function WalletRow({
         aria-label="edit"
       >
         <PencilIcon size={16} />
-        <span className="text-[10px]">แก้ไข</span>
+        <span className="text-[10px]">{t("settings.edit")}</span>
       </button>
       <button
-        type="button"
-        onClick={toggleArchive}
-        className="absolute inset-y-0 right-0 flex w-20 flex-col items-center justify-center gap-0.5 text-white"
-        style={{ backgroundColor: isArchived ? "#22c55e" : "#71717a" }}
-        aria-label={isArchived ? "restore" : "archive"}
+      type="button"
+      onClick={async () => { await snapBack(); await updateWallet(id, { disabled: !isArchived }); await reload(); }}
+      className={`absolute inset-y-0 right-0 flex w-20 flex-col items-center justify-center gap-0.5 text-white ${isArchived ? "bg-[var(--color-primary)]" : "bg-[var(--color-text-muted)]"}`}
+      aria-label={isArchived ? "restore" : "archive"}
       >
-        {isArchived ? <ArchiveRestoreIcon size={16} /> : <ArchiveIcon size={16} />}
-        <span className="text-[10px]">{isArchived ? "เรียกคืน" : "จัดเก็บ"}</span>
+      {isArchived ? <ArchiveRestoreIcon size={16} /> : <ArchiveIcon size={16} />}
+      <span className="text-[10px]">{isArchived ? t("settings.restore") : t("settings.archive")}</span>
       </button>
       <motion.div
         animate={controls}
@@ -123,7 +123,7 @@ function WalletRow({
         <div className="min-w-0 flex-1">
           <p className="text-sm font-medium text-[var(--color-text-primary)]">
             {wallet.name}
-            {isArchived && <span className="ml-2 text-xs text-[var(--color-text-muted)]">· จัดเก็บแล้ว</span>}
+            {isArchived && <span className="ml-2 text-xs text-[var(--color-text-muted)]">· {t("settings.archivedLabel")}</span>}
           </p>
           <p className="text-xs text-[var(--color-text-secondary)]">{typeLabel}</p>
         </div>
@@ -136,7 +136,7 @@ function WalletRow({
         key={renameOpen ? wallet.name : "closed"}
         open={renameOpen}
         currentName={wallet.name}
-        title="แก้ไขกระเป๋าเงิน"
+        title={t("settings.editWallet")}
         onClose={() => setRenameOpen(false)}
         onSave={saveRename}
       />

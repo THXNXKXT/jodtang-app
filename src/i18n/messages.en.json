@@ -97,7 +97,22 @@
     "walletName": "Wallet name",
     "deleteWalletConfirm": "Delete wallet",
     "categories": "Categories",
-    "categoryName": "Category name"
+    "categoryName": "Category name",
+    "deleteAccount": "Delete account",
+    "deleteAccountTitle": "Delete account",
+    "deleteAccountDesc": "This action cannot be undone. All data will be permanently deleted.",
+    "deleteAccountConfirmText": "Type {word} to confirm",
+    "password": "Password",
+    "deletePermanent": "Delete permanently",
+    "deleting": "Deleting...",
+    "edit": "Edit",
+    "editWallet": "Edit wallet",
+    "editCategory": "Edit category",
+    "archive": "Archive",
+    "restore": "Restore",
+    "archivedLabel": "Archived",
+    "expenseSection": "Expenses",
+    "incomeSection": "Income"
   },
   "auth": {
     "loginTitle": "Jodtang",

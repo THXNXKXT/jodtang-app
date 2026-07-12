@@ -11,7 +11,7 @@ import { RenameSheet } from "@/components/ui/rename-sheet";
 import type { Category } from "@/types";
 
 export function CategoryList() {
-  const { locale } = useI18n();
+  const { t, locale } = useI18n();
   const { categories, reload } = useAppData();
 
   async function handleRename(id: number, name: string) {
@@ -24,8 +24,8 @@ export function CategoryList() {
 
   return (
     <div className="space-y-5">
-      <Section title="รายจ่าย" items={expense} onRename={handleRename} locale={locale} />
-      <Section title="รายรับ" items={income} onRename={handleRename} locale={locale} />
+      <Section title={t("settings.expenseSection")} items={expense} onRename={handleRename} locale={locale} />
+      <Section title={t("settings.incomeSection")} items={income} onRename={handleRename} locale={locale} />
     </div>
   );
 }
@@ -58,6 +58,7 @@ function CategoryRow({
   onRename: (id: number, name: string) => Promise<void>;
   locale: string;
 }) {
+  const { t } = useI18n();
   const controls = useAnimation();
   const Icon = CATEGORY_ICONS[cat.icon];
   const color = CATEGORY_COLORS[cat.icon] ?? "#525252";
@@ -87,7 +88,7 @@ function CategoryRow({
         aria-label="edit"
       >
         <PencilIcon size={16} />
-        <span className="text-[10px]">แก้ไข</span>
+        <span className="text-[10px]">{t("settings.edit")}</span>
       </button>
       <motion.div
         animate={controls}
@@ -113,7 +114,7 @@ function CategoryRow({
         key={renameOpen ? displayName : "closed"}
         open={renameOpen}
         currentName={displayName}
-        title="แก้ไขหมวดหมู่"
+        title={t("settings.editCategory")}
         onClose={() => setRenameOpen(false)}
         onSave={saveRename}
       />

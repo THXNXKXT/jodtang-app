@@ -97,7 +97,22 @@
     "walletName": "ชื่อกระเป๋าเงิน",
     "deleteWalletConfirm": "ลบกระเป๋าเงิน",
     "categories": "หมวดหมู่",
-    "categoryName": "ชื่อหมวดหมู่"
+    "categoryName": "ชื่อหมวดหมู่",
+    "deleteAccount": "ลบบัญชี",
+    "deleteAccountTitle": "ลบบัญชี",
+    "deleteAccountDesc": "การกระทำนี้ไม่สามารถย้อนกลับได้ ข้อมูลทั้งหมดจะถูกลบถาวร",
+    "deleteAccountConfirmText": "พิมพ์ {word} เพื่อยืนยัน",
+    "password": "รหัสผ่าน",
+    "deletePermanent": "ลบถาวร",
+    "deleting": "กำลังลบ...",
+    "edit": "แก้ไข",
+    "editWallet": "แก้ไขกระเป๋าเงิน",
+    "editCategory": "แก้ไขหมวดหมู่",
+    "archive": "จัดเก็บ",
+    "restore": "เรียกคืน",
+    "archivedLabel": "จัดเก็บแล้ว",
+    "expenseSection": "รายจ่าย",
+    "incomeSection": "รายรับ"
   },
   "auth": {
     "loginTitle": "จดตัง",
