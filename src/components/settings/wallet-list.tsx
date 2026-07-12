@@ -79,12 +79,6 @@ function WalletRow({
     await reload();
   }
 
-  async function toggleArchive() {
-    await snapBack();
-    await updateWallet(id, { disabled: !isArchived });
-    await reload();
-  }
-
   return (
     <div className="relative overflow-hidden rounded-2xl bg-[var(--color-surface)]">
       <button
