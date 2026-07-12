@@ -21,14 +21,14 @@ const DataContext = createContext<AppData>({
   loading: true, reload: async () => {},
 });
 
-type DbWallet = { id: number; name: string; type: string; icon: string; color: string; openingBalance: number; sortOrder: number };
+type DbWallet = { id: number; name: string; type: string; icon: string; color: string; openingBalance: number; sortOrder: number; disabled: boolean };
 type DbCategory = { id: number; name: string; nameEn: string; type: string; icon: string; color: string; sortOrder: number };
 type DbTransaction = { id: number; type: string; amount: number; categoryId: number | null; walletId: number | null; toWalletId: number | null; date: Date; note: string | null };
 type DbBudget = { id: number; categoryId: number; amount: number; active: boolean };
 type DbGoal = { id: number; name: string; targetAmount: number; currentAmount: number; icon: string; color: string };
 
 function mapWallet(w: DbWallet): Wallet {
-  return { id: String(w.id), name: w.name, type: w.type as Wallet["type"], icon: w.icon, color: w.color, openingBalance: w.openingBalance, sortOrder: w.sortOrder };
+  return { id: String(w.id), name: w.name, type: w.type as Wallet["type"], icon: w.icon, color: w.color, openingBalance: w.openingBalance, sortOrder: w.sortOrder, disabled: w.disabled ?? false };
 }
 function mapCategory(c: DbCategory): Category {
   return { id: String(c.id), name: c.name, nameEn: c.nameEn, type: c.type as Category["type"], icon: c.icon, color: c.color, sortOrder: c.sortOrder };

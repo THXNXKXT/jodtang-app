@@ -23,6 +23,7 @@ export interface Wallet {
   color: string;
   openingBalance: number;
   sortOrder: number;
+  disabled: boolean;
 }
 
 export interface Category {

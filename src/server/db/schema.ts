@@ -39,6 +39,7 @@ export const wallets = pgTable("wallets", {
   color: text("color").notNull().default("#3b82f6"),
   openingBalance: integer("opening_balance").notNull().default(0),
   sortOrder: integer("sort_order").notNull().default(0),
+  disabled: boolean("disabled").notNull().default(false),
   createdAt: timestamp("created_at").defaultNow(),
 });
 

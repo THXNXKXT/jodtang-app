@@ -15,6 +15,7 @@ export const updateWalletSchema = z.object({
   color: z.string().regex(/^#[0-9a-fA-F]{6}$/).optional(),
   openingBalance: z.number().int().min(0).optional(),
   sortOrder: z.number().int().optional(),
+  disabled: z.boolean().optional(),
 });
 
 export const createCategorySchema = z.object({

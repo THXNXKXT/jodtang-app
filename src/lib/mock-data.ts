@@ -3,10 +3,10 @@ import type {
 } from "@/types";
 
 export const mockWallets: Wallet[] = [
-  { id: "w1", name: "กระเป๋าสตางค์", type: "cash", icon: "cash", color: "#22c55e", openingBalance: 5000, sortOrder: 0 },
-  { id: "w2", name: "KBANK", type: "bank", icon: "bank", color: "#3b82f6", openingBalance: 45000, sortOrder: 1 },
-  { id: "w3", name: "TrueMoney", type: "ewallet", icon: "ewallet", color: "#f97316", openingBalance: 1200, sortOrder: 2 },
-  { id: "w4", name: "เงินออม", type: "savings", icon: "savings", color: "#a855f7", openingBalance: 100000, sortOrder: 3 },
+  { id: "w1", name: "กระเป๋าสตางค์", type: "cash", icon: "cash", color: "#22c55e", openingBalance: 5000, sortOrder: 0, disabled: false },
+  { id: "w2", name: "KBANK", type: "bank", icon: "bank", color: "#3b82f6", openingBalance: 45000, sortOrder: 1, disabled: false },
+  { id: "w3", name: "TrueMoney", type: "ewallet", icon: "ewallet", color: "#f97316", openingBalance: 1200, sortOrder: 2, disabled: false },
+  { id: "w4", name: "เงินออม", type: "savings", icon: "savings", color: "#a855f7", openingBalance: 100000, sortOrder: 3, disabled: false },
 ];
 
 export const mockCategories: Category[] = [

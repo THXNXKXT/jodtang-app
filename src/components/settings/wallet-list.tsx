@@ -1,11 +1,12 @@
 "use client";
+import { motion } from "framer-motion";
+import { PencilIcon, PowerIcon, PowerOffIcon } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { CATEGORY_ICONS } from "@/lib/constants";
 import { useAppData } from "@/lib/data-provider";
 import { formatCurrency } from "@/lib/utils";
 import { useI18n } from "@/i18n/config";
-import { updateWallet, deleteWallet } from "@/server/actions/wallets";
-import { PencilIcon, TrashIcon } from "lucide-react";
+import { updateWallet } from "@/server/actions/wallets";
 import type { WalletType } from "@/types";
 
 export function WalletList() {
@@ -40,9 +41,8 @@ export function WalletList() {
     }
   }
 
-  async function handleDelete(id: number, name: string) {
-    if (!confirm(`${t("settings.deleteWalletConfirm")}: ${name}`)) return;
-    await deleteWallet(id);
+  async function toggleDisabled(id: number, current: boolean) {
+    await updateWallet(id, { disabled: !current });
     await reload();
   }
 
@@ -52,28 +52,50 @@ export function WalletList() {
         const Icon = CATEGORY_ICONS[wallet.icon];
         const balance = getWalletBalance(wallet.id, wallet.openingBalance);
         const id = Number(wallet.id);
+        const isDisabled = wallet.disabled;
+
         return (
-          <Card key={wallet.id} className="flex items-center gap-3 py-3.5">
-            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full"
-              style={{ backgroundColor: `${wallet.color}1a`, color: wallet.color }}>
-              {Icon ? <Icon size={18} /> : null}
-            </div>
-            <div className="min-w-0 flex-1">
-              <p className="text-sm font-medium text-[var(--color-text-primary)]">{wallet.name}</p>
-              <p className="text-xs text-[var(--color-text-secondary)]">{typeLabels[wallet.type]}</p>
-            </div>
-            <span className="shrink-0 text-sm font-semibold tabular-nums text-[var(--color-text-primary)]">
-              {formatCurrency(balance)}
-            </span>
-            <button onClick={() => handleRename(id, wallet.name)} aria-label="edit"
-              className="shrink-0 rounded-full p-1.5 text-[var(--color-text-muted)] hover:text-[var(--color-text-primary)]">
-              <PencilIcon size={14} />
+          <div key={wallet.id} className="relative overflow-hidden rounded-2xl bg-[var(--color-surface)]">
+            {/* ponytail: swipe reveals edit + disable toggle behind */}
+            <button
+              type="button"
+              onClick={() => handleRename(id, wallet.name)}
+              className="absolute inset-y-0 right-20 flex w-20 items-center justify-center bg-[var(--color-primary)] text-white"
+              aria-label="edit"
+            >
+              <PencilIcon size={18} />
             </button>
-            <button onClick={() => handleDelete(id, wallet.name)} aria-label="delete"
-              className="shrink-0 rounded-full p-1.5 text-[var(--color-text-muted)] hover:text-[var(--color-expense)]">
-              <TrashIcon size={14} />
+            <button
+              type="button"
+              onClick={() => toggleDisabled(id, isDisabled)}
+              className="absolute inset-y-0 right-0 flex w-20 items-center justify-center text-white"
+              style={{ backgroundColor: isDisabled ? "#22c55e" : "#71717a" }}
+              aria-label={isDisabled ? "enable" : "disable"}
+            >
+              {isDisabled ? <PowerIcon size={18} /> : <PowerOffIcon size={18} />}
             </button>
-          </Card>
+            <motion.div
+              drag="x"
+              dragConstraints={{ left: -160, right: 0 }}
+              dragElastic={0.1}
+              className={`relative flex items-center gap-3 bg-[var(--color-surface)] px-4 py-3.5 ${isDisabled ? "opacity-50" : ""}`}
+            >
+              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full"
+                style={{ backgroundColor: `${wallet.color}1a`, color: wallet.color }}>
+                {Icon ? <Icon size={18} /> : null}
+              </div>
+              <div className="min-w-0 flex-1">
+                <p className="text-sm font-medium text-[var(--color-text-primary)]">
+                  {wallet.name}
+                  {isDisabled && <span className="ml-2 text-xs text-[var(--color-text-muted)]">· ปิดอยู่</span>}
+                </p>
+                <p className="text-xs text-[var(--color-text-secondary)]">{typeLabels[wallet.type]}</p>
+              </div>
+              <span className="shrink-0 text-sm font-semibold tabular-nums text-[var(--color-text-primary)]">
+                {formatCurrency(balance)}
+              </span>
+            </motion.div>
+          </div>
         );
       })}
     </div>

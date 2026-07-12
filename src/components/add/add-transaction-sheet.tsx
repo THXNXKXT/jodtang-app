@@ -45,8 +45,8 @@ export function AddTransactionSheet({ open, onClose, editing }: Props) {
 
   const cats = useMemo(() => allCats.filter((c) => c.type === type), [allCats, type]);
 
-  useEffect(() => { if (wallets.length > 0 && !walletId) setWalletId(wallets[0]!.id); }, [wallets, walletId]);
-  useEffect(() => { if (wallets.length > 1 && !toWalletId) setToWalletId(wallets[1]!.id); }, [wallets, toWalletId]);
+  useEffect(() => { if (wallets.length > 0 && !walletId) setWalletId(wallets.find((w) => !w.disabled)?.id ?? wallets[0]!.id); }, [wallets, walletId]);
+  useEffect(() => { if (wallets.length > 1 && !toWalletId) setToWalletId(wallets.filter((w) => !w.disabled)[1]?.id ?? wallets[1]!.id); }, [wallets, toWalletId]);
   // ponytail: derived — suggestion overrides default unless user manually picked
   const suggestedFromNote = !manualCat ? cats.find((c) => c.icon === suggestCategoryIcon(note))?.id : undefined;
   const effectiveCategoryId = suggestedFromNote ?? categoryId;
@@ -140,7 +140,7 @@ export function AddTransactionSheet({ open, onClose, editing }: Props) {
         <div>
           <p className="mb-2 text-xs text-[var(--color-text-secondary)]">{type === "transfer" ? t("add.fromWallet") : t("add.wallet")}</p>
           <div className="flex flex-wrap gap-2">
-            {wallets.map((w) => {
+            {wallets.filter((w) => !w.disabled).map((w) => {
               const Icon = CATEGORY_ICONS[w.icon];
               return (
                 <button key={w.id} type="button" onClick={() => setWalletId(w.id)}
@@ -157,7 +157,7 @@ export function AddTransactionSheet({ open, onClose, editing }: Props) {
           <div>
             <p className="mb-2 text-xs text-[var(--color-text-secondary)]">{t("add.toWallet")}</p>
             <div className="flex flex-wrap gap-2">
-              {wallets.filter((w) => w.id !== walletId).map((w) => {
+              {wallets.filter((w) => !w.disabled && w.id !== walletId).map((w) => {
                 const Icon = CATEGORY_ICONS[w.icon];
                 return (
                   <button key={w.id} type="button" onClick={() => setToWalletId(w.id)}
