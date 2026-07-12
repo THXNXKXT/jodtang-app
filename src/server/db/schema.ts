@@ -15,6 +15,7 @@ export const users = pgTable("users", {
   updatedAt: timestamp("updated_at").defaultNow(),
   lineId: text("line_id"),
   notifyFreq: text("notify_freq").default("off"),
+  lastDailySummaryAt: timestamp("last_daily_summary_at"),
 });
 
 export const sessions = pgTable("sessions", {
