@@ -175,9 +175,9 @@ export function AddTransactionSheet({ open, onClose, editing }: Props) {
           </div>
         )}
 
-        {/* ponytail: explicit h-[46px] on both — <input type=date> has UA widget padding that makes it taller */}
+        {/* ponytail: date UA widget has its own min-height on mobile webkit — kill it, force h-[46px] */}
         <input type="date" value={date} onChange={(e) => setDate(e.target.value)} max={today}
-          className="h-[46px] w-full rounded-xl border border-[var(--color-border)] bg-[var(--color-bg)] px-4 text-sm outline-none text-[var(--color-text-primary)] [color-scheme:inherit]" />
+          className="h-[46px] min-h-0 w-full rounded-xl border border-[var(--color-border)] bg-[var(--color-bg)] px-4 text-sm outline-none text-[var(--color-text-primary)] [color-scheme:inherit] [&::-webkit-date-and-time-value]:min-h-0 [&::-webkit-date-and-time-value]:p-0 [&::-webkit-date-and-time-value]:text-[inherit]" />
 
         <input type="text" value={note} onChange={(e) => setNote(e.target.value)} placeholder={t("add.note")}
           className="h-[46px] w-full rounded-xl border border-[var(--color-border)] bg-[var(--color-bg)] px-4 text-sm outline-none placeholder:text-[var(--color-text-muted)]" />
