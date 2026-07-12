@@ -44,7 +44,7 @@ export function AddTransactionSheet({ open, onClose, editing }: Props) {
     setToWalletId(editing.toWalletId ?? "");
     setNote(editing.note);
     setManualCat(true);
-    setDate(editing.date instanceof Date ? editing.date.toISOString().slice(0, 10) : String(editing.date).slice(0, 10));
+    setDate(String(editing.date).slice(0, 10));
   }, [open, editing]);
 
   const cats = useMemo(() => allCats.filter((c) => c.type === type), [allCats, type]);
