@@ -175,9 +175,14 @@ export function AddTransactionSheet({ open, onClose, editing }: Props) {
           </div>
         )}
 
-        {/* ponytail: date UA widget has its own min-height on mobile webkit — kill it, force h-[46px] */}
-        <input type="date" value={date} onChange={(e) => setDate(e.target.value)} max={today}
-          className="h-[46px] min-h-0 w-full rounded-xl border border-[var(--color-border)] bg-[var(--color-bg)] px-4 text-sm outline-none text-[var(--color-text-primary)] [color-scheme:inherit] [&::-webkit-date-and-time-value]:min-h-0 [&::-webkit-date-and-time-value]:p-0 [&::-webkit-date-and-time-value]:text-[inherit]" />
+        {/* ponytail: layered date — visible button matches text input height, hidden native input for picker */}
+        <label className="relative block h-[46px] w-full rounded-xl border border-[var(--color-border)] bg-[var(--color-bg)] px-4 text-sm text-[var(--color-text-primary)]">
+          <span className="flex h-full items-center">
+            {new Intl.DateTimeFormat("th-TH", { day: "numeric", month: "short", year: "numeric" }).format(new Date(date + "T00:00:00"))}
+          </span>
+          <input type="date" value={date} onChange={(e) => setDate(e.target.value)} max={today}
+            className="absolute inset-0 h-full w-full cursor-pointer opacity-0" />
+        </label>
 
         <input type="text" value={note} onChange={(e) => setNote(e.target.value)} placeholder={t("add.note")}
           className="h-[46px] w-full rounded-xl border border-[var(--color-border)] bg-[var(--color-bg)] px-4 text-sm outline-none placeholder:text-[var(--color-text-muted)]" />
