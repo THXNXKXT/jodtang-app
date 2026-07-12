@@ -8,7 +8,7 @@ import { catName } from "@/lib/utils";
 import { RenameSheet } from "@/components/ui/rename-sheet";
 
 export function CategoryList() {
-  const { t, locale } = useI18n();
+  const { locale } = useI18n();
   const { categories, reload } = useAppData();
 
   async function handleRename(id: number, name: string) {
