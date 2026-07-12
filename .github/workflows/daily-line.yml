@@ -2,8 +2,8 @@ name: Daily LINE Report
 
 on:
   schedule:
-    # 17:00 UTC = 00:00 ICT (Bangkok)
-    - cron: "0 17 * * *"
+    # 16:30 UTC = 23:30 ICT — off-peak, GitHub Actions schedule reliability drops at 00:00 UTC
+    - cron: "30 16 * * *"
   workflow_dispatch: # manual trigger for testing
 
 jobs:
