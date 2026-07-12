@@ -1,4 +1,5 @@
 "use client";
+import { useState } from "react";
 import { motion, useAnimation } from "framer-motion";
 import { PencilIcon, ArchiveIcon, ArchiveRestoreIcon } from "lucide-react";
 import { CATEGORY_ICONS } from "@/lib/constants";
@@ -6,6 +7,7 @@ import { useAppData } from "@/lib/data-provider";
 import { formatCurrency } from "@/lib/utils";
 import { useI18n } from "@/i18n/config";
 import { updateWallet } from "@/server/actions/wallets";
+import { RenameSheet } from "@/components/ui/rename-sheet";
 import type { Wallet, WalletType } from "@/types";
 
 export function WalletList() {
@@ -59,6 +61,7 @@ function WalletRow({
   const Icon = CATEGORY_ICONS[wallet.icon];
   const id = Number(wallet.id);
   const isArchived = wallet.disabled;
+  const [renameOpen, setRenameOpen] = useState(false);
 
   async function snapBack() {
     // ponytail: spring back to rest after action — fixes "icons stuck open"
@@ -67,11 +70,12 @@ function WalletRow({
 
   async function handleRename() {
     await snapBack();
-    const name = prompt("ชื่อกระเป๋าเงิน", wallet.name);
-    if (name && name.trim() && name !== wallet.name) {
-      await updateWallet(id, { name: name.trim() });
-      await reload();
-    }
+    setRenameOpen(true);
+  }
+
+  async function saveRename(name: string) {
+    await updateWallet(id, { name });
+    await reload();
   }
 
   async function toggleArchive() {
@@ -127,6 +131,14 @@ function WalletRow({
           {formatCurrency(balance)}
         </span>
       </motion.div>
+
+      <RenameSheet
+        open={renameOpen}
+        currentName={wallet.name}
+        title="แก้ไขกระเป๋าเงิน"
+        onClose={() => setRenameOpen(false)}
+        onSave={saveRename}
+      />
     </div>
   );
 }
