@@ -7,6 +7,7 @@ import { ThemeToggle } from "@/components/theme/theme-toggle";
 import dynamic from "next/dynamic";
 const ProfileSheet = dynamic(() => import("@/components/settings/profile-sheet").then((m) => m.ProfileSheet), { ssr: false });
 import { LineSection } from "@/components/settings/line-section";
+import { DeleteAccountButton } from "@/components/settings/delete-account-button";
 import { Logo } from "@/components/svg/logo";
 import { useI18n, type Locale } from "@/i18n/config";
 import { authClient } from "@/lib/auth-client";
@@ -87,6 +88,8 @@ export default function SettingsPage() {
         <button onClick={handleSignOut} className="flex w-full items-center justify-center gap-2 rounded-xl px-4 py-3 text-sm font-medium text-[var(--color-expense)]">
           <LogOutIcon size={16} /> {t("settings.signOut")}
         </button>
+
+        <DeleteAccountButton />
       </div>
 
       <ProfileSheet open={profileOpen} onClose={() => { setProfileOpen(false); reload(); }} currentName={name} currentAvatar={avatar} />
