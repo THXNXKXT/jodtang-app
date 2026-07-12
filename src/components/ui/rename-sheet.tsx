@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { BottomSheet } from "@/components/ui/bottom-sheet";
 
 // ponytail: shared rename modal — used by wallet + category settings
@@ -13,8 +13,7 @@ export function RenameSheet({
   onSave: (name: string) => Promise<void>;
 }) {
   const [value, setValue] = useState(currentName);
-
-  useEffect(() => { if (open) setValue(currentName); }, [open, currentName]);
+  // ponytail: no effect to sync — caller uses key={currentName} to remount on target change
 
   async function handleSave() {
     if (value.trim() && value.trim() !== currentName) await onSave(value.trim());

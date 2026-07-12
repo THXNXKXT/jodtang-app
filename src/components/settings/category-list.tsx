@@ -67,6 +67,7 @@ function Section({
 
       {/* ponytail: shared modal, single instance per section */}
       <RenameSheet
+        key={rename ? rename.name : "closed"}
         open={rename !== null}
         currentName={rename?.name ?? ""}
         title="แก้ไขหมวดหมู่"

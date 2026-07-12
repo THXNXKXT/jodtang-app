@@ -133,6 +133,7 @@ function WalletRow({
       </motion.div>
 
       <RenameSheet
+        key={renameOpen ? wallet.name : "closed"}
         open={renameOpen}
         currentName={wallet.name}
         title="แก้ไขกระเป๋าเงิน"
