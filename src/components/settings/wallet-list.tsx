@@ -110,7 +110,7 @@ function WalletRow({
           // ponytail: if released mid-swipe without button tap, snap to nearest edge
           if (info.offset.x > -40) controls.start({ x: 0 });
         }}
-        className={`relative flex items-center gap-3 bg-[var(--color-surface)] px-4 py-3.5 ${isArchived ? "opacity-50" : ""}`}
+        className={`relative flex items-center gap-3 bg-[var(--color-surface)] px-4 py-3.5 ${isArchived ? "grayscale" : ""}`}
       >
         <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full"
           style={{ backgroundColor: `${wallet.color}1a`, color: wallet.color }}>
