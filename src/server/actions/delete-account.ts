@@ -3,10 +3,10 @@ import { db } from "@/server/db";
 import { users, accounts } from "@/server/db/schema";
 import { eq, and } from "drizzle-orm";
 import { requireUserId } from "@/server/session";
-import bcrypt from "bcryptjs";
+import { verifyPassword } from "better-auth/crypto";
 
-// ponytail: verify password against accounts table (better-auth stores bcrypt hash there)
-// then cascade-delete user — all related rows (wallets, txns, categories, sessions) cascade.
+// ponytail: better-auth uses scrypt (not bcrypt) — use its own verify to match hash format.
+// Cascade-delete user — all related rows (wallets, txns, categories, sessions) cascade.
 export async function deleteAccount(password: string): Promise<{ success: boolean; error?: string }> {
   const userId = await requireUserId();
   if (!password) return { success: false, error: "กรุณาใส่รหัสผ่าน" };
@@ -18,7 +18,7 @@ export async function deleteAccount(password: string): Promise<{ success: boolea
 
   if (!acc?.password) return { success: false, error: "ไม่พบรหัสผ่าน" };
 
-  const ok = await bcrypt.compare(password, acc.password);
+  const ok = await verifyPassword({ hash: acc.password, password });
   if (!ok) return { success: false, error: "รหัสผ่านไม่ถูกต้อง" };
 
   await db.delete(users).where(eq(users.id, userId));
