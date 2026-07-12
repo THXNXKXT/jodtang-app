@@ -1,7 +1,6 @@
 "use client";
 import { motion } from "framer-motion";
 import { PencilIcon, PowerIcon, PowerOffIcon } from "lucide-react";
-import { Card } from "@/components/ui/card";
 import { CATEGORY_ICONS } from "@/lib/constants";
 import { useAppData } from "@/lib/data-provider";
 import { formatCurrency } from "@/lib/utils";
