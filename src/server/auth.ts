@@ -3,6 +3,7 @@ import { betterAuth } from "better-auth";
 import { drizzleAdapter } from "better-auth/adapters/drizzle";
 import { db } from "./db";
 import * as schema from "./db/schema";
+import { seedDefaultData } from "./actions/seed";
 
 export const auth = betterAuth({
   secret: env.BETTER_AUTH_SECRET,
@@ -21,5 +22,15 @@ export const auth = betterAuth({
       verification: schema.verifications,
     },
   }),
-  emailAndPassword: { enabled: true }
+  emailAndPassword: { enabled: true },
+  // ponytail: better-auth hook — seed wallets + categories once on signup, no client changes
+  databaseHooks: {
+    user: {
+      create: {
+        after: async (user) => {
+          try { await seedDefaultData(user.id); } catch (e) { console.error("Seed failed:", e); }
+        },
+      },
+    },
+  },
 });
