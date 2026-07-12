@@ -3,8 +3,6 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import { PageTransition } from "@/components/layout/page-transition";
 import { Card } from "@/components/ui/card";
-import { WalletList } from "@/components/settings/wallet-list";
-import { CategoryList } from "@/components/settings/category-list";
 import { ThemeToggle } from "@/components/theme/theme-toggle";
 import dynamic from "next/dynamic";
 const ProfileSheet = dynamic(() => import("@/components/settings/profile-sheet").then((m) => m.ProfileSheet), { ssr: false });
@@ -15,6 +13,8 @@ import { authClient } from "@/lib/auth-client";
 import { useAppData } from "@/lib/data-provider";
 import { isAvatarUrl } from "@/components/svg/avatars";
 import { GlobeIcon, LogOutIcon, PaletteIcon, ChevronRightIcon } from "@/components/svg/icons";
+import { WalletIcon, TagsIcon } from "lucide-react";
+import Link from "next/link";
 
 export default function SettingsPage() {
   const { t, locale, setLocale } = useI18n();
@@ -78,15 +78,9 @@ export default function SettingsPage() {
           <ThemeToggle />
         </div>
 
-        <div>
-          <p className="mb-2 text-xs font-medium uppercase text-[var(--color-text-muted)]">{t("settings.wallets")}</p>
-          <WalletList />
-        </div>
-
-        <div>
-          <p className="mb-2 text-xs font-medium uppercase text-[var(--color-text-muted)]">{t("settings.categories")}</p>
-          <CategoryList />
-        </div>
+        {/* ponytail: routes instead of inline — list got long, settings is a hub now */}
+        <ManageLink href="/settings/wallets" label={t("settings.wallets")} icon={<WalletIcon size={18} />} />
+        <ManageLink href="/settings/categories" label={t("settings.categories")} icon={<TagsIcon size={18} />} />
 
         <LineSection />
 
@@ -97,6 +91,18 @@ export default function SettingsPage() {
 
       <ProfileSheet open={profileOpen} onClose={() => { setProfileOpen(false); reload(); }} currentName={name} currentAvatar={avatar} />
     </PageTransition>
+  );
+}
+
+// ponytail: tiny inline Link wrapper — reuse for both, no extra file
+function ManageLink({ href, label, icon }: { href: string; label: string; icon: React.ReactNode }) {
+  return (
+    <Link href={href}
+      className="flex items-center gap-3 rounded-xl bg-[var(--color-surface)] px-4 py-3.5 text-sm font-medium text-[var(--color-text-primary)] transition-colors hover:bg-[var(--color-surface-hover)] active:bg-[var(--color-surface-hover)]">
+      <span className="text-[var(--color-text-muted)]">{icon}</span>
+      <span className="flex-1">{label}</span>
+      <ChevronRightIcon size={16} className="text-[var(--color-text-muted)]" />
+    </Link>
   );
 }
 
