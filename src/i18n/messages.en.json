@@ -95,7 +95,9 @@
     "saving": "Saving...",
     "save": "Save",
     "walletName": "Wallet name",
-    "deleteWalletConfirm": "Delete wallet"
+    "deleteWalletConfirm": "Delete wallet",
+    "categories": "Categories",
+    "categoryName": "Category name"
   },
   "auth": {
     "loginTitle": "Jodtang",

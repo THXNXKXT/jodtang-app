@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { PageTransition } from "@/components/layout/page-transition";
 import { Card } from "@/components/ui/card";
 import { WalletList } from "@/components/settings/wallet-list";
+import { CategoryList } from "@/components/settings/category-list";
 import { ThemeToggle } from "@/components/theme/theme-toggle";
 import dynamic from "next/dynamic";
 const ProfileSheet = dynamic(() => import("@/components/settings/profile-sheet").then((m) => m.ProfileSheet), { ssr: false });
@@ -80,6 +81,11 @@ export default function SettingsPage() {
         <div>
           <p className="mb-2 text-xs font-medium uppercase text-[var(--color-text-muted)]">{t("settings.wallets")}</p>
           <WalletList />
+        </div>
+
+        <div>
+          <p className="mb-2 text-xs font-medium uppercase text-[var(--color-text-muted)]">{t("settings.categories")}</p>
+          <CategoryList />
         </div>
 
         <LineSection />

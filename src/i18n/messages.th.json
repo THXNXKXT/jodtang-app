@@ -95,7 +95,9 @@
     "saving": "กำลังบันทึก...",
     "save": "บันทึก",
     "walletName": "ชื่อกระเป๋าเงิน",
-    "deleteWalletConfirm": "ลบกระเป๋าเงิน"
+    "deleteWalletConfirm": "ลบกระเป๋าเงิน",
+    "categories": "หมวดหมู่",
+    "categoryName": "ชื่อหมวดหมู่"
   },
   "auth": {
     "loginTitle": "จดตัง",
