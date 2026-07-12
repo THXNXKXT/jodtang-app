@@ -19,7 +19,7 @@ const SEGS = [
 
 export function AddTransactionSheet({ open, onClose, editing }: Props) {
   const { t, locale } = useI18n();
-  const { categories: allCats, wallets, reload } = useAppData();
+  const { categories: allCats, wallets, budgets, transactions: allTx, reload } = useAppData();
   const [type, setType] = useState<TransactionType>("expense");
   const [amount, setAmount] = useState("");
   const [categoryId, setCategoryId] = useState("");
@@ -28,6 +28,8 @@ export function AddTransactionSheet({ open, onClose, editing }: Props) {
   const [note, setNote] = useState("");
   const [saving, setSaving] = useState(false);
   const [manualCat, setManualCat] = useState(false);
+  const [splitCount, setSplitCount] = useState(0); // ponytail: 0 = no split, >0 = divide by N
+  const [budgetWarn, setBudgetWarn] = useState<string | null>(null);
 
   // ponytail: when opening in edit mode, hydrate state from the transaction once
   useEffect(() => {
@@ -52,9 +54,10 @@ export function AddTransactionSheet({ open, onClose, editing }: Props) {
   useEffect(() => { if (cats.length > 0 && !effectiveCategoryId) setCategoryId(cats[0]!.id); }, [cats, effectiveCategoryId]);
 
   async function handleSave() {
-    const parsed = parseFloat(amount);
-    if (!Number.isFinite(parsed) || parsed <= 0 || !walletId) return;
+    const rawParsed = parseFloat(amount);
+    if (!Number.isFinite(rawParsed) || rawParsed <= 0 || !walletId) return;
     if (type === "transfer" && (!toWalletId || toWalletId === walletId)) return;
+    const parsed = splitCount > 0 ? Math.round(rawParsed / splitCount) : rawParsed;
     setSaving(true);
     try {
       const common = {
@@ -71,8 +74,26 @@ export function AddTransactionSheet({ open, onClose, editing }: Props) {
       }
       await reload();
       navigator.vibrate?.(20);
+
+      // ponytail: budget alert — after save, check if this category hit ≥80% budget
+      if (type === "expense" && effectiveCategoryId) {
+        const budget = budgets.find((b) => b.categoryId === effectiveCategoryId);
+        if (budget) {
+          const now = new Date();
+          const spent = allTx
+            .filter((tx) => tx.type === "expense" && tx.categoryId === effectiveCategoryId
+              && new Date(tx.date).getMonth() === now.getMonth()
+              && new Date(tx.date).getFullYear() === now.getFullYear())
+            .reduce((s, tx) => s + tx.amount, 0) + parsed;
+          if (spent >= budget.amount * 0.8) {
+            navigator.vibrate?.([15, 50, 15]);
+            setBudgetWarn(spent >= budget.amount ? "เกินงบแล้ว!" : "ใกล้เต็มงบแล้ว");
+          }
+        }
+      }
+
       setAmount(""); setNote(""); setCategoryId(""); setManualCat(false);
-      onClose();
+      if (!budgetWarn) onClose();
     } catch (e) { console.error("Save error:", e); }
     finally { setSaving(false); }
   }
@@ -152,10 +173,39 @@ export function AddTransactionSheet({ open, onClose, editing }: Props) {
 
         <input type="text" value={note} onChange={(e) => setNote(e.target.value)} placeholder={t("add.note")}
           className="w-full rounded-xl border border-[var(--color-border)] bg-[var(--color-bg)] px-4 py-3 text-sm outline-none placeholder:text-[var(--color-text-muted)]" />
+
+        {/* ponytail: bill split — divide by N, only for expense/income */}
+        {type !== "transfer" && (
+          <div className="flex items-center justify-between rounded-xl border border-[var(--color-border)] bg-[var(--color-bg)] px-4 py-3">
+            <span className="text-sm text-[var(--color-text-secondary)]">หารคน (split)</span>
+            <div className="flex items-center gap-2">
+              <button type="button" onClick={() => setSplitCount(Math.max(0, splitCount - 1))} className="size-7 rounded-full bg-[var(--color-surface-hover)] text-sm font-semibold text-[var(--color-text-primary)]">−</button>
+              <span className="w-6 text-center text-sm font-semibold tabular-nums text-[var(--color-text-primary)]">{splitCount > 0 ? splitCount : "—"}</span>
+              <button type="button" onClick={() => setSplitCount(Math.min(20, splitCount + 1))} className="size-7 rounded-full bg-[var(--color-surface-hover)] text-sm font-semibold text-[var(--color-text-primary)]">+</button>
+            </div>
+            {splitCount > 1 && parseFloat(amount) > 0 && (
+              <span className="text-xs text-[var(--color-text-muted)]">
+                = ฿{Math.round(parseFloat(amount) / splitCount).toLocaleString("th-TH")} / คน
+              </span>
+            )}
+          </div>
+        )}
+
         <button type="button" onClick={handleSave} disabled={saving}
           className="w-full rounded-xl bg-[var(--color-primary)] py-3.5 text-sm font-semibold text-white disabled:opacity-50">
           {saving ? t("add.saving") : t("add.save")}
         </button>
+
+        {/* ponytail: budget warning banner — keep sheet open so user sees it */}
+        {budgetWarn && (
+          <div className="rounded-xl border border-[var(--color-expense)] bg-[var(--color-expense)]/10 p-4 text-center">
+            <p className="text-sm font-semibold text-[var(--color-expense)]">{budgetWarn}</p>
+            <button type="button" onClick={() => { setBudgetWarn(null); onClose(); }}
+              className="mt-2 text-xs font-medium text-[var(--color-text-secondary)] underline">
+              ปิด
+            </button>
+          </div>
+        )}
       </div>
     </BottomSheet>
   );
