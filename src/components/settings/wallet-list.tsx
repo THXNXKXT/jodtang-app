@@ -87,7 +87,7 @@ export function WalletList() {
               <div className="min-w-0 flex-1">
                 <p className="text-sm font-medium text-[var(--color-text-primary)]">
                   {wallet.name}
-                  {isDisabled && <span className="ml-2 text-xs text-[var(--color-text-muted)]">· ปิดอยู่</span>}
+                  {isDisabled && <span className="ml-2 text-xs text-[var(--color-text-muted)]">· จัดเก็บแล้ว</span>}
                 </p>
                 <p className="text-xs text-[var(--color-text-secondary)]">{typeLabels[wallet.type]}</p>
               </div>

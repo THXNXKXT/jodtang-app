@@ -62,7 +62,7 @@ export function TransactionFilters({
         <select value={walletId} onChange={(e) => onWalletChange(e.target.value)} className={selectClass}>
           <option value="">{t("add.wallet")}: {t("transactions.all")}</option>
           {wallets.map((w) => (
-            <option key={w.id} value={w.id}>{w.name}{w.disabled ? " · ปิดอยู่" : ""}</option>
+            <option key={w.id} value={w.id}>{w.name}{w.disabled ? " · จัดเก็บแล้ว" : ""}</option>
           ))}
         </select>
       </div>
