@@ -30,6 +30,9 @@ export function AddTransactionSheet({ open, onClose, editing }: Props) {
   const [manualCat, setManualCat] = useState(false);
   const [splitCount, setSplitCount] = useState(0); // ponytail: 0 = no split, >0 = divide by N
   const [budgetWarn, setBudgetWarn] = useState<string | null>(null);
+  // ponytail: YYYY-MM-DD for native <input type=date>, defaults to today
+  const today = new Date().toISOString().slice(0, 10);
+  const [date, setDate] = useState(today);
 
   // ponytail: when opening in edit mode, hydrate state from the transaction once
   useEffect(() => {
@@ -41,6 +44,7 @@ export function AddTransactionSheet({ open, onClose, editing }: Props) {
     setToWalletId(editing.toWalletId ?? "");
     setNote(editing.note);
     setManualCat(true);
+    setDate(editing.date instanceof Date ? editing.date.toISOString().slice(0, 10) : String(editing.date).slice(0, 10));
   }, [open, editing]);
 
   const cats = useMemo(() => allCats.filter((c) => c.type === type), [allCats, type]);
@@ -68,9 +72,9 @@ export function AddTransactionSheet({ open, onClose, editing }: Props) {
         note: note.trim() || t("add." + type),
       };
       if (editing) {
-        await updateTransaction(Number(editing.id), { ...common, date: new Date(editing.date) });
+        await updateTransaction(Number(editing.id), { ...common, date: new Date(date + "T00:00:00") });
       } else {
-        await createTransaction({ ...common, date: new Date().toISOString() });
+        await createTransaction({ ...common, date: date + "T00:00:00.000Z" });
       }
       await reload();
       navigator.vibrate?.(20);
@@ -170,6 +174,9 @@ export function AddTransactionSheet({ open, onClose, editing }: Props) {
             </div>
           </div>
         )}
+
+        <input type="date" value={date} onChange={(e) => setDate(e.target.value)} max={today}
+          className="w-full rounded-xl border border-[var(--color-border)] bg-[var(--color-bg)] px-4 py-3 text-sm outline-none text-[var(--color-text-primary)]" />
 
         <input type="text" value={note} onChange={(e) => setNote(e.target.value)} placeholder={t("add.note")}
           className="w-full rounded-xl border border-[var(--color-border)] bg-[var(--color-bg)] px-4 py-3 text-sm outline-none placeholder:text-[var(--color-text-muted)]" />
