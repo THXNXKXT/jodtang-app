@@ -11,43 +11,6 @@ import {
   type ActionResult,
 } from "@/server/validations/schemas";
 
-export async function getCategories() {
-  const userId = await requireUserId();
-  const existing = await db.select().from(categories).where(eq(categories.userId, userId)).orderBy(categories.sortOrder);
-  const { defaultCategories } = await import("@/server/seed-data");
-
-  // ponytail: sync defaults by nameEn (stable key, survives Thai name edits)
-  // 1. insert missing categories
-  // 2. update icon+color for existing defaults whose icon drifted from seed
-  const defaultsByKey = new Map(defaultCategories.map(c => [`${c.type}:${c.nameEn}`, c]));
-  const existingKeys = new Set(existing.map(c => `${c.type}:${c.nameEn}`));
-
-  let changed = false;
-
-  // insert missing
-  const missing = defaultCategories.filter(c => !existingKeys.has(`${c.type}:${c.nameEn}`));
-  if (missing.length > 0) {
-    await db.insert(categories).values(missing.map(c => ({ ...c, userId })));
-    changed = true;
-  }
-
-  // update drifted icon/color on existing defaults
-  for (const cat of existing) {
-    const def = defaultsByKey.get(`${cat.type}:${cat.nameEn}`);
-    if (def && (cat.icon !== def.icon || cat.color !== def.color)) {
-      await db.update(categories)
-        .set({ icon: def.icon, color: def.color })
-        .where(and(eq(categories.id, cat.id), eq(categories.userId, userId)));
-      changed = true;
-    }
-  }
-
-  if (changed) {
-    return db.select().from(categories).where(eq(categories.userId, userId)).orderBy(categories.sortOrder);
-  }
-  return existing;
-}
-
 export async function createCategory(
   input: z.infer<typeof createCategorySchema>,
 ): Promise<ActionResult> {
@@ -72,7 +35,7 @@ export async function updateCategory(
     const [updated] = await db
       .update(categories)
       .set(data)
-      .where(eq(categories.id, id))
+      .where(and(eq(categories.id, id), eq(categories.userId, userId)))
       .returning();
     if (!updated) return { success: false, error: "Not found" };
     revalidatePath("/");
@@ -87,7 +50,7 @@ export async function deleteCategory(id: number): Promise<ActionResult> {
   try {
     const [deleted] = await db
       .delete(categories)
-      .where(eq(categories.id, id))
+      .where(and(eq(categories.id, id), eq(categories.userId, userId)))
       .returning();
     if (!deleted) return { success: false, error: "Not found" };
     revalidatePath("/");

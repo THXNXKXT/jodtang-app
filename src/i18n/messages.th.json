@@ -93,7 +93,9 @@
     "namePlaceholder": "ชื่อของคุณ",
     "chooseAvatar": "เลือกรูปประจำตัว",
     "saving": "กำลังบันทึก...",
-    "save": "บันทึก"
+    "save": "บันทึก",
+    "walletName": "ชื่อกระเป๋าเงิน",
+    "deleteWalletConfirm": "ลบกระเป๋าเงิน"
   },
   "auth": {
     "loginTitle": "จดตัง",

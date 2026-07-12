@@ -93,7 +93,9 @@
     "namePlaceholder": "Your name",
     "chooseAvatar": "Choose Avatar",
     "saving": "Saving...",
-    "save": "Save"
+    "save": "Save",
+    "walletName": "Wallet name",
+    "deleteWalletConfirm": "Delete wallet"
   },
   "auth": {
     "loginTitle": "Jodtang",
