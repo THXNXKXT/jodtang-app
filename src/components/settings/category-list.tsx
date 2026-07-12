@@ -23,20 +23,19 @@ export function CategoryList() {
 
   return (
     <div className="space-y-5">
-      <Section title="รายจ่าย" items={expense} onRename={handleRename} locale={locale} t={t} />
-      <Section title="รายรับ" items={income} onRename={handleRename} locale={locale} t={t} />
+      <Section title="รายจ่าย" items={expense} onRename={handleRename} locale={locale} />
+      <Section title="รายรับ" items={income} onRename={handleRename} locale={locale} />
     </div>
   );
 }
 
 function Section({
-  title, items, onRename, locale, t,
+  title, items, onRename, locale,
 }: {
   title: string;
   items: ReturnType<typeof Array.prototype.slice>;
   onRename: (id: number, name: string) => Promise<void>;
   locale: string;
-  t: (k: string) => string;
 }) {
   if (items.length === 0) return null;
   return (
