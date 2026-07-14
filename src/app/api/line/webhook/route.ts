@@ -16,6 +16,10 @@ async function verifySignature(req: NextRequest): Promise<boolean> {
 
 export async function POST(req: NextRequest) {
   // ponytail: LINE webhook signature uses Channel Secret, not Access Token — was always failing
+  if (!env.LINE_CHANNEL_SECRET) {
+    console.error("LINE_CHANNEL_SECRET not set in environment");
+    return NextResponse.json({ error: "Webhook not configured" }, { status: 500 });
+  }
   const rawBody = await req.text();
   const sig = req.headers.get("x-line-signature");
   const expected = sig ? createHmac("SHA256", env.LINE_CHANNEL_SECRET).update(rawBody).digest("base64") : "";
