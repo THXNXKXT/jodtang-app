@@ -2,7 +2,7 @@
 import { useState, useEffect } from "react";
 import { Card } from "@/components/ui/card";
 import { useI18n } from "@/i18n/config";
-import { generateLinkCode, updateNotifyFreq, getLineSettings } from "@/server/actions/line";
+import { generateLinkCode, cancelLinkCode, updateNotifyFreq, getLineSettings } from "@/server/actions/line";
 import { CODE_EXPIRY_MS } from "@/lib/budget-utils";
 import { BellIcon, CopyIcon, CheckIcon, MessageCircleIcon, ExternalLinkIcon, ClockIcon } from "@/components/svg/icons";
 
@@ -164,7 +164,7 @@ export function LineSection() {
               {t("settings.expiresIn")} {mins}:{secs.toString().padStart(2, "0")}
             </span>
           </div>
-          <button onClick={() => { setCode(null); setCodeExpiry(0); }} className="text-xs text-[var(--color-text-secondary)] underline">
+          <button onClick={async () => { await cancelLinkCode(); setCode(null); setCodeExpiry(0); }} className="text-xs text-[var(--color-text-secondary)] underline">
             {t("settings.cancel")}
           </button>
         </Card>

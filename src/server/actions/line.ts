@@ -17,6 +17,12 @@ export async function generateLinkCode(): Promise<{ code?: string; error?: strin
   }
 }
 
+// ponytail: cancel pending link — clears lineId so refresh doesn't restore code
+export async function cancelLinkCode(): Promise<void> {
+  const userId = await requireUserId();
+  await db.update(users).set({ lineId: null }).where(eq(users.id, userId));
+}
+
 export async function updateNotifyFreq(freq: "daily" | "monthly" | "off"): Promise<{ error?: string }> {
   try {
     const userId = await requireUserId();

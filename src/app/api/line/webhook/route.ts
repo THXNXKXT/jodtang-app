@@ -15,10 +15,10 @@ async function verifySignature(req: NextRequest): Promise<boolean> {
 }
 
 export async function POST(req: NextRequest) {
-  // ponytail: constant-time compare skipped — LINE retry covers timing attacks
+  // ponytail: LINE webhook signature uses Channel Secret, not Access Token — was always failing
   const rawBody = await req.text();
   const sig = req.headers.get("x-line-signature");
-  const expected = sig ? createHmac("SHA256", env.LINE_CHANNEL_ACCESS_TOKEN).update(rawBody).digest("base64") : "";
+  const expected = sig ? createHmac("SHA256", env.LINE_CHANNEL_SECRET).update(rawBody).digest("base64") : "";
   if (sig !== expected) {
     return NextResponse.json({ error: "Invalid signature" }, { status: 401 });
   }

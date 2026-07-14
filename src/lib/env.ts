@@ -12,6 +12,7 @@ function validateEnv() {
     GOOGLE_CLIENT_SECRET: process.env.GOOGLE_CLIENT_SECRET ?? "",
     LINE_CHANNEL_ACCESS_TOKEN: process.env.LINE_CHANNEL_ACCESS_TOKEN ?? "",
     CRON_SECRET: process.env.CRON_SECRET ?? "dev-cron-secret",
+    LINE_CHANNEL_SECRET: process.env.LINE_CHANNEL_SECRET ?? "",
   };
 }
 
