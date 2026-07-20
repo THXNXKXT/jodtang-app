@@ -7,9 +7,9 @@ import { seedDefaultData } from "./actions/seed";
 
 export const auth = betterAuth({
   secret: env.BETTER_AUTH_SECRET,
-  baseURL: env.BETTER_AUTH_URL || "http://localhost:3000",
+  baseURL: env.BETTER_AUTH_URL || "http://localhost:3001",
   trustedOrigins: [
-    "http://localhost:3000",
+    "http://localhost:3001",
     "https://jodtang-app.vercel.app",
     env.BETTER_AUTH_URL,
   ],

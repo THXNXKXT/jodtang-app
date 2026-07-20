@@ -1,6 +1,6 @@
 import type { MetadataRoute } from "next";
 
-// ponytail: SVG icons (Octopus mascot on blue) — modern Chrome/Safari rasterize, no PNG needed.
+// ponytail: PNG icons for iOS (SVG ignored on home screen). sharp generates from icon.svg.
 export default function manifest(): MetadataRoute.Manifest {
   return {
     name: "จดตัง — Jodtang",
@@ -12,8 +12,9 @@ export default function manifest(): MetadataRoute.Manifest {
     theme_color: "#3b82f6",
     lang: "th",
     icons: [
-      { src: "/icon.svg", sizes: "any", type: "image/svg+xml", purpose: "any" },
-      { src: "/icon.svg", sizes: "any", type: "image/svg+xml", purpose: "maskable" },
+      { src: "/icon-192.png", sizes: "192x192", type: "image/png", purpose: "any" },
+      { src: "/icon-512.png", sizes: "512x512", type: "image/png", purpose: "any" },
+      { src: "/icon-512.png", sizes: "512x512", type: "image/png", purpose: "maskable" },
     ],
   };
 }
