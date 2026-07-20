@@ -1,28 +1,28 @@
 <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <path d="M24 5C13 5 7 12 7 22C7 27 9 31 13 33V35C13 36 14 37 15 37H33C34 37 35 36 35 35V33C39 31 41 27 41 22C41 12 35 5 24 5Z" fill="#3b82f6" />
-  <path d="M13 35C12 39 9 41 6 41C4 41 3 40 3 38" stroke="#3b82f6" stroke-width="3" stroke-linecap="round" fill="none" />
-  <path d="M17 36C16 40 14 43 11 44" stroke="#3b82f6" stroke-width="3" stroke-linecap="round" fill="none" />
-  <path d="M24 37V46" stroke="#3b82f6" stroke-width="3" stroke-linecap="round" fill="none" />
-  <path d="M31 36C32 40 34 43 37 44" stroke="#3b82f6" stroke-width="3" stroke-linecap="round" fill="none" />
-  <g transform="rotate(-8 35 35)">
-    <path d="M35 35C36 39 39 41 42 41C44 41 45 40 45 38" stroke="#3b82f6" stroke-width="3" stroke-linecap="round" fill="none" />
-    <g transform="rotate(-25 42 39)">
-      <rect x="40.5" y="36" width="3" height="7" rx="0.5" fill="#fbbf24" />
-      <rect x="40.5" y="36" width="3" height="1.5" fill="#f59e0b" />
-      <path d="M40.5 43L42 45L43.5 43Z" fill="#374151" />
-      <rect x="40.5" y="33.5" width="3" height="2.5" rx="0.5" fill="#ec4263" />
-    </g>
-  </g>
-  <circle cx="18" cy="19" r="3" fill="white" />
-  <circle cx="30" cy="19" r="3" fill="white" />
-  <circle cx="18.8" cy="18.3" r="1.3" fill="#3b82f6" />
-  <circle cx="30.8" cy="18.3" r="1.3" fill="#3b82f6" />
-  <circle cx="12" cy="25" r="2.5" fill="white" fill-opacity="0.3" />
-  <circle cx="36" cy="25" r="2.5" fill="white" fill-opacity="0.3" />
-  <path d="M20 28C22 30 26 30 28 28" stroke="white" stroke-width="1.5" stroke-linecap="round" fill="none" />
-  <rect x="19.5" y="7" width="9" height="2" rx="1" fill="white" fill-opacity="0.3" />
-  <g opacity="0.9">
-    <circle cx="24" cy="11" r="3" fill="#fbbf24" stroke="#f59e0b" stroke-width="0.5" />
-    <text x="24" y="13" text-anchor="middle" font-size="4" fill="#f59e0b" font-weight="bold">B</text>
-  </g>
+  <!-- ponytail: piggy bank mascot — round silhouette reads at 16px→512px, no bg -->
+  <!-- Ears -->
+  <path d="M13 15 L9 5 L19 11 Z" fill="#f472b6"/>
+  <path d="M35 15 L39 5 L29 11 Z" fill="#f472b6"/>
+  <path d="M14 14 L12 8 L17 12 Z" fill="#ec4899"/>
+  <path d="M34 14 L36 8 L31 12 Z" fill="#ec4899"/>
+  <!-- Head -->
+  <circle cx="24" cy="26" r="17" fill="#f472b6"/>
+  <!-- Coin slot -->
+  <rect x="19" y="11" width="10" height="2.2" rx="1.1" fill="#be185d" opacity="0.35"/>
+  <!-- Eyes -->
+  <ellipse cx="18" cy="22" rx="2.8" ry="3.2" fill="white"/>
+  <ellipse cx="30" cy="22" rx="2.8" ry="3.2" fill="white"/>
+  <circle cx="18.5" cy="21.5" r="1.6" fill="#1e293b"/>
+  <circle cx="30.5" cy="21.5" r="1.6" fill="#1e293b"/>
+  <circle cx="19.2" cy="20.5" r="0.6" fill="white"/>
+  <circle cx="31.2" cy="20.5" r="0.6" fill="white"/>
+  <!-- Cheeks -->
+  <ellipse cx="13.5" cy="28" rx="2.5" ry="1.8" fill="#fb7185" opacity="0.45"/>
+  <ellipse cx="34.5" cy="28" rx="2.5" ry="1.8" fill="#fb7185" opacity="0.45"/>
+  <!-- Snout (gold = money) -->
+  <ellipse cx="24" cy="31" rx="5.5" ry="4" fill="#fbbf24"/>
+  <ellipse cx="22" cy="31" rx="0.9" ry="1.3" fill="#92400e"/>
+  <ellipse cx="26" cy="31" rx="0.9" ry="1.3" fill="#92400e"/>
+  <!-- Smile -->
+  <path d="M20 36 Q24 38 28 36" stroke="#be185d" stroke-width="1.8" stroke-linecap="round" fill="none"/>
 </svg>
