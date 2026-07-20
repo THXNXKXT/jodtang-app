@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
-const publicRoutes = ["/login", "/signup", "/api/line/webhook", "/api/cron"];
+const publicRoutes = ["/landing", "/login", "/signup", "/api/line/webhook", "/api/cron"];
 
 function sessionCookie(req: NextRequest): string | undefined {
   const suffixes = ["", ".0", ".1", ".2", ".3"];
@@ -21,7 +21,7 @@ export function proxy(request: NextRequest) {
   const sessionToken = sessionCookie(request);
 
   if (!sessionToken && !isPublic) {
-    return NextResponse.redirect(new URL("/login", request.url));
+    return NextResponse.redirect(new URL("/landing", request.url));
   }
   if (sessionToken && isPublic) {
     return NextResponse.redirect(new URL("/", request.url));
