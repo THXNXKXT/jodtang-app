@@ -13,9 +13,28 @@ const plex = IBM_Plex_Sans_Thai({
 });
 
 export const metadata: Metadata = {
-  title: "Jodtang - จดตัง",
-  description: "Mobile-first personal finance tracker",
+  metadataBase: new URL("https://jodtang-app.vercel.app"),
+  title: {
+    default: "จดตัง — แอปจดบันทึกรายรับรายจ่าย",
+    template: "%s | จดตัง",
+  },
+  description: "จดบันทึกรายรับรายจ่ายง่ายๆ บนมือถือ สรุปยอดรายวัน รายเดือน แจ้งเตือนผ่าน LINE",
   manifest: "/manifest.webmanifest",
+  keywords: ["จดตัง", "จดบันทึกเงิน", "รายรับรายจ่าย", "การเงินส่วนบุคคล", "personal finance", "expense tracker", "thai"],
+  authors: [{ name: "Jodtang" }],
+  openGraph: {
+    type: "website",
+    locale: "th_TH",
+    title: "จดตัง — แอปจดบันทึกรายรับรายจ่าย",
+    description: "จดบันทึกรายรับรายจ่ายง่ายๆ สรุปยอดรายวัน แจ้งเตือนผ่าน LINE",
+    siteName: "จดตัง",
+    images: [{ url: "/apple-icon.png", width: 180, height: 180, alt: "จดตัง" }],
+  },
+  twitter: {
+    card: "summary",
+    title: "จดตัง — แอปจดบันทึกรายรับรายจ่าย",
+    description: "จดบันทึกรายรับรายจ่ายง่ายๆ สรุปยอดรายวัน แจ้งเตือนผ่าน LINE",
+  },
   appleWebApp: {
     capable: true,
     statusBarStyle: "black-translucent",
