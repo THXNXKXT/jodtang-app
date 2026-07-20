@@ -1,7 +1,6 @@
 import type { MetadataRoute } from "next";
 
-// ponytail: SVG icon (Octopus on blue) — modern Chrome rasterizes, no PNG conversion needed.
-// apple-icon.png in src/app/ covers iOS via Next.js auto-mount.
+// ponytail: SVG icons (Octopus mascot on blue) — modern Chrome/Safari rasterize, no PNG needed.
 export default function manifest(): MetadataRoute.Manifest {
   return {
     name: "จดตัง — Jodtang",
@@ -15,7 +14,6 @@ export default function manifest(): MetadataRoute.Manifest {
     icons: [
       { src: "/icon.svg", sizes: "any", type: "image/svg+xml", purpose: "any" },
       { src: "/icon.svg", sizes: "any", type: "image/svg+xml", purpose: "maskable" },
-      { src: "/apple-icon.png", sizes: "180x180", type: "image/png" },
     ],
   };
 }
