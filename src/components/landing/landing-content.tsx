@@ -29,7 +29,7 @@ const features = [
 
 export function LandingContent() {
   return (
-    <div className="min-h-dvh bg-[var(--color-bg)] text-[var(--color-text-primary)]">
+    <div className="mx-auto min-h-dvh max-w-2xl bg-[var(--color-bg)] text-[var(--color-text-primary)]">
       {/* Nav */}
       <nav className="mx-auto flex max-w-2xl items-center justify-between px-5 py-4">
         <div className="flex items-center gap-2">
@@ -178,7 +178,6 @@ export function LandingContent() {
       <footer className="border-t border-[var(--color-border)] py-8">
         <div className="mx-auto max-w-2xl px-5 text-center text-xs text-[var(--color-text-muted)]">
           <p>จดตัง — Jodtang · Personal Finance Tracker</p>
-          <p className="mt-1">© 2026 สร้างด้วยใจในประเทศไทย 🐕</p>
         </div>
       </footer>
     </div>
