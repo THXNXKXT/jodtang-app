@@ -29,9 +29,9 @@ const features = [
 
 export function LandingContent() {
   return (
-    <div className="mx-auto min-h-dvh max-w-2xl bg-[var(--color-bg)] text-[var(--color-text-primary)]">
+    <div className="mx-auto min-h-dvh max-w-4xl bg-[var(--color-bg)] text-[var(--color-text-primary)]">
       {/* Nav */}
-      <nav className="mx-auto flex max-w-2xl items-center justify-between px-5 py-4">
+      <nav className="flex items-center justify-between px-5 py-4">
         <div className="flex items-center gap-2">
           <Logo size={32} />
           <span className="text-base font-bold">จดตัง</span>
@@ -42,7 +42,7 @@ export function LandingContent() {
       </nav>
 
       {/* Hero */}
-      <section className="mx-auto max-w-2xl px-5 pb-16 pt-8 text-center">
+      <section className="px-5 pb-16 pt-8 text-center">
         <motion.div
           initial={{ opacity: 0, scale: 0.8 }}
           animate={{ opacity: 1, scale: 1 }}
@@ -66,7 +66,7 @@ export function LandingContent() {
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ ...spring, delay: 0.3 }}
-          className="mx-auto mt-4 max-w-sm text-[15px] leading-relaxed text-[var(--color-text-muted)]"
+          className="mt-4 max-w-sm text-[15px] leading-relaxed text-[var(--color-text-muted)]"
         >
           แอปจดบันทึกรายรับรายจ่ายที่ง่ายและน่ารัก
           สรุปยอดส่ง LINE ทุกเช้า ไม่ต้องนั่งเปิดแอป
@@ -89,7 +89,7 @@ export function LandingContent() {
       </section>
 
       {/* Feature list */}
-      <section className="mx-auto max-w-2xl px-5 py-12">
+      <section className="px-5 py-12">
         <motion.h2
           {...reveal}
           className="mb-8 text-center text-xl font-bold"
@@ -121,7 +121,7 @@ export function LandingContent() {
       <section className="bg-[#06C755] py-14">
         <motion.div
           {...reveal}
-          className="mx-auto max-w-2xl px-5 text-center text-white"
+          className="px-5 text-center text-white"
         >
           <MessageCircleIcon size={40} className="mx-auto mb-4" />
           <h2 className="text-xl font-bold">สรุปยอดส่ง LINE ทุกเช้า</h2>
@@ -133,7 +133,7 @@ export function LandingContent() {
       </section>
 
       {/* How it works */}
-      <section className="mx-auto max-w-2xl px-5 py-14">
+      <section className="px-5 py-14">
         <motion.h2 {...reveal} className="mb-8 text-center text-xl font-bold">ใช้งานง่าย 3 ขั้นตอน</motion.h2>
         <div className="space-y-6">
           {[
@@ -160,7 +160,7 @@ export function LandingContent() {
       </section>
 
       {/* Final CTA */}
-      <section className="mx-auto max-w-2xl px-5 pb-20 text-center">
+      <section className="px-5 pb-20 text-center">
         <motion.div {...reveal}>
           <Logo size={72} className="mx-auto mb-6" />
           <h2 className="text-2xl font-bold">เริ่มจดตังวันนี้</h2>
@@ -176,7 +176,7 @@ export function LandingContent() {
 
       {/* Footer */}
       <footer className="border-t border-[var(--color-border)] py-8">
-        <div className="mx-auto max-w-2xl px-5 text-center text-xs text-[var(--color-text-muted)]">
+        <div className="px-5 text-center text-xs text-[var(--color-text-muted)]">
           <p>จดตัง — Jodtang · Personal Finance Tracker</p>
         </div>
       </footer>
