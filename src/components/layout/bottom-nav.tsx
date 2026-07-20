@@ -12,7 +12,7 @@ import { cn } from "@/lib/utils";
 interface NavItem { href: string; labelKey: string; icon: typeof LayoutDashboardIcon; }
 
 const navItems: NavItem[] = [
-  { href: "/", labelKey: "nav.home", icon: LayoutDashboardIcon },
+  { href: "/home", labelKey: "nav.home", icon: LayoutDashboardIcon },
   { href: "/transactions", labelKey: "nav.transactions", icon: ReceiptTextIcon },
   { href: "/reports", labelKey: "nav.reports", icon: BarChart3Icon },
   { href: "/settings", labelKey: "nav.settings", icon: SettingsIcon },

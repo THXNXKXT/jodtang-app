@@ -27,7 +27,7 @@ const features = [
   { icon: ShieldCheckIcon, title: "ปลอดภัย", desc: "รหัสผ่านเข้ารหัส scrypt ลบบัญชีได้ทุกเมื่อ ข้อมูลเป็นของคุณเพียงคนเดียว" },
 ];
 
-export default function LandingPage() {
+export function LandingContent() {
   return (
     <div className="min-h-dvh bg-[var(--color-bg)] text-[var(--color-text-primary)]">
       {/* Nav */}
