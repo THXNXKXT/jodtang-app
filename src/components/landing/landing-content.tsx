@@ -66,7 +66,7 @@ export function LandingContent() {
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ ...spring, delay: 0.3 }}
-          className="mt-4 max-w-sm text-[15px] leading-relaxed text-[var(--color-text-muted)]"
+          className="mx-auto mt-4 max-w-sm text-[15px] leading-relaxed text-[var(--color-text-muted)]"
         >
           แอปจดบันทึกรายรับรายจ่ายที่ง่ายและน่ารัก
           สรุปยอดส่ง LINE ทุกเช้า ไม่ต้องนั่งเปิดแอป
