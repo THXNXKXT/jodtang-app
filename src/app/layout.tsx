@@ -28,10 +28,10 @@ export const metadata: Metadata = {
     title: "จดตัง — แอปจดบันทึกรายรับรายจ่าย",
     description: "จดบันทึกรายรับรายจ่ายง่ายๆ สรุปยอดรายวัน แจ้งเตือนผ่าน LINE",
     siteName: "จดตัง",
-    images: [{ url: "/apple-icon.png", width: 180, height: 180, alt: "จดตัง" }],
+    images: [{ url: "/og-image.png", width: 1200, height: 630, alt: "จดตัง — แอปจดบันทึกรายรับรายจ่าย" }],
   },
   twitter: {
-    card: "summary",
+    card: "summary_large_image",
     title: "จดตัง — แอปจดบันทึกรายรับรายจ่าย",
     description: "จดบันทึกรายรับรายจ่ายง่ายๆ สรุปยอดรายวัน แจ้งเตือนผ่าน LINE",
   },
