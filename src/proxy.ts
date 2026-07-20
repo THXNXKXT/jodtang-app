@@ -12,7 +12,8 @@ function sessionCookie(req: NextRequest): string | undefined {
 
 export function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
-  const isPublic = publicRoutes.some((r) => pathname.startsWith(r));
+  // ponytail: "/" is exact-match only — startsWith("/") matches everything
+  const isPublic = publicRoutes.some((r) => (r === "/" ? pathname === "/" : pathname.startsWith(r)));
   const isApiAuth = pathname.startsWith("/api/auth");
   const isStatic = pathname.startsWith("/_next") || pathname.startsWith("/favicon");
 

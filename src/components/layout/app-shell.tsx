@@ -4,16 +4,20 @@ import { BottomNav } from "./bottom-nav";
 
 export function AppShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
-  // ponytail: hide nav on full-page routes (login, signup, landing at /)
-  const isFullPage = pathname === "/login" || pathname === "/signup" || pathname === "/";
+  // ponytail: landing (/) = full screen no constraints, auth = no nav, app = mobile-first with nav
+  const isLanding = pathname === "/";
+  const isAuth = pathname === "/login" || pathname === "/signup";
+  const showChrome = !isLanding && !isAuth;
+
+  if (isLanding) return <>{children}</>;
 
   return (
     <div className="flex min-h-dvh justify-center bg-black">
-      <div className={`relative w-full ${isFullPage ? "max-w-2xl" : "max-w-[480px]"} bg-[var(--color-bg)]`}>
-        <main className={isFullPage ? "min-h-dvh" : "min-h-dvh pb-[calc(var(--spacing-tab-bar)+env(safe-area-inset-bottom))]"}>
+      <div className="relative w-full max-w-[480px] bg-[var(--color-bg)]">
+        <main className={showChrome ? "min-h-dvh pb-[calc(var(--spacing-tab-bar)+env(safe-area-inset-bottom))]" : "min-h-dvh"}>
           {children}
         </main>
-        {!isFullPage && <BottomNav />}
+        {showChrome && <BottomNav />}
       </div>
     </div>
   );
